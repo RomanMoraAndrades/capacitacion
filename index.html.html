@@ -1,0 +1,3315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pesquera — Centro de Capacitación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1EE;
+  --paper:#FFFFFF;
+  --ink:#16242A;
+  --ink-soft:#4B5B5E;
+  --line:#CBD3CE;
+  --cold:#2E7DA6;
+  --cold-dark:#1B5470;
+  --cold-light:#DCEDF4;
+  --warm:#C4622D;
+  --warm-dark:#8E4520;
+  --warm-light:#F4DFC5;
+  --ok:#3F7D4F;
+  --ok-light:#E1F0E3;
+  --bad:#B23A3A;
+  --bad-light:#F7E2E0;
+  --radius:2px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:#D8DED8;
+  color:var(--ink);
+  font-family:'IBM Plex Sans',sans-serif;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.app{
+  min-height:100vh;display:flex;flex-direction:column;
+  max-width:1320px;margin:0 auto;width:100%;
+  background:var(--bg);
+  box-shadow:0 0 0 1px var(--line), 0 20px 60px rgba(20,30,28,.10);
+  position:relative;
+}
+@media(max-width:1340px){
+  .app{box-shadow:none;}
+}
+
+/* ---------- utility ---------- */
+.mono{font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;}
+.display{font-family:'Oswald',sans-serif;text-transform:uppercase;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+.hidden{display:none !important;}
+
+/* ---------- top bar ---------- */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;border-bottom:2px solid var(--ink);
+  background:var(--paper);
+}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{
+  width:34px;height:34px;background:var(--ink);color:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;
+}
+.brand-text .t1{font-family:'Oswald',sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.03em;line-height:1;}
+.brand-text .t2{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.06em;margin-top:3px;}
+.crumbs{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);display:flex;gap:8px;align-items:center;}
+.crumbs .sep{opacity:.5;}
+.crumbs .cur{color:var(--ink);font-weight:600;}
+.back-btn{
+  border:1.5px solid var(--ink);background:none;color:var(--ink);
+  padding:8px 14px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  letter-spacing:.05em;display:flex;align-items:center;gap:6px;
+  transition:background .15s,color .15s;
+}
+.back-btn:hover{background:var(--ink);color:var(--bg);}
+
+main{flex:1;display:flex;flex-direction:column;}
+
+/* ======================================================
+   HOME VIEW
+   ====================================================== */
+#view-home{flex:1;display:flex;flex-direction:column;}
+.home-hero{padding:46px 28px 30px;text-align:center;}
+.home-hero .eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.15em;
+  color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px;
+}
+.home-hero h1{
+  font-family:'Oswald',sans-serif;font-weight:900;text-transform:uppercase;
+  font-size:clamp(28px,5vw,46px);margin:0 0 10px;letter-spacing:.01em;
+}
+.home-hero p{color:var(--ink-soft);max-width:560px;margin:0 auto;font-size:15px;line-height:1.5;}
+
+.panels{
+  flex:1;display:flex;min-height:420px;
+}
+.panel{
+  position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:34px;overflow:hidden;border-top:2px solid var(--ink);cursor:pointer;
+  transition:flex .35s ease;color:var(--paper);
+}
+.panel:hover{flex:1.12;}
+.panel-hp{background:linear-gradient(160deg,var(--warm-dark),var(--warm) 65%);}
+.panel-cg{background:linear-gradient(200deg,var(--cold-dark),var(--cold) 65%);border-left:2px solid var(--ink);}
+.panel-pattern{position:absolute;inset:0;opacity:.16;pointer-events:none;}
+.panel-code{
+  position:absolute;top:26px;left:34px;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;letter-spacing:.15em;border:1px solid rgba(255,255,255,.6);
+  padding:4px 9px;
+}
+.panel-count{
+  position:absolute;top:26px;right:34px;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;letter-spacing:.08em;text-align:right;opacity:.9;
+}
+.panel h2{
+  font-family:'Oswald',sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:clamp(26px,3.4vw,40px);margin:0 0 8px;line-height:1.02;
+}
+.panel p.desc{max-width:380px;font-size:14px;line-height:1.5;opacity:.92;margin:0 0 18px;}
+.panel .enter{
+  display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+  border-bottom:1.5px solid currentColor;padding-bottom:3px;width:fit-content;
+}
+.panel .enter svg{transition:transform .2s;}
+.panel:hover .enter svg{transform:translateX(4px);}
+.divider-badge{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:var(--ink);color:var(--bg);width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;
+  font-weight:700;font-size:12px;letter-spacing:.05em;z-index:2;border:3px solid var(--bg);
+}
+@media(max-width:760px){
+  .panels{flex-direction:column;}
+  .panel:hover{flex:1;}
+  .divider-badge{display:none;}
+  .panel-cg{border-left:none;}
+}
+
+/* ======================================================
+   PROCESS VIEW
+   ====================================================== */
+#view-process{flex:1;display:flex;flex-direction:column;}
+.process-header{padding:30px 28px 10px;}
+.process-tag{
+  display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  letter-spacing:.1em;padding:4px 10px;border:1px solid var(--ink);margin-bottom:12px;
+}
+.process-header h1{
+  font-family:'Oswald',sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:clamp(24px,3.6vw,36px);margin:0 0 8px;
+}
+.process-header p{color:var(--ink-soft);max-width:640px;font-size:14.5px;line-height:1.55;}
+
+/* station line diagram */
+.line-wrap{padding:26px 28px 8px;overflow-x:auto;}
+.line-diagram{
+  display:flex;align-items:flex-start;min-width:640px;position:relative;
+}
+.station{
+  flex:1;display:flex;flex-direction:column;align-items:center;position:relative;
+  padding:0 4px;background:none;border:none;color:inherit;
+}
+.station .dot{
+  width:38px;height:38px;border-radius:50%;background:var(--paper);
+  border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;z-index:2;
+  transition:background .15s,color .15s,transform .15s;
+}
+.station:hover .dot{transform:scale(1.12);}
+.station .lbl{
+  margin-top:10px;font-size:11.5px;text-align:center;font-family:'IBM Plex Mono',monospace;
+  letter-spacing:.02em;color:var(--ink-soft);line-height:1.3;max-width:96px;
+}
+.station::before{
+  content:'';position:absolute;top:19px;left:-50%;width:100%;height:2px;background:var(--line);z-index:1;
+}
+.station:first-child::before{display:none;}
+.station.done .dot{background:var(--accent,var(--ink));border-color:var(--accent,var(--ink));color:#fff;}
+
+/* station cards grid */
+.cards-wrap{padding:20px 28px 44px;flex:1;}
+.cards-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;
+}
+.station-card{
+  background:var(--paper);border:1.5px solid var(--ink);padding:18px 18px 16px;
+  text-align:left;display:flex;flex-direction:column;gap:10px;transition:box-shadow .15s,transform .15s;
+}
+.station-card:hover{box-shadow:5px 5px 0 var(--accent,var(--ink));transform:translate(-2px,-2px);}
+.station-card .code{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;
+  color:var(--accent-dark,var(--ink-soft));
+}
+.station-card h3{
+  font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;font-size:17px;margin:0;
+}
+.station-card .obj{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:0;flex:1;}
+.station-card .go{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;
+  display:flex;align-items:center;gap:6px;text-transform:uppercase;color:var(--ink);
+}
+
+/* ======================================================
+   SUBPROCESS VIEW
+   ====================================================== */
+#view-sub{flex:1;display:flex;flex-direction:column;}
+.sub-header{padding:28px 28px 0;}
+.sub-header .code{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--accent-dark,var(--ink-soft));}
+.sub-header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.sub-header h1{
+  font-family:'Oswald',sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:clamp(22px,3.2vw,32px);margin:6px 0 18px;
+}
+.print-btn{display:flex;align-items:center;gap:7px;margin-top:6px;flex-shrink:0;}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--ink);}
+.tab-btn{
+  background:none;border:none;padding:10px 4px;margin-right:26px;font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  border-bottom:3px solid transparent;position:relative;top:2px;
+}
+.tab-btn.active{color:var(--ink);border-bottom-color:var(--accent,var(--ink));font-weight:600;}
+.tab-panels{padding:26px 28px 60px;max-width:820px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+.box{background:var(--paper);border:1.5px solid var(--ink);padding:20px 22px;margin-bottom:18px;}
+.box h4{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent-dark,var(--ink-soft));margin:0 0 10px;
+}
+.box p{margin:0;font-size:14.5px;line-height:1.6;}
+.steps{margin:0;padding:0;list-style:none;counter-reset:step;}
+.steps li{
+  counter-increment:step;padding:10px 0 10px 40px;position:relative;font-size:14.5px;line-height:1.55;
+  border-top:1px solid var(--line);
+}
+.steps li:first-child{border-top:none;}
+.steps li::before{
+  content:counter(step,decimal-leading-zero);position:absolute;left:0;top:10px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent-dark,var(--ink));
+}
+.safety-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;}
+.safety-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;}
+.safety-list li svg{flex-shrink:0;margin-top:2px;color:var(--warm-dark);}
+
+/* video tab */
+.video-frame{
+  background:var(--ink);color:#cfd8d6;aspect-ratio:16/9;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;border:1.5px solid var(--ink);position:relative;
+  cursor:pointer;overflow:hidden;
+}
+.video-frame .play{
+  width:64px;height:64px;border-radius:50%;border:2px solid #cfd8d6;
+  display:flex;align-items:center;justify-content:center;transition:background .15s;
+}
+.video-frame:hover .play{background:rgba(255,255,255,.12);}
+.video-frame .cap{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;opacity:.75;}
+.video-walk{display:none;padding:18px 4px 4px;}
+.video-walk.active{display:block;}
+.walk-row{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);}
+.walk-row:first-child{border-top:none;}
+.walk-num{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:#fff;background:var(--accent,var(--ink));
+  width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+}
+.walk-text{font-size:14px;line-height:1.5;padding-top:3px;}
+.video-note{
+  margin-top:12px;font-size:12.5px;color:var(--ink-soft);background:var(--cold-light);
+  border-left:3px solid var(--accent,var(--ink));padding:10px 14px;line-height:1.5;
+}
+
+/* media upload/link controls */
+.media-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:4px;}
+.file-btn{
+  position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;
+  border:1.5px solid var(--ink);background:var(--paper);padding:9px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  transition:background .15s,color .15s;
+}
+.file-btn:hover{background:var(--ink);color:var(--bg);}
+.file-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+.link-row{display:flex;gap:8px;flex:1;min-width:230px;}
+.link-row input[type=text]{
+  flex:1;border:1.5px solid var(--line);padding:9px 10px;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;background:var(--paper);color:var(--ink);
+}
+.link-row input[type=text]:focus{outline:none;border-color:var(--ink);}
+.link-row button{
+  border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);padding:9px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+}
+.media-status{
+  font-size:12.5px;color:var(--ink-soft);display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-top:12px;
+}
+.clear-link{background:none;border:none;color:var(--bad);font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-decoration:underline;padding:0;}
+.manual-open-btn{
+  display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);
+  padding:12px 18px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.06em;
+  text-transform:uppercase;text-decoration:none;
+}
+.manual-empty{font-size:13px;color:var(--ink-soft);font-style:italic;margin:8px 0 0;}
+video.local-video{width:100%;aspect-ratio:16/9;background:#000;display:block;}
+iframe.embed-video{width:100%;aspect-ratio:16/9;border:none;display:block;}
+.session-note{font-size:11.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+
+/* panel image controls */
+.panel-img-ctrl{
+  position:relative;z-index:3;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  background:rgba(0,0,0,.28);padding:10px;backdrop-filter:blur(2px);
+}
+.file-btn-sm{
+  position:relative;overflow:hidden;display:inline-flex;align-items:center;
+  border:1.5px solid rgba(255,255,255,.8);background:rgba(255,255,255,.08);color:#fff;
+  padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+}
+.file-btn-sm input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.link-row-sm{display:flex;gap:6px;flex:1;min-width:150px;}
+.link-row-sm input[type=text]{
+  flex:1;min-width:0;border:1.5px solid rgba(255,255,255,.8);background:rgba(255,255,255,.08);color:#fff;
+  padding:6px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;
+}
+.link-row-sm input[type=text]::placeholder{color:rgba(255,255,255,.65);}
+.link-row-sm button{
+  border:1.5px solid rgba(255,255,255,.9);background:rgba(255,255,255,.9);color:var(--ink);
+  padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+}
+.panel-img-status{
+  width:100%;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.85);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.panel-img-status .clear-link{color:#ffd7d0;}
+
+/* manual image */
+.manual-img{width:100%;max-height:360px;object-fit:cover;border:1.5px solid var(--ink);margin-bottom:10px;display:block;}
+
+/* ======================================================
+   ROLE SELECT
+   ====================================================== */
+.role-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px;}
+.role-wrap .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.15em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:4px;}
+.role-wrap h1{font-family:'Oswald',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(24px,4vw,36px);margin:0 0 6px;}
+.role-wrap p.sub{color:var(--ink-soft);font-size:14px;margin:0 0 26px;max-width:480px;}
+.role-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;}
+.role-card{width:230px;background:var(--paper);border:2px solid var(--ink);padding:30px 22px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:box-shadow .15s,transform .15s;font-family:inherit;}
+.role-card:hover{box-shadow:6px 6px 0 var(--ink);transform:translate(-3px,-3px);}
+.role-card .icon{width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;}
+.role-card h3{font-family:'Oswald',sans-serif;text-transform:uppercase;margin:0;font-size:18px;}
+.role-card p{font-size:12.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+.role-note{margin-top:30px;font-size:12px;color:var(--ink-soft);max-width:460px;line-height:1.6;background:var(--cold-light);border-left:3px solid var(--ink);padding:12px 16px;text-align:left;}
+
+/* topbar role/nav */
+.topbar-actions{display:flex;gap:10px;align-items:center;}
+.nav-btn{
+  border:1.5px solid var(--ink);background:none;color:var(--ink);
+  padding:8px 14px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.05em;
+  transition:background .15s,color .15s;
+}
+.nav-btn:hover{background:var(--ink);color:var(--bg);}
+.nav-btn.primary{background:var(--ink);color:var(--bg);}
+.role-badge{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--ink);padding:5px 10px;
+}
+
+/* dashboards */
+.dash-cards{display:flex;gap:14px;flex-wrap:wrap;padding:22px 28px 6px;}
+.dash-card{background:var(--paper);border:1.5px solid var(--ink);padding:16px 22px;min-width:150px;}
+.dash-card .num{font-family:'Oswald',sans-serif;font-weight:800;font-size:30px;line-height:1;}
+.dash-card .lbl{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-top:6px;}
+
+.task-list{padding:14px 28px 50px;display:flex;flex-direction:column;gap:12px;}
+.task-item{background:var(--paper);border:1.5px solid var(--ink);padding:16px 20px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:box-shadow .15s,transform .15s;}
+.task-item:hover{box-shadow:5px 5px 0 var(--accent,var(--ink));transform:translate(-2px,-2px);}
+.task-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.task-top .code{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-dark,var(--ink-soft));}
+.task-top h3{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;margin:0;font-size:16px;flex:1;}
+.progress-mini-row{display:flex;gap:16px;flex-wrap:wrap;}
+.progress-mini{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);}
+.progress-bar-track{width:74px;height:6px;background:var(--line);}
+.progress-bar-fill{height:100%;background:var(--accent,var(--ink));}
+.overall-pill{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:3px 9px;border:1px solid var(--ink);letter-spacing:.04em;}
+.overall-pill.done{background:var(--ok);color:#fff;border-color:var(--ok);}
+.empty-state{padding:50px 28px;text-align:center;color:var(--ink-soft);font-size:14px;max-width:420px;margin:0 auto;line-height:1.6;}
+
+/* assign */
+.assign-list{padding:14px 28px 50px;}
+.assign-group{margin-bottom:26px;}
+.assign-group-head{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.assign-group-head h3{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:16px;margin:0;}
+.assign-all-btn{border:1.5px solid var(--ink);background:none;padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;}
+.assign-row{display:flex;align-items:center;gap:14px;padding:11px 16px;border:1.5px solid var(--line);margin-bottom:8px;background:var(--paper);cursor:pointer;}
+.assign-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--ink);flex-shrink:0;}
+.assign-row .code{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);width:56px;flex-shrink:0;}
+.assign-row .name{flex:1;font-size:14px;}
+.assign-group-footer{display:flex;justify-content:flex-end;margin-top:10px;}
+.confirm-btn{
+  border:1.5px solid var(--ink);background:none;color:var(--ink);padding:10px 18px;
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+  flex-shrink:0;transition:background .15s,color .15s,border-color .15s;
+}
+.confirm-btn:hover{background:var(--ink);color:var(--bg);}
+.confirm-btn.saved{background:var(--ok);border-color:var(--ok);color:#fff;}
+
+.saved-flash{
+  display:inline-flex;align-items:center;gap:5px;margin-left:10px;background:var(--ok);color:#fff;
+  padding:3px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;
+  text-transform:uppercase;animation:savedFade 1.6s ease forwards;vertical-align:middle;
+}
+@keyframes savedFade{0%{opacity:0;transform:translateY(-2px);}12%{opacity:1;transform:translateY(0);}75%{opacity:1;}100%{opacity:0;}}
+
+/* team dashboard table */
+.team-table-wrap{padding:10px 28px 50px;overflow-x:auto;}
+.team-table{width:100%;border-collapse:collapse;min-width:640px;}
+.team-table th,.team-table td{border:1px solid var(--line);padding:10px 12px;text-align:left;font-size:13px;}
+.team-table th{background:var(--ink);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;}
+.team-table td.center{text-align:center;}
+
+/* login */
+.login-form{display:flex;flex-direction:column;gap:6px;width:100%;max-width:270px;text-align:left;margin:0 auto;}
+.login-label{font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-top:10px;}
+.login-input{border:1.5px solid var(--ink);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--paper);color:var(--ink);}
+.login-input:focus{outline:none;border-color:var(--cold);}
+.login-error{color:var(--bad);font-family:'IBM Plex Mono',monospace;font-size:12px;margin-top:12px;}
+
+/* collaborator picker for supervisor */
+.collab-picker-row{display:flex;align-items:center;gap:10px;padding:0 28px 18px;flex-wrap:wrap;}
+.collab-picker-row label{font-size:11px;letter-spacing:.06em;color:var(--ink-soft);}
+.collab-select{border:1.5px solid var(--ink);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--paper);color:var(--ink);}
+
+/* mini process explorer inside mytasks */
+.mini-panels{display:flex;gap:14px;flex-wrap:wrap;padding:0 28px 50px;}
+.mini-panel{
+  flex:1;min-width:220px;text-align:left;color:#fff;padding:22px;border:none;cursor:pointer;
+  display:flex;flex-direction:column;gap:4px;transition:transform .15s,box-shadow .15s;
+}
+.mini-panel:hover{transform:translate(-2px,-2px);}
+.mini-panel-hp{background:linear-gradient(160deg,var(--warm-dark),var(--warm) 70%);}
+.mini-panel-cg{background:linear-gradient(200deg,var(--cold-dark),var(--cold) 70%);}
+.mini-code{font-size:11px;letter-spacing:.1em;opacity:.85;}
+.mini-panel h3{font-family:'Oswald',sans-serif;text-transform:uppercase;margin:2px 0;font-size:19px;}
+.mini-panel p{font-size:12.5px;opacity:.85;margin:0 0 6px;}
+.mini-go{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;}
+
+/* quiz timer + feedback */
+.quiz-timer-row{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
+.quiz-timer{font-size:24px;font-weight:700;background:var(--ink);color:var(--bg);padding:6px 16px;letter-spacing:.03em;}
+.quiz-timer.urgent{background:var(--bad);}
+.quiz-timer-label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+.quiz-feedback{
+  margin-top:12px;padding:10px 14px;background:var(--bad-light);border-left:3px solid var(--bad);
+  font-size:13.5px;line-height:1.5;
+}
+.quiz-feedback-answer{margin-bottom:6px;}
+.quiz-feedback-exp{color:var(--ink-soft);}
+.opt input:disabled{cursor:default;}
+
+/* hide edit/upload controls entirely for colaborador role */
+body.role-colaborador .media-controls,
+body.role-colaborador .panel-img-ctrl,
+body.role-colaborador .session-note,
+body.role-colaborador .clear-link{display:none !important;}
+
+/* quiz tab */
+.quiz-q{background:var(--paper);border:1.5px solid var(--ink);padding:18px 20px;margin-bottom:14px;}
+.quiz-q .qtext{font-size:14.5px;font-weight:600;margin:0 0 12px;line-height:1.4;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--line);
+  font-size:13.5px;transition:border-color .15s,background .15s;
+}
+.opt input{accent-color:var(--ink);}
+.opt.correct{border-color:var(--ok);background:var(--ok-light);}
+.opt.incorrect{border-color:var(--bad);background:var(--bad-light);}
+.quiz-actions{display:flex;align-items:center;gap:16px;margin-top:6px;}
+.submit-btn{
+  background:var(--ink);color:var(--bg);border:none;padding:12px 22px;font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+}
+.submit-btn:hover{background:var(--accent-dark,#000);}
+.quiz-result{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.03em;display:none;
+}
+.quiz-result.show{display:block;}
+.quiz-result.pass{color:var(--ok);}
+.quiz-result.fail{color:var(--bad);}
+
+footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);text-align:center;}
+
+@media(max-width:600px){
+  .topbar{padding:14px 16px;}
+  .crumbs{display:none;}
+  .home-hero{padding:32px 18px 22px;}
+  .panel{padding:24px;}
+  .process-header,.line-wrap,.cards-wrap,.sub-header,.tab-panels{padding-left:16px;padding-right:16px;}
+}
+
+/* print: only the manual content of the active station */
+@media print{
+  .topbar, .tabs, .print-btn, .media-controls, .session-note,
+  #panel-video, #panel-quiz, #manualDocBox, footer, .back-btn{display:none !important;}
+  body{background:#fff;}
+  .app{box-shadow:none;max-width:none;margin:0;}
+  .tab-panel{display:none !important;}
+  #panel-manual{display:block !important;}
+  .box{border:1px solid #999;break-inside:avoid;}
+  .manual-img{max-height:280px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">
+        <div class="t1">Pesquera</div>
+        <div class="t2">CENTRO DE CAPACITACIÓN</div>
+      </div>
+    </div>
+    <div class="crumbs" id="crumbs">
+      <span class="cur">Inicio</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="nav-btn hidden" id="navAssign">Asignar tareas</button>
+      <button class="nav-btn hidden" id="navDash">Dashboard equipo</button>
+      <span class="role-badge hidden" id="roleBadge"></span>
+      <button class="back-btn hidden" id="switchAccountBtn">Cambiar cuenta</button>
+      <button class="back-btn hidden" id="backBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ ROLE SELECT ============ -->
+    <section id="view-role">
+      <div class="role-wrap">
+        <div class="eyebrow">Acceso al sistema</div>
+        <h1>¿Con qué cuenta quieres entrar?</h1>
+        <p class="sub">Esta es una demo. Más adelante esto se reemplaza por un inicio de sesión único con usuario y contraseña reales.</p>
+        <div class="role-cards">
+          <button class="role-card" data-role="supervisor">
+            <div class="icon">SU</div>
+            <h3>Supervisor</h3>
+            <p>Inicia sesión con tu usuario y clave. Edita manuales, videos, imágenes y preguntas. Elige un colaborador, le asigna tareas y ve su dashboard de avance.</p>
+          </button>
+          <button class="role-card" data-role="colaborador">
+            <div class="icon">CO</div>
+            <h3>Colaborador</h3>
+            <p>Inicia sesión con tu usuario y clave. Ve tus tareas asignadas y tu progreso, o explora libremente cualquier proceso. No puede editar contenido.</p>
+          </button>
+        </div>
+        <div class="role-note">Nota: como aún no hay servidor, las tareas asignadas y el progreso se guardan solo mientras esta pestaña del navegador siga abierta. Al recargar la página, se reinician.</div>
+      </div>
+    </section>
+
+    <!-- ============ LOGIN COLABORADOR ============ -->
+    <section id="view-login" class="hidden">
+      <div class="role-wrap">
+        <div class="eyebrow" id="loginEyebrow">Acceso colaborador</div>
+        <h1>Inicia sesión</h1>
+        <p class="sub" id="loginSub">Usuario: COLABORADOR1 a COLABORADOR5 · Clave: 12345 (misma para todos, solo para esta demo).</p>
+        <form id="loginForm" class="login-form">
+          <label class="login-label mono">Usuario</label>
+          <input type="text" id="loginUser" class="login-input" placeholder="COLABORADOR1" autocomplete="username">
+          <label class="login-label mono">Contraseña</label>
+          <input type="password" id="loginPass" class="login-input" placeholder="••••••" autocomplete="current-password">
+          <button type="button" id="loginBtn" class="nav-btn primary" style="margin-top:6px;">Entrar</button>
+          <div id="loginError" class="login-error hidden">⚠ Usuario y/o clave errónea.</div>
+        </form>
+        <button class="back-btn" id="loginBackBtn" style="margin-top:24px;">Volver</button>
+      </div>
+    </section>
+
+    <!-- ============ HOME ============ -->
+    <section id="view-home" class="hidden">
+      <div class="home-hero">
+        <div class="eyebrow">Formación por línea de proceso</div>
+        <h1>Selecciona una línea de proceso</h1>
+        <p>Cada línea contiene sus estaciones de trabajo. En cada una encontrarás el manual del subproceso, un video explicativo y una evaluación breve.</p>
+      </div>
+      <div class="panels">
+        <div class="panel panel-hp" data-process="hp" role="button" tabindex="0">
+          <svg class="panel-pattern" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <g stroke="#fff" stroke-width="1">
+              <line x1="0" y1="380" x2="400" y2="380"/><line x1="0" y1="350" x2="400" y2="350"/>
+              <line x1="0" y1="320" x2="400" y2="320"/><line x1="0" y1="290" x2="400" y2="290"/>
+              <line x1="0" y1="260" x2="400" y2="260"/><line x1="0" y1="230" x2="400" y2="230"/>
+            </g>
+          </svg>
+          <div class="panel-code mono">LÍNEA HP</div>
+          <div class="panel-count mono">6 ESTACIONES</div>
+          <h2>Harina de<br>Pescado</h2>
+          <p class="desc">Recepción, cocción, prensado, secado, molienda y envasado del producto.</p>
+          <span class="enter">Ingresar a la línea
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          <div class="panel-img-ctrl" id="hpImgCtrl">
+            <label class="file-btn-sm">Imagen
+              <input type="file" id="hpImgUpload" accept="image/*">
+            </label>
+            <div class="link-row-sm">
+              <input type="text" id="hpImgLinkInput" placeholder="o link de imagen">
+              <button id="hpImgLinkBtn">OK</button>
+            </div>
+            <div class="panel-img-status" id="hpImgStatus"></div>
+          </div>
+        </div>
+        <div class="divider-badge">HP · CG</div>
+        <div class="panel panel-cg" data-process="cg" role="button" tabindex="0">
+          <svg class="panel-pattern" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <g stroke="#fff" stroke-width="1">
+              <line x1="40" y1="0" x2="0" y2="60"/><line x1="120" y1="0" x2="60" y2="90"/>
+              <line x1="200" y1="0" x2="140" y2="90"/><line x1="280" y1="0" x2="220" y2="90"/>
+              <line x1="360" y1="0" x2="300" y2="90"/><line x1="400" y1="30" x2="360" y2="90"/>
+            </g>
+          </svg>
+          <div class="panel-code mono">LÍNEA CG</div>
+          <div class="panel-count mono">6 ESTACIONES</div>
+          <h2>Congelado de<br>Pescado</h2>
+          <p class="desc">Recepción, lavado, fileteado, congelado IQF, glaseado y empaque en frío.</p>
+          <span class="enter">Ingresar a la línea
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          <div class="panel-img-ctrl" id="cgImgCtrl">
+            <label class="file-btn-sm">Imagen
+              <input type="file" id="cgImgUpload" accept="image/*">
+            </label>
+            <div class="link-row-sm">
+              <input type="text" id="cgImgLinkInput" placeholder="o link de imagen">
+              <button id="cgImgLinkBtn">OK</button>
+            </div>
+            <div class="panel-img-status" id="cgImgStatus"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section id="view-process" class="hidden">
+      <div class="process-header">
+        <div class="process-tag mono" id="proc-tag">LÍNEA HP</div>
+        <h1 id="proc-title">Harina de Pescado</h1>
+        <p id="proc-desc"></p>
+      </div>
+      <div class="line-wrap">
+        <div class="line-diagram" id="proc-line"></div>
+      </div>
+      <div class="cards-wrap">
+        <div class="cards-grid" id="proc-cards"></div>
+      </div>
+    </section>
+
+    <!-- ============ SUBPROCESS ============ -->
+    <section id="view-sub" class="hidden">
+      <div class="sub-header">
+        <div class="code mono" id="sub-code">HP-01</div>
+        <div class="sub-header-top">
+          <h1 id="sub-title">Recepción de materia prima</h1>
+          <button class="nav-btn print-btn" id="printManualBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/></svg>
+            Imprimir manual
+          </button>
+        </div>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="manual">Manual</button>
+          <button class="tab-btn" data-tab="video">Video</button>
+          <button class="tab-btn" data-tab="quiz">Evaluación</button>
+        </div>
+      </div>
+      <div class="tab-panels">
+        <div class="tab-panel active" id="panel-manual">
+          <div class="box" id="manualDocBox">
+            <h4>Documento del manual (PDF)</h4>
+            <div id="manualDocStatus"></div>
+            <div class="media-controls">
+              <label class="file-btn">Subir PDF
+                <input type="file" id="pdfUpload" accept="application/pdf">
+              </label>
+              <div class="link-row">
+                <input type="text" id="pdfLinkInput" placeholder="o pega un link al PDF (https://...)">
+                <button id="pdfLinkBtn">Usar link</button>
+              </div>
+            </div>
+            <p class="session-note">Un PDF subido queda disponible mientras esta página siga abierta en tu navegador. Para que quede permanente (y visible desde otros equipos), lo mejor es alojarlo en algún lugar (Google Drive, Dropbox, tu servidor) y pegar el link.</p>
+          </div>
+          <div class="box" id="manualImgBox">
+            <h4>Imagen del subproceso (opcional)</h4>
+            <div id="manualImgStatus"></div>
+            <div class="media-controls">
+              <label class="file-btn">Subir imagen
+                <input type="file" id="imgUpload" accept="image/*">
+              </label>
+              <div class="link-row">
+                <input type="text" id="imgLinkInput" placeholder="o pega un link a la imagen (https://...)">
+                <button id="imgLinkBtn">Usar link</button>
+              </div>
+            </div>
+            <p class="session-note">Igual que el PDF, una imagen subida solo dura mientras la pestaña siga abierta. Para que sea permanente, usa un link.</p>
+          </div>
+          <div class="box">
+            <h4>Objetivo</h4>
+            <p id="man-objetivo"></p>
+          </div>
+          <div class="box">
+            <h4>Pasos del subproceso</h4>
+            <ol class="steps" id="man-pasos"></ol>
+          </div>
+          <div class="box">
+            <h4>Seguridad y EPP</h4>
+            <ul class="safety-list" id="man-seguridad"></ul>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-video">
+          <div class="box">
+            <h4>Video de capacitación</h4>
+            <div class="media-controls">
+              <label class="file-btn">Subir video
+                <input type="file" id="videoUpload" accept="video/*">
+              </label>
+              <div class="link-row">
+                <input type="text" id="videoLinkInput" placeholder="o pega un link (YouTube, Vimeo o .mp4)">
+                <button id="videoLinkBtn">Usar link</button>
+              </div>
+            </div>
+            <div class="media-status" id="videoStatus"></div>
+            <p class="session-note">Un video subido queda disponible mientras esta página siga abierta en tu navegador. Para que sea permanente, sube el video a YouTube/Vimeo (puede ser "no listado") o a tu propio hosting y pega el link.</p>
+          </div>
+          <div id="videoPlayerWrap"></div>
+          <div class="video-frame" id="videoFrame">
+            <div class="play">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div class="cap">REPRODUCIR RECORRIDO DEL SUBPROCESO</div>
+          </div>
+          <div class="video-walk" id="videoWalk"></div>
+          <div class="video-note" id="videoNote">Aún no se ha subido ni enlazado un video para este subproceso. Mientras tanto, este es un recorrido en texto con los mismos pasos.</div>
+        </div>
+
+        <div class="tab-panel" id="panel-quiz">
+          <div class="box" id="quizStart">
+            <h4>Evaluación</h4>
+            <p>Tendrás <strong>25 minutos</strong> desde que presiones "Empezar test" para responder las 10 preguntas. Si se acaba el tiempo, la evaluación se envía automáticamente con lo que hayas respondido.</p>
+            <button class="submit-btn" id="quizStartBtn">Empezar test</button>
+          </div>
+          <div class="quiz-timer-row hidden" id="quizTimerRow">
+            <span class="quiz-timer mono" id="quizTimer">25:00</span>
+            <span class="quiz-timer-label">tiempo restante</span>
+          </div>
+          <div id="quizQuestions"></div>
+          <div class="quiz-actions hidden" id="quizActions">
+            <button class="submit-btn" id="quizSubmit">Enviar respuestas</button>
+            <span class="quiz-result mono" id="quizResult"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>PESQUERA · MATERIAL DE CAPACITACIÓN INTERNA · CONTENIDO EDITABLE</footer>
+</div>
+
+<!-- templates for new views, injected via JS after view-sub -->
+<template id="tpl-mytasks">
+  <section id="view-mytasks" class="hidden">
+    <div class="process-header">
+      <div class="process-tag mono">MI CUENTA</div>
+      <h1 id="mytasks-title">Mis tareas</h1>
+      <p>Estas son las estaciones que tu supervisor te asignó. Abre cada una para revisar el manual, ver el video y rendir la evaluación.</p>
+    </div>
+    <div class="dash-cards" id="mytasks-summary"></div>
+    <div class="task-list" id="mytasks-list"></div>
+    <div class="process-header" style="padding-top:6px;">
+      <h1 style="font-size:19px;">Explorar todos los procesos</h1>
+      <p>Puedes revisar cualquier estación, aunque todavía no te la hayan asignado.</p>
+    </div>
+    <div class="mini-panels">
+      <button class="mini-panel mini-panel-hp" data-process="hp">
+        <span class="mini-code mono">LÍNEA HP</span>
+        <h3>Harina de Pescado</h3>
+        <p>6 estaciones</p>
+        <span class="mini-go">Ver estaciones →</span>
+      </button>
+      <button class="mini-panel mini-panel-cg" data-process="cg">
+        <span class="mini-code mono">LÍNEA CG</span>
+        <h3>Congelado de Pescado</h3>
+        <p>6 estaciones</p>
+        <span class="mini-go">Ver estaciones →</span>
+      </button>
+    </div>
+  </section>
+</template>
+
+<template id="tpl-assign">
+  <section id="view-assign" class="hidden">
+    <div class="process-header">
+      <div class="process-tag mono">SUPERVISIÓN</div>
+      <h1>Asignar tareas</h1>
+      <p>Elige un colaborador y marca qué estaciones debe completar. Los cambios se guardan al instante.</p>
+    </div>
+    <div class="collab-picker-row">
+      <label class="mono">COLABORADOR</label>
+      <select id="assignCollabSelect" class="collab-select"></select>
+    </div>
+    <div class="assign-list" id="assign-list"></div>
+  </section>
+</template>
+
+<template id="tpl-teamdash">
+  <section id="view-teamdash" class="hidden">
+    <div class="process-header">
+      <div class="process-tag mono">SUPERVISIÓN</div>
+      <h1>Dashboard del equipo</h1>
+      <p>Elige un colaborador para ver su avance en las tareas que le asignaste.</p>
+    </div>
+    <div class="collab-picker-row">
+      <label class="mono">COLABORADOR</label>
+      <select id="dashCollabSelect" class="collab-select"></select>
+    </div>
+    <div class="dash-cards" id="teamdash-summary"></div>
+    <div class="team-table-wrap">
+      <table class="team-table">
+        <thead>
+          <tr><th>Estación</th><th class="center">Manual</th><th class="center">Video</th><th class="center">Evaluación</th><th class="center">Intentos</th><th class="center">Estado</th></tr>
+        </thead>
+        <tbody id="teamdash-body"></tbody>
+      </table>
+    </div>
+  </section>
+</template>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const DATA = {
+  "hp": {
+    "code": "HP",
+    "name": "Harina de Pescado",
+    "accent": "var(--warm)",
+    "accentDark": "var(--warm-dark)",
+    "desc": "Proceso que transforma pescado entero en harina de pescado, un insumo proteico usado en alimentación animal, mediante cocción, prensado, secado y molienda.",
+    "subs": [
+      {
+        "id": "hp-01",
+        "code": "HP-01",
+        "name": "Recepción de materia prima",
+        "objetivo": "Recibir y controlar la calidad y frescura del pescado que ingresa a planta antes de iniciar el proceso.",
+        "pasos": [
+          "Verificar la guía de despacho y la procedencia del pescado.",
+          "Medir la temperatura y evaluar el grado de frescura (prueba organoléptica).",
+          "Pesar la materia prima en las básculas de recepción.",
+          "Derivar el pescado a pozas de almacenamiento o directo a cocción según su estado.",
+          "Registrar los datos del lote en el sistema de trazabilidad."
+        ],
+        "seguridad": [
+          "Uso de botas antideslizantes y guantes impermeables.",
+          "Protección auditiva cerca de equipos de descarga.",
+          "Precaución con superficies húmedas y resbalosas.",
+          "Señalización de tránsito de vehículos en zona de descarga."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se evalúa principalmente al recibir el pescado en planta?",
+            "opts": [
+              "El color del envase de transporte",
+              "La temperatura y el grado de frescura",
+              "La marca del vehículo",
+              "El horario de llegada únicamente"
+            ],
+            "a": 1,
+            "exp": "La temperatura y el estado organoléptico determinan si el pescado puede procesarse o debe descartarse."
+          },
+          {
+            "q": "¿Dónde se registran los datos del lote recibido?",
+            "opts": [
+              "No se registran",
+              "En el sistema de trazabilidad",
+              "Solo en un cuaderno personal",
+              "En la etiqueta del camión"
+            ],
+            "a": 1,
+            "exp": "El registro en el sistema de trazabilidad permite seguir el lote en todas las etapas posteriores."
+          },
+          {
+            "q": "¿Qué EPP es indispensable en la zona de recepción?",
+            "opts": [
+              "Guantes impermeables y botas antideslizantes",
+              "Corbata y camisa formal",
+              "Ninguno, no es zona de riesgo",
+              "Lentes de sol"
+            ],
+            "a": 0,
+            "exp": "El área de descarga es húmeda y resbaladiza, por eso se requieren guantes impermeables y botas antideslizantes."
+          },
+          {
+            "q": "¿Qué instrumento se usa para pesar la materia prima?",
+            "opts": [
+              "Básculas de recepción",
+              "Termómetro de bulbo",
+              "Balanza de laboratorio",
+              "Cinta métrica"
+            ],
+            "a": 0,
+            "exp": "Las básculas de recepción permiten registrar el peso exacto del lote que ingresa a planta."
+          },
+          {
+            "q": "¿Qué determina si el pescado va a pozas de almacenamiento o directo a cocción?",
+            "opts": [
+              "Su estado (frescura/condición)",
+              "El color del camión",
+              "El turno del día",
+              "El precio de mercado"
+            ],
+            "a": 0,
+            "exp": "El estado y frescura del pescado define si puede esperar en pozas o debe procesarse de inmediato."
+          },
+          {
+            "q": "¿Qué documento se debe verificar al recibir el camión?",
+            "opts": [
+              "La guía de despacho",
+              "Una boleta de compra personal",
+              "El manual del camión",
+              "Ninguno"
+            ],
+            "a": 0,
+            "exp": "La guía de despacho certifica el origen y las condiciones de transporte del lote."
+          },
+          {
+            "q": "¿Qué riesgo justifica señalizar el tránsito de vehículos en la zona de descarga?",
+            "opts": [
+              "Colisión con vehículos",
+              "Incendio de bodega",
+              "Contaminación acústica",
+              "Exposición solar"
+            ],
+            "a": 0,
+            "exp": "En la zona de descarga circulan camiones y montacargas, por lo que existe riesgo real de colisión con personas."
+          },
+          {
+            "q": "Verdadero o falso: la prueba organoléptica evalúa color, olor y textura del pescado.",
+            "opts": [
+              "Verdadero, es correcta",
+              "Falso, solo se mide el peso",
+              "Falso, solo aplica a la harina",
+              "Falso, no se realiza en recepción"
+            ],
+            "a": 0,
+            "exp": "La prueba organoléptica es justamente un examen sensorial: color, olor y textura indican el grado de frescura."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar guía de despacho y procedencia",
+              "Pesar la materia prima",
+              "Derivar a pozas de almacenamiento",
+              "Registrar en trazabilidad"
+            ],
+            "a": 0,
+            "exp": "Antes de descargar o pesar, siempre se verifica primero la guía de despacho y la procedencia del pescado."
+          },
+          {
+            "q": "¿Qué se hace al final del proceso de recepción?",
+            "opts": [
+              "Registrar los datos en el sistema de trazabilidad",
+              "Cocinar el pescado",
+              "Envasar la harina",
+              "Congelar el producto"
+            ],
+            "a": 0,
+            "exp": "El registro en trazabilidad cierra el proceso de recepción antes de enviar el lote a la siguiente etapa."
+          }
+        ]
+      },
+      {
+        "id": "hp-02",
+        "code": "HP-02",
+        "name": "Cocción",
+        "objetivo": "Cocer el pescado mediante vapor para coagular las proteínas, liberar aceite y agua, y facilitar el prensado posterior.",
+        "pasos": [
+          "Cargar el pescado en el cocedor continuo.",
+          "Aplicar vapor a temperatura controlada (aprox. 95-100 °C).",
+          "Mantener el tiempo de cocción según el tipo de materia prima.",
+          "Monitorear presión y temperatura en el panel de control.",
+          "Trasladar el pescado cocido a la etapa de prensado."
+        ],
+        "seguridad": [
+          "Protección térmica: guantes y ropa resistente al calor.",
+          "Precaución con líneas de vapor presurizadas.",
+          "Verificación periódica de válvulas de seguridad.",
+          "No manipular el equipo sin autorización ni capacitación."
+        ],
+        "quiz": [
+          {
+            "q": "¿Cuál es el objetivo principal de la cocción?",
+            "opts": [
+              "Enfriar el pescado",
+              "Coagular proteínas y facilitar el prensado",
+              "Empacar el producto",
+              "Lavar el pescado"
+            ],
+            "a": 1,
+            "exp": "La cocción coagula las proteínas del pescado, lo que facilita separar después el aceite y el agua en el prensado."
+          },
+          {
+            "q": "¿Aproximadamente a qué temperatura se realiza la cocción?",
+            "opts": [
+              "0-5 °C",
+              "20-30 °C",
+              "95-100 °C",
+              "200-250 °C"
+            ],
+            "a": 2,
+            "exp": "La cocción se realiza con vapor entre 95 y 100°C aproximadamente para lograr una coagulación uniforme."
+          },
+          {
+            "q": "¿Qué riesgo es más relevante en esta estación?",
+            "opts": [
+              "Riesgo eléctrico únicamente",
+              "Quemaduras por vapor y superficies calientes",
+              "Riesgo de caída de altura",
+              "Ninguno, es una etapa segura"
+            ],
+            "a": 1,
+            "exp": "El vapor y las superficies del cocedor alcanzan temperaturas altas, por lo que el riesgo principal es de quemaduras."
+          },
+          {
+            "q": "¿Qué equipo se utiliza para cocer el pescado?",
+            "opts": [
+              "Cocedor continuo",
+              "Prensa continua",
+              "Molino",
+              "Túnel IQF"
+            ],
+            "a": 0,
+            "exp": "El cocedor continuo es el equipo diseñado específicamente para esta etapa de cocción con vapor."
+          },
+          {
+            "q": "¿Qué se monitorea en el panel de control durante la cocción?",
+            "opts": [
+              "Presión y temperatura",
+              "Humedad ambiente",
+              "Velocidad del viento",
+              "Voltaje de la red"
+            ],
+            "a": 0,
+            "exp": "Controlar presión y temperatura en el panel evita sobrecocción o fallas del equipo."
+          },
+          {
+            "q": "¿A qué etapa se traslada el pescado después de cocido?",
+            "opts": [
+              "Prensado",
+              "Molienda",
+              "Empaque",
+              "Glaseado"
+            ],
+            "a": 0,
+            "exp": "Una vez cocido, el pescado pasa directamente a la prensa para separar sólidos de líquidos."
+          },
+          {
+            "q": "Verdadero o falso: cualquier persona sin capacitación puede operar el cocedor.",
+            "opts": [
+              "Verdadero, cualquiera puede operarlo",
+              "Falso, requiere autorización y capacitación",
+              "Verdadero, solo se necesita fuerza física",
+              "Falso, solo lo opera el gerente"
+            ],
+            "a": 1,
+            "exp": "Operar el cocedor sin autorización ni capacitación expone a quemaduras graves por vapor y superficies calientes."
+          },
+          {
+            "q": "¿Qué elemento de seguridad debe verificarse periódicamente en esta estación?",
+            "opts": [
+              "Las válvulas de seguridad",
+              "Los extintores de la bodega",
+              "Las cámaras de seguridad",
+              "Las básculas"
+            ],
+            "a": 0,
+            "exp": "Las válvulas de seguridad liberan presión excesiva y deben revisarse periódicamente para evitar accidentes."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Cargar el pescado en el cocedor continuo",
+              "Monitorear presión y temperatura",
+              "Trasladar a prensado",
+              "Mantener el tiempo de cocción"
+            ],
+            "a": 0,
+            "exp": "El proceso de cocción comienza cargando el pescado en el cocedor continuo."
+          },
+          {
+            "q": "¿Qué protege al operador de quemaduras en esta estación?",
+            "opts": [
+              "Ropa y guantes resistentes al calor",
+              "Guantes de látex",
+              "Lentes de sol",
+              "Chaleco reflectante"
+            ],
+            "a": 0,
+            "exp": "La ropa y guantes resistentes al calor son la barrera principal contra quemaduras en esta estación."
+          }
+        ]
+      },
+      {
+        "id": "hp-03",
+        "code": "HP-03",
+        "name": "Prensado",
+        "objetivo": "Separar la fase sólida (torta de prensa) de la fase líquida (licor de prensa) mediante presión mecánica.",
+        "pasos": [
+          "Alimentar el pescado cocido a la prensa continua.",
+          "Ajustar la presión del tornillo prensador.",
+          "Separar la torta de prensa y enviarla a secado.",
+          "Enviar el licor de prensa a la planta de concentración/evaporación.",
+          "Verificar el rendimiento de extracción de aceite."
+        ],
+        "seguridad": [
+          "No introducir manos ni herramientas en zonas de compresión.",
+          "Respetar los bloqueos de seguridad (LOTO) durante mantenimiento.",
+          "Uso obligatorio de protección auditiva.",
+          "Reportar de inmediato cualquier ruido o vibración anormal."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se obtiene como productos del prensado?",
+            "opts": [
+              "Harina y aceite envasado",
+              "Torta de prensa y licor de prensa",
+              "Agua potable",
+              "Hielo"
+            ],
+            "a": 1,
+            "exp": "El prensado separa el pescado cocido en dos fracciones: la torta sólida y el licor líquido."
+          },
+          {
+            "q": "¿Qué práctica de seguridad es obligatoria en mantenimiento de la prensa?",
+            "opts": [
+              "Trabajar con el equipo encendido",
+              "Bloqueo de seguridad (LOTO)",
+              "Ninguna, no es necesario",
+              "Usar sandalias"
+            ],
+            "a": 1,
+            "exp": "El bloqueo de seguridad (LOTO) evita que la prensa se active accidentalmente mientras alguien hace mantenimiento."
+          },
+          {
+            "q": "¿Por qué no se debe introducir las manos en la zona de compresión?",
+            "opts": [
+              "Por estética",
+              "Riesgo grave de atrapamiento",
+              "Para no ensuciarse",
+              "No hay ningún riesgo"
+            ],
+            "a": 1,
+            "exp": "La zona de compresión de la prensa puede atrapar manos o herramientas con fuerza suficiente para causar lesiones graves."
+          },
+          {
+            "q": "¿A qué proceso se envía el licor de prensa?",
+            "opts": [
+              "Concentración/evaporación",
+              "Secado",
+              "Molienda",
+              "Congelado"
+            ],
+            "a": 0,
+            "exp": "El licor de prensa, rico en agua y aceite, se envía a concentración/evaporación para recuperar el aceite."
+          },
+          {
+            "q": "¿A qué etapa se envía la torta de prensa?",
+            "opts": [
+              "Secado",
+              "Cocción",
+              "Glaseado",
+              "Empaque"
+            ],
+            "a": 0,
+            "exp": "La torta de prensa, aún húmeda, pasa a secado para reducir su humedad."
+          },
+          {
+            "q": "¿Qué se ajusta para controlar la presión de la prensa?",
+            "opts": [
+              "El tornillo prensador",
+              "La válvula de vapor",
+              "El termómetro",
+              "La banda transportadora"
+            ],
+            "a": 0,
+            "exp": "El tornillo prensador es el mecanismo que aplica la presión mecánica para exprimir el pescado cocido."
+          },
+          {
+            "q": "¿Qué se debe hacer si se detecta ruido o vibración anormal en la prensa?",
+            "opts": [
+              "Reportarlo de inmediato",
+              "Ignorarlo si no es muy fuerte",
+              "Aumentar la presión",
+              "Apagar toda la planta sin avisar"
+            ],
+            "a": 0,
+            "exp": "Un ruido o vibración anormal puede indicar una falla mecánica, por eso debe reportarse de inmediato antes de que empeore."
+          },
+          {
+            "q": "¿Qué mide el rendimiento de extracción de aceite?",
+            "opts": [
+              "La eficiencia del prensado",
+              "La temperatura del secador",
+              "El peso de los sacos",
+              "La humedad de la harina final"
+            ],
+            "a": 0,
+            "exp": "El rendimiento de extracción de aceite mide qué tan eficiente fue el prensado en separar el aceite del sólido."
+          },
+          {
+            "q": "Verdadero o falso: está permitido introducir herramientas en la zona de compresión mientras el equipo funciona.",
+            "opts": [
+              "Verdadero, es una práctica normal",
+              "Falso, está prohibido por riesgo de atrapamiento",
+              "Verdadero, solo si es rápido",
+              "Falso, pero solo los fines de semana"
+            ],
+            "a": 1,
+            "exp": "Nunca debe introducirse nada en la zona de compresión mientras el equipo está en funcionamiento, por el riesgo de atrapamiento."
+          },
+          {
+            "q": "¿Cuál es la última actividad de esta estación?",
+            "opts": [
+              "Verificar el rendimiento de extracción de aceite",
+              "Alimentar la prensa",
+              "Ajustar la presión",
+              "Enviar licor a evaporación"
+            ],
+            "a": 0,
+            "exp": "Verificar el rendimiento de extracción cierra el control de calidad de esta estación."
+          }
+        ]
+      },
+      {
+        "id": "hp-04",
+        "code": "HP-04",
+        "name": "Secado",
+        "objetivo": "Reducir la humedad de la torta de prensa hasta el nivel adecuado para su conservación y molienda.",
+        "pasos": [
+          "Ingresar la torta de prensa al secador.",
+          "Controlar la temperatura para evitar sobrecalentamiento.",
+          "Monitorear la humedad de salida (objetivo aprox. 8-10%).",
+          "Enfriar el producto antes de la molienda.",
+          "Registrar los parámetros del proceso."
+        ],
+        "seguridad": [
+          "Vigilancia continua de la temperatura por riesgo de autoignición.",
+          "Mantener operativos los sistemas de detección de humo.",
+          "Asegurar ventilación adecuada del área.",
+          "Evitar acumulación de polvo cerca de fuentes de calor."
+        ],
+        "quiz": [
+          {
+            "q": "¿Cuál es el riesgo más crítico durante el secado?",
+            "opts": [
+              "Autoignición o combustión espontánea",
+              "Falta de luz natural",
+              "Exceso de frío",
+              "Ruido excesivo"
+            ],
+            "a": 0,
+            "exp": "El material seco y caliente puede autoencenderse si no se controla bien la temperatura, por eso es el riesgo más crítico."
+          },
+          {
+            "q": "¿Cuál es aproximadamente la humedad objetivo de salida?",
+            "opts": [
+              "50-60%",
+              "30-40%",
+              "8-10%",
+              "0%"
+            ],
+            "a": 2,
+            "exp": "Una humedad final de 8-10% asegura que la harina se conserve bien y no se degrade."
+          },
+          {
+            "q": "¿Qué debe hacerse antes de enviar el producto a molienda?",
+            "opts": [
+              "Enfriarlo",
+              "Mojarlo nuevamente",
+              "Congelarlo",
+              "Nada, se envía directo caliente"
+            ],
+            "a": 0,
+            "exp": "El producto debe enfriarse antes de molerse para evitar dañar el equipo y reducir riesgos de combustión."
+          },
+          {
+            "q": "¿Qué sistema debe estar siempre operativo por seguridad en esta estación?",
+            "opts": [
+              "Detección de humo",
+              "Cámaras de vigilancia",
+              "Sensores de movimiento",
+              "Alarma de vehículos"
+            ],
+            "a": 0,
+            "exp": "La detección temprana de humo permite actuar antes de que un principio de incendio se propague."
+          },
+          {
+            "q": "¿Qué favorece el riesgo de combustión en el secado?",
+            "opts": [
+              "La acumulación de polvo cerca de fuentes de calor",
+              "El exceso de agua",
+              "La baja temperatura",
+              "La falta de luz"
+            ],
+            "a": 0,
+            "exp": "El polvo acumulado cerca de fuentes de calor es un material altamente combustible."
+          },
+          {
+            "q": "¿Qué se debe registrar al finalizar el secado?",
+            "opts": [
+              "Los parámetros del proceso",
+              "El nombre del proveedor",
+              "El precio de venta",
+              "La marca del camión"
+            ],
+            "a": 0,
+            "exp": "Registrar los parámetros del secado permite hacer seguimiento y detectar desviaciones del proceso."
+          },
+          {
+            "q": "¿Por qué es importante la ventilación adecuada en esta estación?",
+            "opts": [
+              "Para reducir el riesgo de acumulación de gases y calor",
+              "Para enfriar a los trabajadores en verano",
+              "No tiene relación con la seguridad",
+              "Para que la harina pese más"
+            ],
+            "a": 0,
+            "exp": "Una buena ventilación ayuda a disipar el calor y reducir la concentración de gases o polvo en el ambiente."
+          },
+          {
+            "q": "Verdadero o falso: se puede omitir el control de temperatura si el secador es nuevo.",
+            "opts": [
+              "Verdadero, si el equipo es nuevo no hace falta",
+              "Falso, siempre debe vigilarse la temperatura",
+              "Verdadero, solo se controla una vez al día",
+              "Falso, solo se controla en invierno"
+            ],
+            "a": 1,
+            "exp": "El control de temperatura debe hacerse siempre, sin importar la antigüedad del equipo, por el riesgo de autoignición."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Ingresar la torta de prensa al secador",
+              "Enfriar el producto",
+              "Registrar parámetros",
+              "Monitorear humedad de salida"
+            ],
+            "a": 0,
+            "exp": "El secado comienza ingresando la torta de prensa al secador."
+          },
+          {
+            "q": "¿Qué ocurre justo antes de enviar el producto a molienda?",
+            "opts": [
+              "Se enfría el producto",
+              "Se congela el producto",
+              "Se envasa el producto",
+              "Se lava el producto"
+            ],
+            "a": 0,
+            "exp": "Enfriar el producto es el paso final del secado antes de pasar a la molienda."
+          }
+        ]
+      },
+      {
+        "id": "hp-05",
+        "code": "HP-05",
+        "name": "Molienda",
+        "objetivo": "Reducir el tamaño de partícula de la harina para lograr una granulometría uniforme.",
+        "pasos": [
+          "Alimentar el producto seco al molino.",
+          "Ajustar el tamaño de malla según especificación.",
+          "Tamizar el producto molido.",
+          "Retornar a molienda el material de sobre-tamaño.",
+          "Enviar la harina molida a dosificación de antioxidante."
+        ],
+        "seguridad": [
+          "Protección auditiva por alto nivel de ruido.",
+          "Protección respiratoria por material particulado.",
+          "Precaución con partes móviles del molino.",
+          "No retirar guardas de seguridad durante la operación."
+        ],
+        "quiz": [
+          {
+            "q": "¿Cuál es el propósito de la molienda?",
+            "opts": [
+              "Cocer el pescado",
+              "Uniformar la granulometría de la harina",
+              "Congelar el producto",
+              "Lavar el pescado"
+            ],
+            "a": 1,
+            "exp": "La molienda busca lograr un tamaño de partícula uniforme (granulometría) en la harina final."
+          },
+          {
+            "q": "¿Qué EPP es clave por el material particulado?",
+            "opts": [
+              "Protección respiratoria",
+              "Casco de moto",
+              "Corbata",
+              "Guantes de cocina"
+            ],
+            "a": 0,
+            "exp": "El polvo fino generado en la molienda puede inhalarse, por eso se requiere protección respiratoria."
+          },
+          {
+            "q": "¿Qué se hace con el material de sobre-tamaño tras el tamizado?",
+            "opts": [
+              "Se descarta",
+              "Se retorna a molienda",
+              "Se envasa igual",
+              "Se envía a congelado"
+            ],
+            "a": 1,
+            "exp": "El material que no cumple el tamaño requerido se retorna al molino para procesarlo de nuevo."
+          },
+          {
+            "q": "¿Qué se ajusta según la especificación de granulometría?",
+            "opts": [
+              "El tamaño de malla",
+              "La temperatura del molino",
+              "El color de la harina",
+              "El peso del saco"
+            ],
+            "a": 0,
+            "exp": "El tamaño de malla determina la granulometría final de la harina."
+          },
+          {
+            "q": "¿A qué etapa se envía la harina después de la molienda?",
+            "opts": [
+              "Dosificación de antioxidante",
+              "Cocción",
+              "Recepción",
+              "Glaseado"
+            ],
+            "a": 0,
+            "exp": "Tras molerse, la harina pasa a dosificación de antioxidante para su conservación."
+          },
+          {
+            "q": "¿Por qué no se deben retirar las guardas de seguridad del molino?",
+            "opts": [
+              "Por riesgo de atrapamiento con partes móviles",
+              "Porque son decorativas",
+              "Porque afectan el color de la harina",
+              "No tienen ninguna función"
+            ],
+            "a": 0,
+            "exp": "Las guardas de seguridad protegen a las personas de las partes móviles del molino; retirarlas expone a atrapamientos."
+          },
+          {
+            "q": "Verdadero o falso: el nivel de ruido en la molienda no requiere protección auditiva.",
+            "opts": [
+              "Verdadero, el ruido es bajo",
+              "Falso, el ruido es alto y requiere protección auditiva",
+              "Verdadero, solo en la noche",
+              "Falso, pero solo para visitas"
+            ],
+            "a": 1,
+            "exp": "La molienda genera niveles de ruido altos que requieren protección auditiva obligatoria."
+          },
+          {
+            "q": "¿Qué se hace con el producto luego de tamizarlo?",
+            "opts": [
+              "Se separa el sobre-tamaño para reprocesarlo",
+              "Se descarta todo el sobre-tamaño",
+              "Se envasa directamente sin control",
+              "Se congela"
+            ],
+            "a": 0,
+            "exp": "El tamizado separa el producto que ya tiene el tamaño correcto del que debe volver a molerse."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Alimentar el producto seco al molino",
+              "Tamizar el producto molido",
+              "Ajustar el tamaño de malla",
+              "Enviar a dosificación"
+            ],
+            "a": 0,
+            "exp": "La molienda comienza alimentando el producto seco al molino."
+          },
+          {
+            "q": "¿Qué EPP protege de la inhalación de polvo fino?",
+            "opts": [
+              "Protección respiratoria",
+              "Guantes de cocina",
+              "Delantal impermeable",
+              "Botas de PVC"
+            ],
+            "a": 0,
+            "exp": "La protección respiratoria evita la inhalación de partículas finas de harina generadas al moler."
+          }
+        ]
+      },
+      {
+        "id": "hp-06",
+        "code": "HP-06",
+        "name": "Envasado y Almacenamiento",
+        "objetivo": "Envasar la harina de pescado de forma segura y almacenarla evitando el autocalentamiento.",
+        "pasos": [
+          "Dosificar antioxidante para prevenir la oxidación de la harina.",
+          "Enfriar la harina a temperatura ambiente antes de envasar.",
+          "Envasar en sacos según el peso especificado.",
+          "Coser o sellar los sacos correctamente.",
+          "Apilar en bodega respetando altura máxima y tiempo de reposo."
+        ],
+        "seguridad": [
+          "Control periódico de temperatura en bodega.",
+          "Respetar el distanciamiento entre pilas de sacos.",
+          "Uso de mascarilla por presencia de polvo.",
+          "Mantener extintores accesibles y señalizados."
+        ],
+        "quiz": [
+          {
+            "q": "¿Para qué se dosifica antioxidante en la harina?",
+            "opts": [
+              "Para darle color",
+              "Para prevenir la oxidación",
+              "Para que pese más",
+              "No cumple ninguna función"
+            ],
+            "a": 1,
+            "exp": "El antioxidante retrasa la oxidación de las grasas de la harina, evitando su deterioro."
+          },
+          {
+            "q": "¿Por qué se controla la temperatura en bodega?",
+            "opts": [
+              "Por comodidad del personal",
+              "Por riesgo de autocalentamiento/combustión",
+              "Para que la harina se congele",
+              "No es necesario controlarla"
+            ],
+            "a": 1,
+            "exp": "La harina almacenada puede autocalentarse y generar riesgo de combustión si no se controla la temperatura."
+          },
+          {
+            "q": "¿Qué debe respetarse al apilar los sacos?",
+            "opts": [
+              "Ninguna norma en particular",
+              "Altura máxima y tiempo de reposo",
+              "Apilar lo más alto posible",
+              "Apilar junto a fuentes de calor"
+            ],
+            "a": 1,
+            "exp": "Respetar la altura máxima y el tiempo de reposo reduce el riesgo de compactación y autocalentamiento."
+          },
+          {
+            "q": "¿Qué se debe hacer antes de envasar la harina?",
+            "opts": [
+              "Enfriarla a temperatura ambiente",
+              "Congelarla",
+              "Mojarla",
+              "Calentarla más"
+            ],
+            "a": 0,
+            "exp": "Envasar harina caliente favorece la condensación y el riesgo de autocalentamiento dentro del saco."
+          },
+          {
+            "q": "¿Según qué se envasa la harina en los sacos?",
+            "opts": [
+              "El peso especificado",
+              "El color del saco",
+              "La hora del turno",
+              "El precio del producto"
+            ],
+            "a": 0,
+            "exp": "El envasado sigue un peso estándar para mantener consistencia y control de inventario."
+          },
+          {
+            "q": "¿Qué debe hacerse después de llenar los sacos?",
+            "opts": [
+              "Coserlos o sellarlos correctamente",
+              "Dejarlos abiertos",
+              "Lavarlos con agua",
+              "Congelarlos"
+            ],
+            "a": 0,
+            "exp": "Sellar bien los sacos evita el ingreso de humedad y contaminación durante el almacenamiento."
+          },
+          {
+            "q": "¿Qué elemento de emergencia debe estar accesible en la bodega?",
+            "opts": [
+              "Extintores",
+              "Botiquín de veterinaria",
+              "Salvavidas",
+              "Cascos de moto"
+            ],
+            "a": 0,
+            "exp": "Por el riesgo de combustión de la harina almacenada, los extintores deben estar siempre accesibles."
+          },
+          {
+            "q": "Verdadero o falso: se puede apilar la harina a cualquier altura sin restricciones.",
+            "opts": [
+              "Verdadero, no hay límite de altura",
+              "Falso, debe respetarse una altura máxima",
+              "Verdadero, mientras más alto mejor",
+              "Falso, solo aplica los fines de semana"
+            ],
+            "a": 1,
+            "exp": "Apilar sin límite de altura aumenta el riesgo de compactación, calor interno y derrumbe."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Dosificar antioxidante",
+              "Apilar en bodega",
+              "Coser los sacos",
+              "Envasar en sacos"
+            ],
+            "a": 0,
+            "exp": "El envasado comienza dosificando el antioxidante antes de enfriar y empacar."
+          },
+          {
+            "q": "¿Por qué se distancian las pilas de sacos en bodega?",
+            "opts": [
+              "Para reducir el riesgo de autocalentamiento y facilitar el control de temperatura",
+              "Para que se vea más ordenado únicamente",
+              "No tiene relación con la seguridad",
+              "Para ahorrar sacos"
+            ],
+            "a": 0,
+            "exp": "El espacio entre pilas facilita la disipación de calor y el control visual de la temperatura."
+          }
+        ]
+      }
+    ]
+  },
+  "cg": {
+    "code": "CG",
+    "name": "Congelado de Pescado",
+    "accent": "var(--cold)",
+    "accentDark": "var(--cold-dark)",
+    "desc": "Proceso que preserva el pescado fresco mediante congelado rápido, manteniendo su calidad, textura y vida útil para consumo humano.",
+    "subs": [
+      {
+        "id": "cg-01",
+        "code": "CG-01",
+        "name": "Recepción y Selección",
+        "objetivo": "Recibir el pescado fresco y seleccionarlo según especie, tamaño y calidad para su congelado.",
+        "pasos": [
+          "Verificar la cadena de frío del transporte.",
+          "Controlar la temperatura y frescura del pescado.",
+          "Clasificar por especie y tamaño.",
+          "Descartar ejemplares que no cumplan los estándares de calidad.",
+          "Registrar el lote en el sistema de trazabilidad."
+        ],
+        "seguridad": [
+          "Uso de guantes térmicos.",
+          "Botas antideslizantes obligatorias.",
+          "Precaución con superficies frías y húmedas.",
+          "Evitar sobrecarga manual al mover cajas de pescado."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se verifica primero al recibir el pescado?",
+            "opts": [
+              "El color del camión",
+              "La cadena de frío del transporte",
+              "El nombre del conductor",
+              "La hora exacta de salida de fábrica"
+            ],
+            "a": 1,
+            "exp": "Si se rompió la cadena de frío durante el transporte, el pescado puede llegar en mal estado aunque se vea bien."
+          },
+          {
+            "q": "¿Según qué criterios se clasifica el pescado en esta etapa?",
+            "opts": [
+              "Especie y tamaño",
+              "Precio de mercado",
+              "Marca del barco",
+              "Color del envase"
+            ],
+            "a": 0,
+            "exp": "Clasificar por especie y tamaño permite dirigir el pescado a la línea de proceso correcta."
+          },
+          {
+            "q": "¿Qué EPP es importante por el frío y la humedad?",
+            "opts": [
+              "Guantes térmicos y botas antideslizantes",
+              "Lentes de sol",
+              "Casco de obra únicamente",
+              "Ninguno"
+            ],
+            "a": 0,
+            "exp": "El ambiente frío y húmedo de la recepción requiere guantes térmicos y calzado antideslizante."
+          },
+          {
+            "q": "¿Qué se hace con los ejemplares que no cumplen los estándares de calidad?",
+            "opts": [
+              "Se descartan",
+              "Se congelan igual",
+              "Se envían a harina de pescado directamente",
+              "Se venden aparte sin registro"
+            ],
+            "a": 0,
+            "exp": "Los ejemplares que no cumplen el estándar de calidad se descartan para no comprometer el producto final."
+          },
+          {
+            "q": "¿Dónde se registra el lote recibido?",
+            "opts": [
+              "En el sistema de trazabilidad",
+              "En ningún lugar",
+              "Solo verbalmente",
+              "En la etiqueta del vehículo"
+            ],
+            "a": 0,
+            "exp": "El registro del lote permite rastrear su origen en cualquier etapa posterior del proceso."
+          },
+          {
+            "q": "¿Qué riesgo previene evitar la sobrecarga manual al mover cajas?",
+            "opts": [
+              "Lesiones musculoesqueléticas o lumbares",
+              "Quemaduras",
+              "Cortes profundos",
+              "Intoxicación"
+            ],
+            "a": 0,
+            "exp": "Levantar cajas pesadas de forma incorrecta es una causa común de lesiones lumbares."
+          },
+          {
+            "q": "Verdadero o falso: la cadena de frío del transporte no influye en la calidad del pescado.",
+            "opts": [
+              "Verdadero, no influye",
+              "Falso, es fundamental para mantener la calidad",
+              "Verdadero, solo influye en el sabor",
+              "Falso, pero solo en verano"
+            ],
+            "a": 1,
+            "exp": "Mantener la cadena de frío durante el transporte es clave para conservar la calidad del pescado fresco."
+          },
+          {
+            "q": "¿Cuál es la última actividad de esta estación?",
+            "opts": [
+              "Registrar el lote en el sistema de trazabilidad",
+              "Verificar la cadena de frío",
+              "Clasificar por especie y tamaño",
+              "Controlar la temperatura"
+            ],
+            "a": 0,
+            "exp": "El registro en trazabilidad es el paso final antes de enviar el lote a la siguiente estación."
+          },
+          {
+            "q": "¿Qué EPP es clave frente al frío y la humedad en recepción?",
+            "opts": [
+              "Guantes térmicos y botas antideslizantes",
+              "Lentes de sol",
+              "Casco de obra",
+              "Delantal de cuero"
+            ],
+            "a": 0,
+            "exp": "Trabajar con pescado frío y superficies húmedas exige guantes térmicos y botas antideslizantes."
+          },
+          {
+            "q": "¿Qué se controla junto con la temperatura al recibir el pescado?",
+            "opts": [
+              "El grado de frescura",
+              "El precio internacional",
+              "El color del camión",
+              "El idioma del proveedor"
+            ],
+            "a": 0,
+            "exp": "Temperatura y frescura se evalúan juntas porque ambas indican el estado real del pescado."
+          }
+        ]
+      },
+      {
+        "id": "cg-02",
+        "code": "CG-02",
+        "name": "Lavado y Clasificación",
+        "objetivo": "Eliminar impurezas y clasificar el pescado según calibre para su procesamiento.",
+        "pasos": [
+          "Lavar el pescado con agua clorada según protocolo sanitario.",
+          "Clasificar por calibre en la calibradora.",
+          "Separar por líneas según destino del producto (entero, filete, etc.).",
+          "Verificar la temperatura del agua de proceso.",
+          "Trasladar a la siguiente etapa en carros o cintas transportadoras."
+        ],
+        "seguridad": [
+          "Uso de delantal impermeable.",
+          "Guantes de malla si existe riesgo de corte.",
+          "Pisos antideslizantes y señalizados.",
+          "Cuidado con productos de limpieza y desinfección."
+        ],
+        "quiz": [
+          {
+            "q": "¿Con qué se lava el pescado según protocolo sanitario?",
+            "opts": [
+              "Agua clorada",
+              "Agua con detergente de cocina",
+              "Alcohol",
+              "No se lava en esta etapa"
+            ],
+            "a": 0,
+            "exp": "El agua clorada cumple el protocolo sanitario para eliminar impurezas y microorganismos superficiales."
+          },
+          {
+            "q": "¿Según qué se clasifica el pescado en la calibradora?",
+            "opts": [
+              "Color de la escama",
+              "Calibre/tamaño",
+              "Precio",
+              "Temperatura corporal"
+            ],
+            "a": 1,
+            "exp": "La calibradora clasifica el pescado según su calibre o tamaño, no por otros criterios."
+          },
+          {
+            "q": "¿Qué prenda protege de salpicaduras en el lavado?",
+            "opts": [
+              "Delantal impermeable",
+              "Corbata",
+              "Guantes de cocina de tela",
+              "Ninguna es necesaria"
+            ],
+            "a": 0,
+            "exp": "El delantal impermeable protege al operario de las salpicaduras constantes del lavado."
+          },
+          {
+            "q": "¿Qué se verifica respecto al agua utilizada en esta etapa?",
+            "opts": [
+              "Su temperatura",
+              "Su color",
+              "Su precio",
+              "Su marca comercial"
+            ],
+            "a": 0,
+            "exp": "La temperatura del agua de proceso se controla para no afectar la calidad ni la cadena de frío del producto."
+          },
+          {
+            "q": "¿Según qué se separan las líneas de producto en esta estación?",
+            "opts": [
+              "El destino del producto (entero, filete, etc.)",
+              "El turno de trabajo",
+              "El nombre del operario",
+              "El clima del día"
+            ],
+            "a": 0,
+            "exp": "El producto se separa según si será vendido entero, en filete, etc., cada uno con un proceso distinto."
+          },
+          {
+            "q": "¿Qué se debe tener en cuenta al manipular productos de limpieza y desinfección?",
+            "opts": [
+              "Manipularlos con precaución según las indicaciones",
+              "Se pueden mezclar libremente",
+              "No requieren ninguna precaución",
+              "Se pueden usar sin ventilación"
+            ],
+            "a": 0,
+            "exp": "Los productos de limpieza y desinfección pueden ser irritantes o peligrosos si no se usan según las indicaciones."
+          },
+          {
+            "q": "Verdadero o falso: los pisos de esta estación no requieren señalización especial.",
+            "opts": [
+              "Verdadero, no es necesario",
+              "Falso, deben estar señalizados por ser antideslizantes",
+              "Verdadero, solo en invierno",
+              "Falso, pero solo si hay visitas"
+            ],
+            "a": 1,
+            "exp": "El agua constante en esta estación hace que el piso sea resbaladizo y deba señalizarse."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Lavar el pescado con agua clorada",
+              "Clasificar por calibre",
+              "Verificar la temperatura del agua",
+              "Trasladar a la siguiente etapa"
+            ],
+            "a": 0,
+            "exp": "El proceso comienza lavando el pescado con agua clorada según el protocolo sanitario."
+          },
+          {
+            "q": "¿De qué protegen los guantes de malla en esta estación?",
+            "opts": [
+              "De posibles cortes",
+              "Del frío extremo",
+              "De quemaduras",
+              "De la radiación solar"
+            ],
+            "a": 0,
+            "exp": "Los guantes de malla metálica protegen las manos de cortes al manipular el pescado."
+          },
+          {
+            "q": "¿Qué equipo se utiliza para clasificar el pescado por tamaño?",
+            "opts": [
+              "La calibradora",
+              "El secador",
+              "El cocedor",
+              "La prensa"
+            ],
+            "a": 0,
+            "exp": "La calibradora es el equipo específico usado para clasificar el pescado por tamaño en esta etapa."
+          }
+        ]
+      },
+      {
+        "id": "cg-03",
+        "code": "CG-03",
+        "name": "Fileteado / Eviscerado",
+        "objetivo": "Obtener filetes o pescado eviscerado limpio, retirando vísceras, espinas y piel según el producto final.",
+        "pasos": [
+          "Eviscerar el pescado de forma manual o mecánica.",
+          "Filetear según la especificación del producto.",
+          "Retirar espinas y piel si corresponde.",
+          "Inspeccionar visualmente cada pieza (control de calidad).",
+          "Enviar el producto a la línea de congelado."
+        ],
+        "seguridad": [
+          "Uso de guantes de malla metálica.",
+          "Cuchillos afilados y en buen estado (un cuchillo desafilado es más peligroso).",
+          "Atención constante por riesgo de corte.",
+          "Mantener el área de trabajo ordenada y limpia."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se retira principalmente en el eviscerado?",
+            "opts": [
+              "Las vísceras",
+              "La grasa subcutánea",
+              "El agua de mar",
+              "Nada, solo se lava"
+            ],
+            "a": 0,
+            "exp": "Eviscerar consiste en retirar las vísceras del pescado antes de continuar el proceso."
+          },
+          {
+            "q": "¿Por qué un cuchillo desafilado es más peligroso?",
+            "opts": [
+              "No lo es, es más seguro",
+              "Porque requiere más fuerza y aumenta el riesgo de resbalar",
+              "Porque corta más rápido",
+              "Porque es más caro"
+            ],
+            "a": 1,
+            "exp": "Un cuchillo sin filo requiere más fuerza para cortar, lo que aumenta el riesgo de que resbale y cause una lesión."
+          },
+          {
+            "q": "¿Qué EPP protege las manos del riesgo de corte?",
+            "opts": [
+              "Guantes de malla metálica",
+              "Guantes de lana",
+              "Ningún guante",
+              "Guantes de látex desechables únicamente"
+            ],
+            "a": 0,
+            "exp": "Los guantes de malla metálica son la protección estándar contra cortes al manipular cuchillos."
+          },
+          {
+            "q": "¿Qué se realiza después de filetear el pescado, si corresponde?",
+            "opts": [
+              "Retirar espinas y piel",
+              "Congelarlo de inmediato sin revisión",
+              "Empacarlo directo",
+              "Lavarlo con cloro puro"
+            ],
+            "a": 0,
+            "exp": "Según la especificación del producto final, después de filetear se retiran espinas y piel si corresponde."
+          },
+          {
+            "q": "¿Qué se hace con cada pieza antes de enviarla a congelado?",
+            "opts": [
+              "Se inspecciona visualmente",
+              "Se pesa dos veces",
+              "Se marca con tinta",
+              "No se revisa"
+            ],
+            "a": 0,
+            "exp": "La inspección visual de cada pieza es un control de calidad antes de continuar a congelado."
+          },
+          {
+            "q": "¿Por qué es importante mantener el área de trabajo ordenada en esta estación?",
+            "opts": [
+              "Para reducir riesgos de accidentes con herramientas cortantes",
+              "Solo por estética",
+              "No tiene relación con la seguridad",
+              "Para que se vea más grande el espacio"
+            ],
+            "a": 0,
+            "exp": "Un área desordenada con herramientas cortantes aumenta el riesgo de accidentes."
+          },
+          {
+            "q": "Verdadero o falso: el eviscerado siempre se realiza únicamente de forma manual.",
+            "opts": [
+              "Verdadero, siempre es manual",
+              "Falso, puede ser manual o mecánico",
+              "Verdadero, está prohibido mecanizarlo",
+              "Falso, siempre es mecánico"
+            ],
+            "a": 1,
+            "exp": "El eviscerado puede hacerse de forma manual o con máquinas, según la capacidad de la planta."
+          },
+          {
+            "q": "¿A qué etapa se envía el producto después del fileteado/eviscerado?",
+            "opts": [
+              "A la línea de congelado",
+              "A la línea de harina de pescado",
+              "A bodega seca",
+              "A cocción"
+            ],
+            "a": 0,
+            "exp": "Tras el fileteado/eviscerado, el producto avanza a la línea de congelado."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Eviscerar el pescado",
+              "Filetear según especificación",
+              "Inspeccionar cada pieza",
+              "Enviar a congelado"
+            ],
+            "a": 0,
+            "exp": "El proceso comienza eviscerando el pescado antes de filetearlo."
+          },
+          {
+            "q": "¿Qué característica deben tener los cuchillos utilizados?",
+            "opts": [
+              "Estar afilados y en buen estado",
+              "Estar oxidados",
+              "Ser lo más grandes posible",
+              "No importa su estado"
+            ],
+            "a": 0,
+            "exp": "Los cuchillos deben mantenerse afilados y en buen estado para un corte seguro y preciso."
+          }
+        ]
+      },
+      {
+        "id": "cg-04",
+        "code": "CG-04",
+        "name": "Congelado (IQF / Placas)",
+        "objetivo": "Congelar rápidamente el producto para preservar su calidad, textura y vida útil.",
+        "pasos": [
+          "Distribuir el producto en el túnel IQF o en placas de contacto.",
+          "Congelar a temperaturas bajo -30 °C hasta alcanzar el centro térmico (-18 °C).",
+          "Controlar el tiempo de residencia en el equipo.",
+          "Verificar la temperatura de salida del producto.",
+          "Trasladar a glaseado o empaque según corresponda."
+        ],
+        "seguridad": [
+          "Ropa térmica obligatoria para trabajo en frío extremo.",
+          "Rotación de personal para evitar hipotermia.",
+          "Detectores de amoníaco/CO2 operativos si el sistema los utiliza.",
+          "Conocer la ubicación de salidas de emergencia."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué temperatura de centro térmico se busca alcanzar?",
+            "opts": [
+              "-18 °C",
+              "4 °C",
+              "0 °C",
+              "25 °C"
+            ],
+            "a": 0,
+            "exp": "Se busca que el centro del producto llegue a -18°C para asegurar una congelación completa."
+          },
+          {
+            "q": "¿Qué medida previene la hipotermia del personal?",
+            "opts": [
+              "Rotación de personal y ropa térmica",
+              "Trabajar sin pausas",
+              "No usar ropa de abrigo",
+              "Aumentar la temperatura del túnel"
+            ],
+            "a": 0,
+            "exp": "Rotar al personal y usar ropa térmica reduce el tiempo de exposición al frío extremo."
+          },
+          {
+            "q": "¿Qué sistemas de seguridad son relevantes si se usa amoníaco/CO2?",
+            "opts": [
+              "Detectores de gas",
+              "Extintores de espuma únicamente",
+              "Ninguno",
+              "Alarmas de incendio de cocina"
+            ],
+            "a": 0,
+            "exp": "Si el sistema usa amoníaco o CO2 como refrigerante, los detectores de gas son esenciales para prevenir fugas peligrosas."
+          },
+          {
+            "q": "¿Qué equipos se mencionan para congelar el producto?",
+            "opts": [
+              "Túnel IQF o placas de contacto",
+              "Hornos de cocción",
+              "Calibradoras",
+              "Prensas continuas"
+            ],
+            "a": 0,
+            "exp": "El túnel IQF y las placas de contacto son los equipos típicos para congelar rápidamente el producto."
+          },
+          {
+            "q": "¿Qué se controla durante el tiempo que el producto permanece en el equipo de congelado?",
+            "opts": [
+              "El tiempo de residencia",
+              "El color del envase",
+              "El precio del producto",
+              "El nombre del operario"
+            ],
+            "a": 0,
+            "exp": "El tiempo que el producto pasa en el equipo debe controlarse para asegurar una congelación uniforme."
+          },
+          {
+            "q": "¿A qué temperatura aproximada se congela el producto?",
+            "opts": [
+              "Bajo -30 °C",
+              "Entre 0 y 4 °C",
+              "Entre 10 y 15 °C",
+              "Sobre 30 °C"
+            ],
+            "a": 0,
+            "exp": "Se trabaja bajo -30°C para lograr una congelación rápida que preserve la calidad del producto."
+          },
+          {
+            "q": "Verdadero o falso: no es necesario conocer las salidas de emergencia en zonas de frío extremo.",
+            "opts": [
+              "Verdadero, no es relevante",
+              "Falso, es fundamental conocerlas",
+              "Verdadero, solo para visitas",
+              "Falso, pero solo de noche"
+            ],
+            "a": 1,
+            "exp": "En zonas de frío extremo, conocer la salida de emergencia es vital ante cualquier imprevisto."
+          },
+          {
+            "q": "¿A qué etapas se traslada el producto después del congelado?",
+            "opts": [
+              "Glaseado o empaque",
+              "Cocción o prensado",
+              "Recepción o lavado",
+              "Secado o molienda"
+            ],
+            "a": 0,
+            "exp": "Después de congelado, el producto continúa a glaseado o directo a empaque."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Distribuir el producto en el túnel IQF o placas de contacto",
+              "Verificar la temperatura de salida",
+              "Controlar el tiempo de residencia",
+              "Trasladar a glaseado"
+            ],
+            "a": 0,
+            "exp": "El proceso comienza distribuyendo el producto en el túnel IQF o placas de contacto."
+          },
+          {
+            "q": "¿Qué prenda es obligatoria para trabajar en esta estación?",
+            "opts": [
+              "Ropa térmica",
+              "Delantal de cuero",
+              "Ropa liviana",
+              "Ninguna en particular"
+            ],
+            "a": 0,
+            "exp": "La ropa térmica es obligatoria para proteger al personal del frío extremo de esta estación."
+          }
+        ]
+      },
+      {
+        "id": "cg-05",
+        "code": "CG-05",
+        "name": "Glaseado",
+        "objetivo": "Aplicar una capa protectora de hielo sobre el producto congelado para evitar la deshidratación (quemadura por frío).",
+        "pasos": [
+          "Sumergir o rociar el producto con agua fría controlada.",
+          "Verificar el porcentaje de glaseo según especificación.",
+          "Re-congelar brevemente si es necesario.",
+          "Controlar el peso neto versus el peso glaseado.",
+          "Enviar el producto a empaque final."
+        ],
+        "seguridad": [
+          "Piso muy resbaladizo por agua y hielo: extremar precaución.",
+          "Uso obligatorio de botas antideslizantes.",
+          "Cuidado con salpicaduras de agua fría.",
+          "Mantener despejadas las vías de circulación."
+        ],
+        "quiz": [
+          {
+            "q": "¿Cuál es la función del glaseado?",
+            "opts": [
+              "Dar sabor al pescado",
+              "Proteger contra la deshidratación por frío",
+              "Aumentar la temperatura del producto",
+              "Eliminar bacterias"
+            ],
+            "a": 1,
+            "exp": "El glaseado forma una capa de hielo protectora que evita la deshidratación (quemadura por frío) del producto."
+          },
+          {
+            "q": "¿Qué riesgo físico es más relevante en esta estación?",
+            "opts": [
+              "Caídas por piso resbaladizo",
+              "Riesgo eléctrico",
+              "Riesgo de incendio",
+              "Riesgo de radiación"
+            ],
+            "a": 0,
+            "exp": "El agua constante en esta estación genera pisos resbaladizos, el riesgo físico más relevante aquí."
+          },
+          {
+            "q": "¿Qué se controla al finalizar el glaseado?",
+            "opts": [
+              "El peso neto vs peso glaseado",
+              "El color del envase",
+              "La marca del hielo",
+              "El horario del turno"
+            ],
+            "a": 0,
+            "exp": "Comparar el peso neto con el peso glaseado permite verificar que el porcentaje de hielo agregado sea el correcto."
+          },
+          {
+            "q": "¿Qué se hace si el porcentaje de glaseo no es suficiente?",
+            "opts": [
+              "Se re-congela brevemente si es necesario",
+              "Se descarta todo el lote",
+              "Se cocina",
+              "No se hace nada"
+            ],
+            "a": 0,
+            "exp": "Si el glaseo no alcanza el porcentaje requerido, se puede re-congelar brevemente para reforzarlo."
+          },
+          {
+            "q": "¿A qué etapa se envía el producto después del glaseado?",
+            "opts": [
+              "Al empaque final",
+              "A la recepción",
+              "A la cocción",
+              "Al secado"
+            ],
+            "a": 0,
+            "exp": "Una vez glaseado, el producto está listo para pasar al empaque final."
+          },
+          {
+            "q": "¿Por qué deben mantenerse despejadas las vías de circulación en esta estación?",
+            "opts": [
+              "Para evitar caídas por el piso resbaladizo",
+              "Para que pase más rápido el camión",
+              "No tiene relación con la seguridad",
+              "Para ahorrar agua"
+            ],
+            "a": 0,
+            "exp": "Mantener las vías libres reduce el riesgo de caídas en un piso constantemente mojado."
+          },
+          {
+            "q": "Verdadero o falso: en esta estación no es necesario usar calzado antideslizante.",
+            "opts": [
+              "Verdadero, no es necesario",
+              "Falso, es obligatorio por el piso mojado",
+              "Verdadero, solo en verano",
+              "Falso, pero solo para visitas"
+            ],
+            "a": 1,
+            "exp": "El piso mojado de esta estación hace obligatorio el uso de calzado antideslizante."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Sumergir o rociar el producto con agua fría controlada",
+              "Controlar el peso neto vs glaseado",
+              "Enviar a empaque final",
+              "Verificar el porcentaje de glaseo"
+            ],
+            "a": 0,
+            "exp": "El glaseado comienza sumergiendo o rociando el producto con agua fría controlada."
+          },
+          {
+            "q": "¿Qué se compara para verificar el rendimiento del glaseado?",
+            "opts": [
+              "El peso neto versus el peso glaseado",
+              "El color versus el sabor",
+              "La temperatura versus el precio",
+              "El tamaño versus el turno"
+            ],
+            "a": 0,
+            "exp": "El peso neto versus el peso glaseado indica cuánta agua se agregó como protección."
+          },
+          {
+            "q": "¿Con qué se aplica la capa protectora sobre el producto?",
+            "opts": [
+              "Agua fría controlada",
+              "Aceite caliente",
+              "Vapor a presión",
+              "Aire seco"
+            ],
+            "a": 0,
+            "exp": "El agua fría controlada es el medio con el que se aplica la capa protectora de hielo."
+          }
+        ]
+      },
+      {
+        "id": "cg-06",
+        "code": "CG-06",
+        "name": "Empaque y Almacenamiento en Frío",
+        "objetivo": "Empacar el producto y almacenarlo en cámara de frío manteniendo la cadena de frío hasta el despacho.",
+        "pasos": [
+          "Empacar el producto en cajas o bolsas rotuladas.",
+          "Verificar peso y etiquetado (trazabilidad, lote, fecha).",
+          "Paletizar las cajas correctamente.",
+          "Almacenar en cámara a -18 °C o inferior.",
+          "Controlar la temperatura de la cámara periódicamente."
+        ],
+        "seguridad": [
+          "Ropa de frío obligatoria para ingresar a cámara.",
+          "Respetar el tiempo máximo de permanencia en frío extremo.",
+          "Conocer la salida de emergencia de la cámara.",
+          "No bloquear pasillos con pallets."
+        ],
+        "quiz": [
+          {
+            "q": "¿A qué temperatura debe almacenarse el producto final?",
+            "opts": [
+              "-18 °C o inferior",
+              "4 °C",
+              "0 °C",
+              "10 °C"
+            ],
+            "a": 0,
+            "exp": "El producto congelado debe mantenerse a -18°C o menos para conservar su calidad."
+          },
+          {
+            "q": "¿Qué información debe llevar el etiquetado?",
+            "opts": [
+              "Trazabilidad, lote y fecha",
+              "Solo el precio",
+              "Solo el nombre del operario",
+              "Ninguna información es necesaria"
+            ],
+            "a": 0,
+            "exp": "La trazabilidad, el lote y la fecha en la etiqueta permiten rastrear el producto en toda la cadena."
+          },
+          {
+            "q": "¿Qué debe respetarse al trabajar dentro de la cámara de frío?",
+            "opts": [
+              "El tiempo máximo de permanencia",
+              "No hay restricciones de tiempo",
+              "Se puede ingresar sin ropa térmica",
+              "No es necesario conocer la salida de emergencia"
+            ],
+            "a": 0,
+            "exp": "El frío extremo de la cámara exige respetar un tiempo máximo de permanencia para el personal."
+          },
+          {
+            "q": "¿Qué se hace con las cajas antes de llevarlas a la cámara?",
+            "opts": [
+              "Se paletizan",
+              "Se dejan sueltas en el piso",
+              "Se congelan una por una manualmente",
+              "Se lavan con cloro puro"
+            ],
+            "a": 0,
+            "exp": "Paletizar las cajas facilita su manejo, almacenamiento y transporte posterior."
+          },
+          {
+            "q": "¿Qué se controla periódicamente dentro de la cámara de frío?",
+            "opts": [
+              "La temperatura",
+              "El precio del producto",
+              "El idioma de las etiquetas",
+              "El color de los pallets"
+            ],
+            "a": 0,
+            "exp": "Revisar la temperatura de la cámara periódicamente asegura que la cadena de frío no se rompa."
+          },
+          {
+            "q": "¿Por qué no se deben bloquear los pasillos con pallets?",
+            "opts": [
+              "Para mantener libres las vías de circulación y evacuación",
+              "Para que quepan más pallets",
+              "No tiene relación con la seguridad",
+              "Para que se vea más ordenado únicamente"
+            ],
+            "a": 0,
+            "exp": "Los pasillos despejados son necesarios para la circulación segura y la evacuación en caso de emergencia."
+          },
+          {
+            "q": "Verdadero o falso: se puede permanecer en la cámara de frío el tiempo que se desee sin restricciones.",
+            "opts": [
+              "Verdadero, no hay límite de tiempo",
+              "Falso, existe un tiempo máximo de permanencia",
+              "Verdadero, solo en invierno hay límite",
+              "Falso, pero solo aplica a visitas"
+            ],
+            "a": 1,
+            "exp": "Permanecer en frío extremo sin límite de tiempo aumenta el riesgo de hipotermia."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Empacar el producto en cajas o bolsas rotuladas",
+              "Paletizar las cajas",
+              "Almacenar en cámara",
+              "Controlar la temperatura de la cámara"
+            ],
+            "a": 0,
+            "exp": "El proceso comienza empacando el producto en cajas o bolsas rotuladas."
+          },
+          {
+            "q": "¿Qué prenda se requiere para ingresar a la cámara de frío?",
+            "opts": [
+              "Ropa de frío",
+              "Delantal de cocina",
+              "Ropa liviana",
+              "Ninguna en particular"
+            ],
+            "a": 0,
+            "exp": "La ropa de frío protege al personal de las bajas temperaturas dentro de la cámara."
+          },
+          {
+            "q": "¿Qué debe conocer el personal que trabaja dentro de la cámara?",
+            "opts": [
+              "La ubicación de la salida de emergencia",
+              "El precio del producto",
+              "El nombre del proveedor",
+              "El horario de otros turnos"
+            ],
+            "a": 0,
+            "exp": "Conocer la salida de emergencia es esencial para actuar rápido ante cualquier incidente en la cámara."
+          }
+        ]
+      }
+    ]
+  }
+};
+
+/* ============================================================
+   STATE & NAVIGATION
+   ============================================================ */
+let state = { process:null, sub:null, cameFrom:null };
+let role = null; // 'supervisor' | 'colaborador'
+const COLLAB_IDS = ['COLABORADOR1','COLABORADOR2','COLABORADOR3','COLABORADOR4','COLABORADOR5'];
+const SUPERVISOR_IDS = ['SUPERVISOR1','SUPERVISOR2','SUPERVISOR3','SUPERVISOR4'];
+const COLLAB_PASSWORD = '12345';
+let currentCollaboratorId = null; // colaborador con sesión iniciada (role === 'colaborador')
+let currentSupervisorId = null;   // supervisor con sesión iniciada (role === 'supervisor')
+let pendingLoginRole = null;      // qué tipo de cuenta se está intentando iniciar sesión
+let selectedCollabId = COLLAB_IDS[0]; // colaborador que el supervisor está gestionando
+let collabStore = {}; // { [collabId]: { assignments:{[subId]:true}, progress:{[subId]:{manual,video,quiz,attempts}} } }
+let media = {}; // { [subId]: { pdfUrl, pdfName, pdfIsObjectUrl, videoUrl, videoRawUrl, videoKind, videoName, videoIsObjectUrl, imgUrl, imgName, imgIsObjectUrl } }
+let panelMedia = { hp:{}, cg:{} }; // { url, name, isObjectUrl }
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function initProgress(){
+  COLLAB_IDS.forEach(id=>{
+    collabStore[id] = { assignments:{}, progress:{} };
+    Object.values(DATA).forEach(proc=>{
+      proc.subs.forEach(s=>{
+        collabStore[id].progress[s.id] = {manual:0, video:0, quiz:0, attempts:0};
+      });
+    });
+  });
+}
+
+function injectTemplates(){
+  ['tpl-mytasks','tpl-assign','tpl-teamdash'].forEach(tid=>{
+    const tpl = document.getElementById(tid);
+    if(!tpl) return;
+    const node = tpl.content.firstElementChild.cloneNode(true);
+    document.querySelector('main').appendChild(node);
+    tpl.remove();
+  });
+}
+
+function getMedia(subId){
+  if(!media[subId]) media[subId] = {};
+  return media[subId];
+}
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+function flashSaved(container){
+  if(!container) return;
+  const old = container.querySelector('.saved-flash');
+  if(old) old.remove();
+  const badge = document.createElement('span');
+  badge.className = 'saved-flash';
+  badge.textContent = '✓ Guardado';
+  container.appendChild(badge);
+  setTimeout(()=>{ if(badge.parentNode) badge.remove(); }, 1600);
+}
+function parseVideoUrl(url){
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{6,})/);
+  if(yt) return { kind:'youtube', embedUrl:'https://www.youtube.com/embed/'+yt[1] };
+  const vimeo = url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+  if(vimeo) return { kind:'vimeo', embedUrl:'https://player.vimeo.com/video/'+vimeo[1] };
+  if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) return { kind:'direct', embedUrl:url };
+  return { kind:'other', embedUrl:url };
+}
+
+function renderManualDoc(subId){
+  const m = getMedia(subId);
+  const box = $('#manualDocStatus');
+  if(m.pdfUrl){
+    box.innerHTML = `
+      <a class="manual-open-btn" href="${m.pdfUrl}" target="_blank" rel="noopener">Abrir manual (PDF) ↗</a>
+      <div class="media-status">${m.pdfName ? 'Archivo: '+escapeHtml(m.pdfName) : 'Link: '+escapeHtml(m.pdfUrl)} <button class="clear-link" id="clearPdf">Quitar</button></div>`;
+  } else {
+    box.innerHTML = `<p class="manual-empty">Aún no se ha cargado el manual en PDF de este subproceso.</p>`;
+  }
+}
+
+function renderManualImage(subId){
+  const m = getMedia(subId);
+  const box = $('#manualImgStatus');
+  if(m.imgUrl){
+    box.innerHTML = `
+      <img class="manual-img" src="${m.imgUrl}" alt="Imagen del subproceso">
+      <div class="media-status">${m.imgName ? 'Archivo: '+escapeHtml(m.imgName) : 'Link: '+escapeHtml(m.imgUrl)} <button class="clear-link" id="clearImg">Quitar</button></div>`;
+  } else {
+    box.innerHTML = `<p class="manual-empty">Aún no se ha agregado una imagen para este subproceso.</p>`;
+  }
+}
+
+function renderPanelImage(key){
+  const panel = document.querySelector('.panel-'+key);
+  const status = document.getElementById(key+'ImgStatus');
+  const m = panelMedia[key];
+  if(m && m.url){
+    const overlay = key==='hp'
+      ? 'linear-gradient(160deg, rgba(142,69,32,.88), rgba(196,98,45,.72) 65%)'
+      : 'linear-gradient(200deg, rgba(27,84,112,.88), rgba(46,125,166,.72) 65%)';
+    panel.style.backgroundImage = overlay + ', url(' + m.url + ')';
+    panel.style.backgroundSize = 'cover';
+    panel.style.backgroundPosition = 'center';
+    status.innerHTML = `${m.name ? 'Archivo: '+escapeHtml(m.name) : 'Imagen enlazada'} <button class="clear-link" id="${key}ImgClear">Quitar</button>`;
+  } else {
+    panel.style.backgroundImage = '';
+    status.innerHTML = '';
+  }
+}
+
+function renderVideoMedia(subId){
+  const m = getMedia(subId);
+  const status = $('#videoStatus');
+  const wrap = $('#videoPlayerWrap');
+  const frame = $('#videoFrame');
+  const walk = $('#videoWalk');
+  const note = $('#videoNote');
+  if(m.videoUrl){
+    frame.classList.add('hidden');
+    walk.classList.remove('active');
+    note.classList.add('hidden');
+    if(m.videoKind==='file' || m.videoKind==='direct'){
+      wrap.innerHTML = `<video class="local-video" controls src="${m.videoUrl}"></video>`;
+      const vEl = wrap.querySelector('video');
+      vEl.addEventListener('timeupdate', ()=>{
+        if(vEl.duration){
+          const pct = Math.min(100, Math.round((vEl.currentTime/vEl.duration)*100));
+          updateProgress(subId,'video',pct);
+        }
+      });
+      vEl.addEventListener('ended', ()=> updateProgress(subId,'video',100));
+    } else if(m.videoKind==='youtube' || m.videoKind==='vimeo'){
+      wrap.innerHTML = `<iframe class="embed-video" src="${m.videoUrl}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+      /* no se puede medir la reproducción real de un iframe externo sin su API,
+         así que se marca como revisado al abrirlo */
+      updateProgress(subId,'video',100);
+    } else {
+      wrap.innerHTML = `<div class="video-note">No se pudo previsualizar este link directamente. <a href="${m.videoUrl}" target="_blank" rel="noopener">Abrir video en una pestaña nueva ↗</a></div>`;
+    }
+    status.innerHTML = `${m.videoName ? 'Archivo: '+escapeHtml(m.videoName) : 'Link: '+escapeHtml(m.videoRawUrl||m.videoUrl)} <button class="clear-link" id="clearVideo">Quitar</button>`;
+  } else {
+    wrap.innerHTML = '';
+    frame.classList.remove('hidden');
+    note.classList.remove('hidden');
+    status.innerHTML = '';
+  }
+}
+
+function setAccent(proc){
+  document.documentElement.style.setProperty('--accent', proc.accent);
+  document.documentElement.style.setProperty('--accent-dark', proc.accentDark);
+}
+
+let currentViewId = 'view-role';
+
+function showView(id){
+  currentViewId = id;
+  ['view-role','view-login','view-home','view-process','view-sub','view-mytasks','view-assign','view-teamdash'].forEach(v=>{
+    const el = document.getElementById(v);
+    if(el) el.classList.toggle('hidden', v!==id);
+  });
+  $('#backBtn').classList.toggle('hidden', id==='view-role' || id==='view-login' || id==='view-home' || id==='view-mytasks');
+  updateTopbar();
+}
+
+function updateTopbar(){
+  const chosen = !!role;
+  $('#switchAccountBtn').classList.toggle('hidden', !chosen);
+  $('#roleBadge').classList.toggle('hidden', !chosen);
+  if(chosen){
+    $('#roleBadge').textContent = role==='supervisor' ? ('SUPERVISOR — '+currentSupervisorId) : ('COLABORADOR — '+currentCollaboratorId);
+  }
+  $('#navAssign').classList.toggle('hidden', role!=='supervisor');
+  $('#navDash').classList.toggle('hidden', role!=='supervisor');
+}
+
+function updateCrumbs(){
+  const c = $('#crumbs');
+  if(!state.process){ c.innerHTML = '<span class="cur">Inicio</span>'; return; }
+  const proc = DATA[state.process];
+  if(!state.sub){
+    c.innerHTML = `<span>Inicio</span><span class="sep">/</span><span class="cur">${proc.name}</span>`;
+  } else {
+    const sub = proc.subs.find(s=>s.id===state.sub);
+    if(state.cameFrom==='mytasks'){
+      c.innerHTML = `<span>Mis tareas</span><span class="sep">/</span><span class="cur">${sub.code}</span>`;
+    } else {
+      c.innerHTML = `<span>Inicio</span><span class="sep">/</span><span>${proc.name}</span><span class="sep">/</span><span class="cur">${sub.code}</span>`;
+    }
+  }
+}
+
+function goHome(){
+  state = {process:null, sub:null};
+  showView('view-home'); updateCrumbs();
+}
+
+function findSub(subId){
+  const key = subId.split('-')[0];
+  const proc = DATA[key];
+  const sub = proc.subs.find(s=>s.id===subId);
+  return { proc, key, sub };
+}
+
+function stationOverall(collabId, subId){
+  const p = collabStore[collabId] && collabStore[collabId].progress[subId];
+  if(!p) return 0;
+  return Math.round((p.manual + p.video + p.quiz)/3);
+}
+
+function updateProgress(subId, field, value){
+  if(role!=='colaborador' || !currentCollaboratorId) return;
+  const store = collabStore[currentCollaboratorId].progress;
+  if(!store[subId]) store[subId] = {manual:0,video:0,quiz:0,attempts:0};
+  store[subId][field] = Math.max(store[subId][field]||0, value);
+}
+
+function openProcess(key){
+  state = {process:key, sub:null};
+  const proc = DATA[key];
+  setAccent(proc);
+  $('#proc-tag').textContent = 'LÍNEA ' + proc.code;
+  $('#proc-title').textContent = proc.name;
+  $('#proc-desc').textContent = proc.desc;
+
+  $('#proc-line').innerHTML = proc.subs.map((s,i)=>`
+    <button class="station" data-sub="${s.id}">
+      <span class="dot">${String(i+1).padStart(2,'0')}</span>
+      <span class="lbl">${s.name}</span>
+    </button>`).join('');
+
+  $('#proc-cards').innerHTML = proc.subs.map(s=>`
+    <button class="station-card" data-sub="${s.id}">
+      <span class="code mono">${s.code}</span>
+      <h3>${s.name}</h3>
+      <p class="obj">${s.objetivo}</p>
+      <span class="go">Ver estación
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+      </span>
+    </button>`).join('');
+
+  $$('.station,[data-sub]').forEach(el=>{
+    el.addEventListener('click', ()=> openSub(el.getAttribute('data-sub'), 'process'));
+  });
+
+  showView('view-process'); updateCrumbs();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openSub(subId, cameFrom){
+  const { proc, key, sub } = findSub(subId);
+  state.process = key;
+  state.sub = subId;
+  state.cameFrom = cameFrom || state.cameFrom || 'process';
+  setAccent(proc);
+
+  $('#sub-code').textContent = sub.code;
+  $('#sub-title').textContent = sub.name;
+  $('#man-objetivo').textContent = sub.objetivo;
+  $('#man-pasos').innerHTML = sub.pasos.map(p=>`<li>${p}</li>`).join('');
+  $('#man-seguridad').innerHTML = sub.seguridad.map(s=>`
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/></svg>${s}</li>`).join('');
+
+  $('#videoWalk').innerHTML = sub.pasos.map((p,i)=>`
+    <div class="walk-row"><span class="walk-num">${i+1}</span><span class="walk-text">${p}</span></div>`).join('');
+  $('#videoWalk').classList.remove('active');
+  $('#pdfLinkInput').value = '';
+  $('#videoLinkInput').value = '';
+  $('#imgLinkInput').value = '';
+  renderManualDoc(subId);
+  renderManualImage(subId);
+  renderVideoMedia(subId);
+  updateProgress(subId, 'manual', 100);
+
+  resetQuizUI();
+  currentQuizSub = sub;
+
+  $$('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab==='manual'));
+  $$('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-manual'));
+
+  showView('view-sub'); updateCrumbs();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+let currentQuizSub = null;
+let quizTimerInterval = null;
+let quizTimeLeft = 25*60;
+let quizStarted = false;
+let quizFinished = false;
+
+function resetQuizUI(){
+  clearInterval(quizTimerInterval);
+  quizTimerInterval = null;
+  quizStarted = false;
+  quizFinished = false;
+  quizTimeLeft = 25*60;
+  $('#quizStart').classList.remove('hidden');
+  $('#quizTimerRow').classList.add('hidden');
+  $('#quizActions').classList.add('hidden');
+  $('#quizQuestions').innerHTML = '';
+  $('#quizResult').className = 'quiz-result mono';
+  $('#quizResult').textContent = '';
+  $('#quizSubmit').disabled = false;
+  $('#quizSubmit').textContent = 'Enviar respuestas';
+  const retry = document.getElementById('quizRetryBtn');
+  if(retry) retry.remove();
+}
+
+function buildQuiz(sub){
+  const wrap = $('#quizQuestions');
+  const shuffledQuestions = shuffle(sub.quiz).map(q=>{
+    const opts = q.opts.map((text,i)=>({text, correct:i===q.a}));
+    const shuffledOpts = shuffle(opts);
+    return { q:q.q, opts:shuffledOpts.map(o=>o.text), a:shuffledOpts.findIndex(o=>o.correct), exp:q.exp||'' };
+  });
+  wrap.innerHTML = shuffledQuestions.map((q,qi)=>`
+    <div class="quiz-q" data-qi="${qi}" data-answer="${q.a}" data-exp="${escapeHtml(q.exp)}">
+      <p class="qtext">${qi+1}. ${q.q}</p>
+      <div class="quiz-opts">
+        ${q.opts.map((o,oi)=>`
+          <label class="opt">
+            <input type="radio" name="q${qi}" value="${oi}">
+            <span>${o}</span>
+          </label>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function startQuiz(){
+  if(!currentQuizSub || quizStarted) return;
+  quizStarted = true;
+  quizFinished = false;
+  quizTimeLeft = 25*60;
+  $('#quizStart').classList.add('hidden');
+  $('#quizTimerRow').classList.remove('hidden');
+  $('#quizActions').classList.remove('hidden');
+  buildQuiz(currentQuizSub);
+  updateQuizTimerDisplay();
+  quizTimerInterval = setInterval(()=>{
+    quizTimeLeft--;
+    updateQuizTimerDisplay();
+    if(quizTimeLeft<=0){
+      clearInterval(quizTimerInterval);
+      submitQuiz(true);
+    }
+  }, 1000);
+}
+
+function updateQuizTimerDisplay(){
+  const m = Math.floor(quizTimeLeft/60);
+  const s = quizTimeLeft%60;
+  const el = $('#quizTimer');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.classList.toggle('urgent', quizTimeLeft<=60);
+}
+
+function submitQuiz(isTimeout){
+  if(quizFinished) return;
+  quizFinished = true;
+  clearInterval(quizTimerInterval);
+  const qs = $$('.quiz-q');
+  let correct = 0;
+  qs.forEach(qEl=>{
+    const qi = qEl.dataset.qi;
+    const answer = Number(qEl.dataset.answer);
+    const selected = qEl.querySelector('input[name="q'+qi+'"]:checked');
+    const opts = Array.from(qEl.querySelectorAll('.opt'));
+    let correctText = '';
+    opts.forEach((optEl,oi)=>{
+      optEl.classList.remove('correct','incorrect');
+      const input = optEl.querySelector('input');
+      input.disabled = true;
+      if(oi===answer){
+        optEl.classList.add('correct');
+        correctText = optEl.querySelector('span').textContent;
+      } else if(selected && Number(selected.value)===oi){
+        optEl.classList.add('incorrect');
+      }
+    });
+    const isCorrect = !!(selected && Number(selected.value)===answer);
+    if(isCorrect) correct++;
+    const oldFb = qEl.querySelector('.quiz-feedback');
+    if(oldFb) oldFb.remove();
+    if(!isCorrect){
+      const exp = qEl.dataset.exp || '';
+      const fb = document.createElement('div');
+      fb.className = 'quiz-feedback';
+      fb.innerHTML = `<div class="quiz-feedback-answer"><strong>Respuesta correcta:</strong> ${escapeHtml(correctText)}</div>` +
+        (exp ? `<div class="quiz-feedback-exp"><strong>Por qué:</strong> ${escapeHtml(exp)}</div>` : '');
+      qEl.appendChild(fb);
+    }
+  });
+  const total = qs.length;
+  const wrong = total - correct;
+  const pct = Math.round((correct/total)*100);
+  const res = $('#quizResult');
+  res.textContent = (isTimeout ? '⏱ TIEMPO AGOTADO — ' : '') + `RESULTADO: ${correct}/${total} CORRECTAS · ${wrong} INCORRECTAS (${pct}%)`;
+  res.classList.add('show');
+  res.classList.toggle('pass', pct>=70);
+  res.classList.toggle('fail', pct<70);
+  $('#quizSubmit').disabled = true;
+  $('#quizSubmit').textContent = 'Evaluación enviada';
+
+  if(state.sub && role==='colaborador' && currentCollaboratorId){
+    updateProgress(state.sub, 'quiz', pct);
+    const store = collabStore[currentCollaboratorId].progress[state.sub];
+    store.attempts = (store.attempts||0) + 1;
+  }
+
+  let retry = document.getElementById('quizRetryBtn');
+  if(!retry){
+    retry = document.createElement('button');
+    retry.id = 'quizRetryBtn';
+    retry.className = 'nav-btn';
+    retry.style.marginLeft = '12px';
+    retry.textContent = 'Volver a intentar';
+    $('#quizActions').appendChild(retry);
+    retry.addEventListener('click', ()=>{
+      const sub = currentQuizSub;
+      resetQuizUI();
+      currentQuizSub = sub;
+    });
+  }
+}
+
+/* ============================================================
+   MIS TAREAS (colaborador)
+   ============================================================ */
+function progressMini(label, pct){
+  return `<div class="progress-mini">${label}
+    <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    ${pct}%</div>`;
+}
+
+function openMyTasks(){
+  state = {process:null, sub:null, cameFrom:'mytasks'};
+  $('#crumbs').innerHTML = '<span class="cur">Mis tareas</span>';
+  $('#mytasks-title').textContent = 'Mis tareas — ' + currentCollaboratorId;
+  renderMyTasks();
+  showView('view-mytasks');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderMyTasks(){
+  const store = collabStore[currentCollaboratorId];
+  const assignedIds = Object.keys(store.assignments).filter(id=>store.assignments[id]);
+  const total = assignedIds.length;
+  const completed = assignedIds.filter(id=>stationOverall(currentCollaboratorId,id)>=100).length;
+  const avg = total ? Math.round(assignedIds.reduce((s,id)=>s+stationOverall(currentCollaboratorId,id),0)/total) : 0;
+  $('#mytasks-summary').innerHTML = `
+    <div class="dash-card"><div class="num">${total}</div><div class="lbl">Tareas asignadas</div></div>
+    <div class="dash-card"><div class="num">${completed}</div><div class="lbl">Completadas</div></div>
+    <div class="dash-card"><div class="num">${avg}%</div><div class="lbl">Progreso general</div></div>`;
+
+  const list = $('#mytasks-list');
+  if(total===0){
+    list.innerHTML = `<div class="empty-state">Aún no tienes tareas asignadas. Pídele a tu supervisor que te asigne una estación desde su cuenta, o explora libremente los procesos más abajo.</div>`;
+  } else {
+    list.innerHTML = assignedIds.map(id=>{
+      const { sub } = findSub(id);
+      const p = store.progress[id] || {manual:0,video:0,quiz:0};
+      const overall = stationOverall(currentCollaboratorId,id);
+      return `
+      <div class="task-item" data-sub="${id}">
+        <div class="task-top">
+          <span class="code mono">${sub.code}</span>
+          <h3>${sub.name}</h3>
+          <span class="overall-pill ${overall>=100?'done':''}">${overall}%</span>
+        </div>
+        <div class="progress-mini-row">
+          ${progressMini('Manual', p.manual)}
+          ${progressMini('Video', p.video)}
+          ${progressMini('Evaluación', p.quiz)}
+        </div>
+      </div>`;
+    }).join('');
+    $$('#mytasks-list .task-item').forEach(el=>{
+      el.addEventListener('click', ()=> openSub(el.dataset.sub, 'mytasks'));
+    });
+  }
+}
+
+/* ============================================================
+   ASIGNAR TAREAS (supervisor)
+   ============================================================ */
+function openAssign(){
+  populateCollabSelects();
+  renderAssignList();
+  $('#crumbs').innerHTML = '<span>Inicio</span><span class="sep">/</span><span class="cur">Asignar tareas</span>';
+  showView('view-assign');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderAssignList(){
+  const store = collabStore[selectedCollabId];
+  const wrap = $('#assign-list');
+  wrap.innerHTML = Object.entries(DATA).map(([key,proc])=>`
+    <div class="assign-group">
+      <div class="assign-group-head">
+        <h3>${proc.name}</h3>
+        <button class="assign-all-btn" data-key="${key}" data-action="all">Asignar toda la línea</button>
+        <button class="assign-all-btn" data-key="${key}" data-action="none">Quitar toda la línea</button>
+      </div>
+      ${proc.subs.map(s=>`
+        <label class="assign-row">
+          <input type="checkbox" data-sub="${s.id}" ${store.assignments[s.id]?'checked':''}>
+          <span class="code mono">${s.code}</span>
+          <span class="name">${s.name}</span>
+        </label>`).join('')}
+      <div class="assign-group-footer">
+        <button class="confirm-btn confirm-group-btn" data-key="${key}" type="button">Confirmar cambios en esta línea</button>
+      </div>
+    </div>`).join('');
+
+  wrap.querySelectorAll('.confirm-group-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      const group = btn.closest('.assign-group');
+      group.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+        store.assignments[cb.dataset.sub] = cb.checked;
+      });
+      btn.textContent = '✓ Guardado';
+      btn.classList.add('saved');
+      clearTimeout(btn._resetTimer);
+      btn._resetTimer = setTimeout(()=>{
+        btn.textContent = 'Confirmar cambios en esta línea';
+        btn.classList.remove('saved');
+      }, 1400);
+    });
+  });
+  wrap.querySelectorAll('.assign-all-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      const val = btn.dataset.action==='all';
+      DATA[key].subs.forEach(s=>{ store.assignments[s.id] = val; });
+      renderAssignList();
+    });
+  });
+}
+
+/* ============================================================
+   DASHBOARD DE EQUIPO (supervisor)
+   ============================================================ */
+function openTeamDash(){
+  populateCollabSelects();
+  renderTeamDash();
+  $('#crumbs').innerHTML = '<span>Inicio</span><span class="sep">/</span><span class="cur">Dashboard equipo</span>';
+  showView('view-teamdash');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderTeamDash(){
+  const store = collabStore[selectedCollabId];
+  const assignedIds = Object.keys(store.assignments).filter(id=>store.assignments[id]);
+  const total = assignedIds.length;
+  const completed = assignedIds.filter(id=>stationOverall(selectedCollabId,id)>=100).length;
+  const avg = total ? Math.round(assignedIds.reduce((s,id)=>s+stationOverall(selectedCollabId,id),0)/total) : 0;
+  $('#teamdash-summary').innerHTML = `
+    <div class="dash-card"><div class="num" style="font-size:18px;">${selectedCollabId}</div><div class="lbl">Colaborador</div></div>
+    <div class="dash-card"><div class="num">${total}</div><div class="lbl">Tareas asignadas</div></div>
+    <div class="dash-card"><div class="num">${completed}</div><div class="lbl">Completadas</div></div>
+    <div class="dash-card"><div class="num">${avg}%</div><div class="lbl">Progreso general</div></div>`;
+
+  const body = $('#teamdash-body');
+  if(total===0){
+    body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--ink-soft);padding:24px;">Aún no le has asignado tareas a ${selectedCollabId}. Ve a "Asignar tareas".</td></tr>`;
+    return;
+  }
+  body.innerHTML = assignedIds.map(id=>{
+    const { sub } = findSub(id);
+    const p = store.progress[id] || {manual:0,video:0,quiz:0,attempts:0};
+    const overall = stationOverall(selectedCollabId,id);
+    const estado = overall>=100 ? '✅ Completo' : (overall>0 ? '🟡 En progreso' : '🔴 Sin iniciar');
+    return `<tr>
+      <td>${sub.code} — ${sub.name}</td>
+      <td class="center">${p.manual}%</td>
+      <td class="center">${p.video}%</td>
+      <td class="center">${p.quiz}%</td>
+      <td class="center">${p.attempts||0}</td>
+      <td class="center">${estado}</td>
+    </tr>`;
+  }).join('');
+}
+
+function populateCollabSelects(){
+  const assignSel = document.getElementById('assignCollabSelect');
+  const dashSel = document.getElementById('dashCollabSelect');
+  [assignSel, dashSel].forEach(sel=>{
+    if(!sel) return;
+    if(!sel.options.length){
+      sel.innerHTML = COLLAB_IDS.map(c=>`<option value="${c}">${c}</option>`).join('');
+      sel.addEventListener('change', ()=>{
+        selectedCollabId = sel.value;
+        if(assignSel) assignSel.value = selectedCollabId;
+        if(dashSel) dashSel.value = selectedCollabId;
+        if(currentViewId==='view-assign') renderAssignList();
+        if(currentViewId==='view-teamdash') renderTeamDash();
+      });
+    }
+    sel.value = selectedCollabId;
+  });
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+$$('.panel[data-process]').forEach(p=>{
+  p.addEventListener('click', ()=> openProcess(p.dataset.process));
+  p.addEventListener('keydown', e=>{
+    if(e.target===p && (e.key==='Enter' || e.key===' ')){
+      e.preventDefault();
+      openProcess(p.dataset.process);
+    }
+  });
+});
+
+function goBack(){
+  if(currentViewId==='view-sub'){
+    if(state.cameFrom==='mytasks') openMyTasks();
+    else openProcess(state.process);
+  } else if(currentViewId==='view-process'){
+    role==='colaborador' ? openMyTasks() : goHome();
+  } else if(currentViewId==='view-assign' || currentViewId==='view-teamdash'){
+    goHome();
+  } else {
+    role==='colaborador' ? openMyTasks() : goHome();
+  }
+}
+$('#backBtn').addEventListener('click', goBack);
+
+$$('.role-card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    pendingLoginRole = card.dataset.role;
+    $('#loginError').classList.add('hidden');
+    $('#loginUser').value = '';
+    $('#loginPass').value = '';
+    if(pendingLoginRole==='supervisor'){
+      $('#loginEyebrow').textContent = 'Acceso supervisor';
+      $('#loginSub').textContent = 'Usuario: SUPERVISOR1 a SUPERVISOR4 · Clave: 12345 (misma para todos, solo para esta demo).';
+      $('#loginUser').placeholder = 'SUPERVISOR1';
+    } else {
+      $('#loginEyebrow').textContent = 'Acceso colaborador';
+      $('#loginSub').textContent = 'Usuario: COLABORADOR1 a COLABORADOR5 · Clave: 12345 (misma para todos, solo para esta demo).';
+      $('#loginUser').placeholder = 'COLABORADOR1';
+    }
+    showView('view-login');
+    $('#loginUser').focus();
+  });
+});
+
+function doLogin(){
+  const u = $('#loginUser').value.trim().toUpperCase();
+  const p = $('#loginPass').value.trim();
+  if(pendingLoginRole==='supervisor'){
+    if(SUPERVISOR_IDS.includes(u) && p===COLLAB_PASSWORD){
+      role = 'supervisor';
+      currentSupervisorId = u;
+      document.body.classList.add('role-supervisor');
+      document.body.classList.remove('role-colaborador');
+      $('#loginError').classList.add('hidden');
+      goHome();
+    } else {
+      $('#loginError').classList.remove('hidden');
+    }
+  } else {
+    if(COLLAB_IDS.includes(u) && p===COLLAB_PASSWORD){
+      role = 'colaborador';
+      currentCollaboratorId = u;
+      document.body.classList.add('role-colaborador');
+      document.body.classList.remove('role-supervisor');
+      $('#loginError').classList.add('hidden');
+      openMyTasks();
+    } else {
+      $('#loginError').classList.remove('hidden');
+    }
+  }
+}
+/* varios disparadores para que el login funcione sin depender del submit nativo del form */
+$('#loginBtn').addEventListener('click', doLogin);
+$('#loginForm').addEventListener('submit', e=>{ e.preventDefault(); doLogin(); });
+[$('#loginUser'), $('#loginPass')].forEach(inp=>{
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); doLogin(); } });
+  inp.addEventListener('input', ()=> $('#loginError').classList.add('hidden'));
+});
+$('#loginBackBtn').addEventListener('click', ()=> showView('view-role'));
+
+$('#switchAccountBtn').addEventListener('click', ()=>{
+  role = null;
+  currentCollaboratorId = null;
+  currentSupervisorId = null;
+  document.body.classList.remove('role-colaborador','role-supervisor');
+  $('#crumbs').innerHTML = '<span class="cur">Inicio</span>';
+  showView('view-role');
+});
+
+$('#navAssign').addEventListener('click', openAssign);
+$('#navDash').addEventListener('click', openTeamDash);
+
+$$('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    $$('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    $$('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+$('#printManualBtn').addEventListener('click', ()=> window.print());
+
+$('#videoFrame').addEventListener('click', ()=>{
+  $('#videoFrame').classList.add('hidden');
+  $('#videoWalk').classList.add('active');
+  if(state.sub) updateProgress(state.sub, 'video', 100);
+});
+
+/* --- manual PDF: upload / link / clear --- */
+$('#pdfUpload').addEventListener('change', e=>{
+  const f = e.target.files[0];
+  if(!f || !state.sub) return;
+  const m = getMedia(state.sub);
+  if(m.pdfIsObjectUrl && m.pdfUrl) URL.revokeObjectURL(m.pdfUrl);
+  m.pdfUrl = URL.createObjectURL(f);
+  m.pdfName = f.name;
+  m.pdfIsObjectUrl = true;
+  renderManualDoc(state.sub);
+  flashSaved($('#manualDocStatus'));
+  e.target.value = '';
+});
+$('#pdfLinkBtn').addEventListener('click', ()=>{
+  const val = $('#pdfLinkInput').value.trim();
+  if(!val || !state.sub) return;
+  const m = getMedia(state.sub);
+  if(m.pdfIsObjectUrl && m.pdfUrl) URL.revokeObjectURL(m.pdfUrl);
+  m.pdfUrl = val;
+  m.pdfName = null;
+  m.pdfIsObjectUrl = false;
+  renderManualDoc(state.sub);
+  flashSaved($('#manualDocStatus'));
+  $('#pdfLinkInput').value = '';
+});
+$('#manualDocStatus').addEventListener('click', e=>{
+  if(e.target.id==='clearPdf' && state.sub){
+    if(!confirm('¿Quitar el manual en PDF de esta estación?')) return;
+    const m = getMedia(state.sub);
+    if(m.pdfIsObjectUrl && m.pdfUrl) URL.revokeObjectURL(m.pdfUrl);
+    m.pdfUrl = null; m.pdfName = null; m.pdfIsObjectUrl = false;
+    renderManualDoc(state.sub);
+  }
+});
+
+/* --- manual image: upload / link / clear --- */
+$('#imgUpload').addEventListener('change', e=>{
+  const f = e.target.files[0];
+  if(!f || !state.sub) return;
+  const m = getMedia(state.sub);
+  if(m.imgIsObjectUrl && m.imgUrl) URL.revokeObjectURL(m.imgUrl);
+  m.imgUrl = URL.createObjectURL(f);
+  m.imgName = f.name;
+  m.imgIsObjectUrl = true;
+  renderManualImage(state.sub);
+  flashSaved($('#manualImgStatus'));
+  e.target.value = '';
+});
+$('#imgLinkBtn').addEventListener('click', ()=>{
+  const val = $('#imgLinkInput').value.trim();
+  if(!val || !state.sub) return;
+  const m = getMedia(state.sub);
+  if(m.imgIsObjectUrl && m.imgUrl) URL.revokeObjectURL(m.imgUrl);
+  m.imgUrl = val;
+  m.imgName = null;
+  m.imgIsObjectUrl = false;
+  renderManualImage(state.sub);
+  flashSaved($('#manualImgStatus'));
+  $('#imgLinkInput').value = '';
+});
+$('#manualImgStatus').addEventListener('click', e=>{
+  if(e.target.id==='clearImg' && state.sub){
+    if(!confirm('¿Quitar la imagen de esta estación?')) return;
+    const m = getMedia(state.sub);
+    if(m.imgIsObjectUrl && m.imgUrl) URL.revokeObjectURL(m.imgUrl);
+    m.imgUrl = null; m.imgName = null; m.imgIsObjectUrl = false;
+    renderManualImage(state.sub);
+  }
+});
+
+/* --- home panel images: upload / link / clear --- */
+['hp','cg'].forEach(key=>{
+  document.getElementById(key+'ImgCtrl').addEventListener('click', e=> e.stopPropagation());
+  document.getElementById(key+'ImgUpload').addEventListener('change', e=>{
+    const f = e.target.files[0];
+    if(!f) return;
+    if(panelMedia[key].isObjectUrl && panelMedia[key].url) URL.revokeObjectURL(panelMedia[key].url);
+    panelMedia[key] = { url:URL.createObjectURL(f), name:f.name, isObjectUrl:true };
+    renderPanelImage(key);
+    flashSaved(document.getElementById(key+'ImgStatus'));
+    e.target.value = '';
+  });
+  document.getElementById(key+'ImgLinkBtn').addEventListener('click', ()=>{
+    const val = document.getElementById(key+'ImgLinkInput').value.trim();
+    if(!val) return;
+    if(panelMedia[key].isObjectUrl && panelMedia[key].url) URL.revokeObjectURL(panelMedia[key].url);
+    panelMedia[key] = { url:val, name:null, isObjectUrl:false };
+    renderPanelImage(key);
+    flashSaved(document.getElementById(key+'ImgStatus'));
+    document.getElementById(key+'ImgLinkInput').value = '';
+  });
+  document.getElementById(key+'ImgStatus').addEventListener('click', e=>{
+    if(e.target.id===key+'ImgClear'){
+      if(!confirm('¿Quitar la imagen de esta línea?')) return;
+      if(panelMedia[key].isObjectUrl && panelMedia[key].url) URL.revokeObjectURL(panelMedia[key].url);
+      panelMedia[key] = {};
+      renderPanelImage(key);
+    }
+  });
+});
+
+/* --- video: upload / link / clear --- */
+$('#videoUpload').addEventListener('change', e=>{
+  const f = e.target.files[0];
+  if(!f || !state.sub) return;
+  const m = getMedia(state.sub);
+  if(m.videoIsObjectUrl && m.videoUrl) URL.revokeObjectURL(m.videoUrl);
+  m.videoUrl = URL.createObjectURL(f);
+  m.videoName = f.name;
+  m.videoKind = 'file';
+  m.videoIsObjectUrl = true;
+  renderVideoMedia(state.sub);
+  flashSaved($('#videoStatus'));
+  e.target.value = '';
+});
+$('#videoLinkBtn').addEventListener('click', ()=>{
+  const raw = $('#videoLinkInput').value.trim();
+  if(!raw || !state.sub) return;
+  const m = getMedia(state.sub);
+  if(m.videoIsObjectUrl && m.videoUrl) URL.revokeObjectURL(m.videoUrl);
+  const parsed = parseVideoUrl(raw);
+  m.videoUrl = parsed.embedUrl;
+  m.videoKind = parsed.kind;
+  m.videoRawUrl = raw;
+  m.videoName = null;
+  m.videoIsObjectUrl = false;
+  renderVideoMedia(state.sub);
+  flashSaved($('#videoStatus'));
+  $('#videoLinkInput').value = '';
+});
+$('#videoStatus').addEventListener('click', e=>{
+  if(e.target.id==='clearVideo' && state.sub){
+    if(!confirm('¿Quitar el video de esta estación?')) return;
+    const m = getMedia(state.sub);
+    if(m.videoIsObjectUrl && m.videoUrl) URL.revokeObjectURL(m.videoUrl);
+    m.videoUrl = null; m.videoKind = null; m.videoName = null; m.videoRawUrl = null; m.videoIsObjectUrl = false;
+    renderVideoMedia(state.sub);
+  }
+});
+
+$('#quizStartBtn').addEventListener('click', startQuiz);
+$('#quizSubmit').addEventListener('click', ()=> submitQuiz(false));
+
+/* init */
+injectTemplates();
+initProgress();
+$$('.mini-panel[data-process]').forEach(p=>{
+  p.addEventListener('click', ()=> openProcess(p.dataset.process));
+});
+showView('view-role');
+</script>
+</body>
+</html>
