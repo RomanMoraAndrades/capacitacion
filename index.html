@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pesquera — Centro de Capacitación</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A2FE0">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pesquera">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -22,6 +29,12 @@
   --warm:#D6221A;
   --warm-dark:#7A0F0A;
   --warm-light:#FBDAD8;
+  --quality:#1E8449;
+  --quality-dark:#124F2C;
+  --quality-light:#D9F0DF;
+  --risk:#C97A0A;
+  --risk-dark:#7A4805;
+  --risk-light:#FBE9CD;
   --ok:#3F7D4F;
   --ok-light:#E1F0E3;
   --bad:#C6262A;
@@ -98,49 +111,42 @@ main{flex:1;display:flex;flex-direction:column;}
 .home-hero p{color:var(--ink-soft);max-width:560px;margin:0 auto;font-size:15px;line-height:1.5;}
 
 .panels{
-  flex:1;display:flex;min-height:420px;
+  flex:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--ink);min-height:520px;
 }
 .panel{
-  position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;
-  padding:34px;overflow:hidden;border-top:2px solid var(--ink);cursor:pointer;
-  transition:flex .35s ease;color:var(--paper);
+  position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:30px;overflow:hidden;cursor:pointer;color:var(--paper);
+  transition:filter .2s;
 }
-.panel:hover{flex:1.12;}
+.panel:hover{filter:brightness(1.08);}
 .panel-hp{background:linear-gradient(160deg,var(--warm-dark),var(--warm) 65%);}
-.panel-cg{background:linear-gradient(200deg,var(--cold-dark),var(--cold) 65%);border-left:2px solid var(--ink);}
+.panel-cg{background:linear-gradient(200deg,var(--cold-dark),var(--cold) 65%);}
+.panel-cc{background:linear-gradient(160deg,var(--quality-dark),var(--quality) 65%);}
+.panel-pr{background:linear-gradient(200deg,var(--risk-dark),var(--risk) 65%);}
 .panel-pattern{position:absolute;inset:0;opacity:.16;pointer-events:none;}
 .panel-code{
-  position:absolute;top:26px;left:34px;font-family:'IBM Plex Mono',monospace;
-  font-size:12px;letter-spacing:.15em;border:1px solid rgba(255,255,255,.6);
+  position:absolute;top:22px;left:28px;font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;letter-spacing:.15em;border:1px solid rgba(255,255,255,.6);
   padding:4px 9px;
 }
 .panel-count{
-  position:absolute;top:26px;right:34px;font-family:'IBM Plex Mono',monospace;
-  font-size:12px;letter-spacing:.08em;text-align:right;opacity:.9;
+  position:absolute;top:22px;right:28px;font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;letter-spacing:.08em;text-align:right;opacity:.9;
 }
 .panel h2{
   font-family:'Oswald',sans-serif;font-weight:800;text-transform:uppercase;
-  font-size:clamp(26px,3.4vw,40px);margin:0 0 8px;line-height:1.02;
+  font-size:clamp(22px,2.6vw,32px);margin:0 0 6px;line-height:1.02;
 }
-.panel p.desc{max-width:380px;font-size:14px;line-height:1.5;opacity:.92;margin:0 0 18px;}
+.panel p.desc{max-width:380px;font-size:13.5px;line-height:1.5;opacity:.92;margin:0 0 14px;}
 .panel .enter{
   display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;
-  font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;
   border-bottom:1.5px solid currentColor;padding-bottom:3px;width:fit-content;
 }
 .panel .enter svg{transition:transform .2s;}
 .panel:hover .enter svg{transform:translateX(4px);}
-.divider-badge{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  background:var(--brand);color:#fff;width:56px;height:56px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;
-  font-weight:700;font-size:12px;letter-spacing:.05em;z-index:2;border:3px solid var(--bg);
-}
 @media(max-width:760px){
-  .panels{flex-direction:column;}
-  .panel:hover{flex:1;}
-  .divider-badge{display:none;}
-  .panel-cg{border-left:none;}
+  .panels{grid-template-columns:1fr;min-height:auto;}
 }
 
 /* ======================================================
@@ -156,6 +162,8 @@ main{flex:1;display:flex;flex-direction:column;}
   font-family:'Oswald',sans-serif;font-weight:800;text-transform:uppercase;
   font-size:clamp(24px,3.6vw,36px);margin:0 0 8px;
 }
+.teamdash-header-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.teamdash-header-row h1{margin:0;}
 .process-header p{color:var(--ink-soft);max-width:640px;font-size:14.5px;line-height:1.55;}
 
 /* station line diagram */
@@ -218,7 +226,6 @@ main{flex:1;display:flex;flex-direction:column;}
   font-family:'Oswald',sans-serif;font-weight:800;text-transform:uppercase;
   font-size:clamp(22px,3.2vw,32px);margin:6px 0 18px;
 }
-.print-btn{display:flex;align-items:center;gap:7px;margin-top:6px;flex-shrink:0;}
 .tabs{display:flex;gap:0;border-bottom:2px solid var(--ink);}
 .tab-btn{
   background:none;border:none;padding:10px 4px;margin-right:26px;font-family:'IBM Plex Mono',monospace;
@@ -226,6 +233,16 @@ main{flex:1;display:flex;flex-direction:column;}
   border-bottom:3px solid transparent;position:relative;top:2px;
 }
 .tab-btn.active{color:var(--ink);border-bottom-color:var(--accent,var(--ink));font-weight:600;}
+.tab-btn.locked{color:var(--line);cursor:not-allowed;}
+.tab-btn.locked::after{content:' 🔒';font-size:10px;}
+
+.confirm-read-box{background:var(--brand-light);border-color:var(--brand);}
+.confirm-read-label{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;cursor:pointer;}
+.confirm-read-label input[type=checkbox]{width:20px;height:20px;accent-color:var(--brand);flex-shrink:0;}
+.confirm-read-note{margin:8px 0 0 32px;font-size:12.5px;color:var(--ink-soft);}
+.confirm-read-box.confirmed{background:var(--ok-light);border-color:var(--ok);}
+.confirm-read-box.shake{animation:shakeBox .4s;}
+@keyframes shakeBox{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
 .tab-panels{padding:26px 28px 60px;max-width:820px;}
 .tab-panel{display:none;}
 .tab-panel.active{display:block;animation:fade .25s ease;}
@@ -420,6 +437,23 @@ iframe.embed-video{width:100%;aspect-ratio:16/9;border:none;display:block;}
 
 /* team dashboard table */
 .team-table-wrap{padding:10px 28px 50px;overflow-x:auto;}
+
+.section-label{
+  margin:8px 28px 4px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:20px;
+}
+.section-label:first-of-type{border-top:none;padding-top:0;}
+.charts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:14px 28px;}
+.chart-box{background:var(--paper);border:1.5px solid var(--ink);padding:20px 22px;}
+.chart-box h3{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:16px;margin:0 0 4px;}
+.chart-sub{font-size:12px;color:var(--ink-soft);margin:0 0 14px;}
+.chart-canvas-wrap{position:relative;height:220px;}
+@media(max-width:980px){
+  .charts-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:760px){
+  .charts-grid{grid-template-columns:1fr;}
+}
 .team-table{width:100%;border-collapse:collapse;min-width:640px;}
 .team-table th,.team-table td{border:1px solid var(--line);padding:10px 12px;text-align:left;font-size:13px;}
 .team-table th{background:var(--ink);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;}
@@ -446,6 +480,8 @@ iframe.embed-video{width:100%;aspect-ratio:16/9;border:none;display:block;}
 .mini-panel:hover{transform:translate(-2px,-2px);}
 .mini-panel-hp{background:linear-gradient(160deg,var(--warm-dark),var(--warm) 70%);}
 .mini-panel-cg{background:linear-gradient(200deg,var(--cold-dark),var(--cold) 70%);}
+.mini-panel-cc{background:linear-gradient(160deg,var(--quality-dark),var(--quality) 70%);}
+.mini-panel-pr{background:linear-gradient(200deg,var(--risk-dark),var(--risk) 70%);}
 .mini-code{font-size:11px;letter-spacing:.1em;opacity:.85;}
 .mini-panel h3{font-family:'Oswald',sans-serif;text-transform:uppercase;margin:2px 0;font-size:19px;}
 .mini-panel p{font-size:12.5px;opacity:.85;margin:0 0 6px;}
@@ -506,7 +542,7 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
 
 /* print: only the manual content of the active station */
 @media print{
-  .topbar, .tabs, .print-btn, .media-controls, .session-note,
+  .topbar, .tabs, .media-controls, .session-note,
   #panel-video, #panel-quiz, #manualDocBox, footer, .back-btn{display:none !important;}
   body{background:#fff;}
   .app{box-shadow:none;max-width:none;margin:0;}
@@ -518,6 +554,8 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/10.13.2/firebase-app-compat.min.js';"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/10.13.2/firebase-firestore-compat.min.js';"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js';"></script>
 </head>
 <body>
 <div class="app">
@@ -536,6 +574,7 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
     <div class="topbar-actions">
       <button class="nav-btn hidden" id="navAssign">Asignar tareas</button>
       <button class="nav-btn hidden" id="navDash">Dashboard equipo</button>
+      <button class="nav-btn hidden" id="navAudit">Auditoría</button>
       <span class="role-badge hidden" id="roleBadge"></span>
       <button class="back-btn hidden" id="switchAccountBtn">Cambiar cuenta</button>
       <button class="back-btn hidden" id="backBtn">
@@ -561,7 +600,7 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
           <button type="button" id="loginBtn" class="nav-btn primary" style="margin-top:6px;">Entrar</button>
           <div id="loginError" class="login-error hidden">⚠ Usuario y/o clave errónea.</div>
         </form>
-        <div class="role-note">Demo: colaboradores COLABORADOR1 a COLABORADOR5, supervisores SUPERVISOR1 a SUPERVISOR4 — clave 12345 para todos. Las tareas asignadas y el progreso ya quedan guardados de verdad. Lo único que sigue siendo solo por esta sesión son los PDF/video/imagen que subas con el botón "Subir" — para que sean permanentes, usa la opción de pegar un link.</div>
+        <div class="role-note">Demo: colaboradores COLABORADOR1 a COLABORADOR5, supervisores SUPERVISOR1 a SUPERVISOR4 — clave 12345 para todos. Las tareas asignadas, el progreso y los PDF/video/imagen que subas con el botón "Subir" ya quedan guardados de verdad para siempre, visibles para cualquiera que entre.</div>
       </div>
     </section>
 
@@ -599,7 +638,6 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
             <div class="panel-img-status" id="hpImgStatus"></div>
           </div>
         </div>
-        <div class="divider-badge">HP · CG</div>
         <div class="panel panel-cg" data-process="cg" role="button" tabindex="0">
           <svg class="panel-pattern" viewBox="0 0 400 400" preserveAspectRatio="none">
             <g stroke="#fff" stroke-width="1">
@@ -626,6 +664,56 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
             <div class="panel-img-status" id="cgImgStatus"></div>
           </div>
         </div>
+        <div class="panel panel-cc" data-process="cc" role="button" tabindex="0">
+          <svg class="panel-pattern" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <g stroke="#fff" stroke-width="1">
+              <circle cx="60" cy="340" r="26"/><path d="M48 340l9 9 18-18"/>
+              <circle cx="340" cy="60" r="26"/><path d="M328 60l9 9 18-18"/>
+            </g>
+          </svg>
+          <div class="panel-code mono">LÍNEA CC</div>
+          <div class="panel-count mono">6 ESTACIONES</div>
+          <h2>Control de<br>Calidad</h2>
+          <p class="desc">Recepción, control de proceso, microbiología, producto terminado, trazabilidad y no conformidades.</p>
+          <span class="enter">Ingresar a la línea
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          <div class="panel-img-ctrl" id="ccImgCtrl">
+            <label class="file-btn-sm">Imagen
+              <input type="file" id="ccImgUpload" accept="image/*">
+            </label>
+            <div class="link-row-sm">
+              <input type="text" id="ccImgLinkInput" placeholder="o link de imagen">
+              <button id="ccImgLinkBtn">OK</button>
+            </div>
+            <div class="panel-img-status" id="ccImgStatus"></div>
+          </div>
+        </div>
+        <div class="panel panel-pr" data-process="pr" role="button" tabindex="0">
+          <svg class="panel-pattern" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <g stroke="#fff" stroke-width="1">
+              <path d="M60 40l24 42h-48z"/><line x1="60" y1="58" x2="60" y2="66"/>
+              <path d="M340 320l24 42h-48z"/><line x1="340" y1="338" x2="340" y2="346"/>
+            </g>
+          </svg>
+          <div class="panel-code mono">LÍNEA PR</div>
+          <div class="panel-count mono">6 ESTACIONES</div>
+          <h2>Prevención de<br>Riesgos</h2>
+          <p class="desc">EPP, accidentes en planta, manejo de cargas, trabajo en frío, maquinaria y emergencias.</p>
+          <span class="enter">Ingresar a la línea
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          <div class="panel-img-ctrl" id="prImgCtrl">
+            <label class="file-btn-sm">Imagen
+              <input type="file" id="prImgUpload" accept="image/*">
+            </label>
+            <div class="link-row-sm">
+              <input type="text" id="prImgLinkInput" placeholder="o link de imagen">
+              <button id="prImgLinkBtn">OK</button>
+            </div>
+            <div class="panel-img-status" id="prImgStatus"></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -650,10 +738,6 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
         <div class="code mono" id="sub-code">HP-01</div>
         <div class="sub-header-top">
           <h1 id="sub-title">Recepción de materia prima</h1>
-          <button class="nav-btn print-btn" id="printManualBtn" type="button">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/></svg>
-            Imprimir manual
-          </button>
         </div>
         <div class="tabs">
           <button class="tab-btn active" data-tab="manual">Manual</button>
@@ -675,7 +759,7 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
                 <button id="pdfLinkBtn">Usar link</button>
               </div>
             </div>
-            <p class="session-note">Un PDF subido queda disponible mientras esta página siga abierta en tu navegador. Para que quede permanente (y visible desde otros equipos), lo mejor es alojarlo en algún lugar (Google Drive, Dropbox, tu servidor) y pegar el link.</p>
+            <p class="session-note">Al subir un PDF se guarda de forma permanente en la nube (Cloudinary) — cualquiera que entre a esta estación lo va a ver, sin importar el dispositivo.</p>
           </div>
           <div class="box" id="manualImgBox">
             <h4>Imagen del subproceso (opcional)</h4>
@@ -689,7 +773,7 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
                 <button id="imgLinkBtn">Usar link</button>
               </div>
             </div>
-            <p class="session-note">Igual que el PDF, una imagen subida solo dura mientras la pestaña siga abierta. Para que sea permanente, usa un link.</p>
+            <p class="session-note">Al subir una imagen se guarda de forma permanente en la nube (Cloudinary) — cualquiera que entre a esta estación la va a ver.</p>
           </div>
           <div class="box">
             <h4>Objetivo</h4>
@@ -702,6 +786,13 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
           <div class="box">
             <h4>Seguridad y EPP</h4>
             <ul class="safety-list" id="man-seguridad"></ul>
+          </div>
+          <div class="box confirm-read-box" id="confirmReadBox">
+            <label class="confirm-read-label">
+              <input type="checkbox" id="confirmReadCheckbox">
+              <span>Leí y entendí este manual completo</span>
+            </label>
+            <p class="confirm-read-note" id="confirmReadNote">Debes marcar esta casilla antes de poder ver el video y rendir la evaluación.</p>
           </div>
         </div>
 
@@ -718,7 +809,7 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
               </div>
             </div>
             <div class="media-status" id="videoStatus"></div>
-            <p class="session-note">Un video subido queda disponible mientras esta página siga abierta en tu navegador. Para que sea permanente, sube el video a YouTube/Vimeo (puede ser "no listado") o a tu propio hosting y pega el link.</p>
+            <p class="session-note">Al subir un video se guarda de forma permanente en la nube (Cloudinary) — puede tardar un poco según el tamaño del archivo. También puedes pegar un link de YouTube/Vimeo si prefieres.</p>
           </div>
           <div id="videoPlayerWrap"></div>
           <div class="video-frame" id="videoFrame">
@@ -729,6 +820,13 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
           </div>
           <div class="video-walk" id="videoWalk"></div>
           <div class="video-note" id="videoNote">Aún no se ha subido ni enlazado un video para este subproceso. Mientras tanto, este es un recorrido en texto con los mismos pasos.</div>
+          <div class="box confirm-read-box" id="confirmVideoBox">
+            <label class="confirm-read-label">
+              <input type="checkbox" id="confirmVideoCheckbox">
+              <span>Vi el video completo (o el recorrido del subproceso)</span>
+            </label>
+            <p class="confirm-read-note">Debes marcar esta casilla antes de poder rendir la evaluación.</p>
+          </div>
         </div>
 
         <div class="tab-panel" id="panel-quiz">
@@ -764,6 +862,11 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
       <p>Estas son las estaciones que tu supervisor te asignó. Abre cada una para revisar el manual, ver el video y rendir la evaluación.</p>
     </div>
     <div class="dash-cards" id="mytasks-summary"></div>
+    <div class="chart-box" id="myProgressChartBox" style="margin:0 28px 20px;">
+      <h3>Mi progreso por estación</h3>
+      <p class="chart-sub">Avance general en cada una de tus tareas asignadas</p>
+      <div class="chart-canvas-wrap" id="myProgressCanvasWrap"><canvas id="chartMyProgress"></canvas></div>
+    </div>
     <div class="task-list" id="mytasks-list"></div>
     <div class="process-header" style="padding-top:6px;">
       <h1 style="font-size:19px;">Explorar todos los procesos</h1>
@@ -779,6 +882,18 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
       <button class="mini-panel mini-panel-cg" data-process="cg">
         <span class="mini-code mono">LÍNEA CG</span>
         <h3>Congelado de Pescado</h3>
+        <p>6 estaciones</p>
+        <span class="mini-go">Ver estaciones →</span>
+      </button>
+      <button class="mini-panel mini-panel-cc" data-process="cc">
+        <span class="mini-code mono">LÍNEA CC</span>
+        <h3>Control de Calidad</h3>
+        <p>6 estaciones</p>
+        <span class="mini-go">Ver estaciones →</span>
+      </button>
+      <button class="mini-panel mini-panel-pr" data-process="pr">
+        <span class="mini-code mono">LÍNEA PR</span>
+        <h3>Prevención de Riesgos</h3>
         <p>6 estaciones</p>
         <span class="mini-go">Ver estaciones →</span>
       </button>
@@ -805,9 +920,14 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
   <section id="view-teamdash" class="hidden">
     <div class="process-header">
       <div class="process-tag mono">SUPERVISIÓN</div>
-      <h1>Dashboard del equipo</h1>
-      <p>Elige un colaborador para ver su avance en las tareas que le asignaste.</p>
+      <div class="teamdash-header-row">
+        <h1>Dashboard del equipo</h1>
+        <button class="nav-btn primary" id="exportExcelBtn" type="button">⬇ Exportar a Excel</button>
+      </div>
+      <p>Elige un colaborador para ver su avance en las tareas que le asignaste. El botón de exportar descarga el detalle de <strong>todos</strong> los colaboradores, no solo el que estás viendo.</p>
     </div>
+
+    <div class="section-label">Detalle por colaborador</div>
     <div class="collab-picker-row">
       <label class="mono">COLABORADOR</label>
       <select id="dashCollabSelect" class="collab-select"></select>
@@ -819,6 +939,44 @@ footer{padding:16px 28px;border-top:1px solid var(--line);font-family:'IBM Plex 
           <tr><th>Estación</th><th class="center">Manual</th><th class="center">Video</th><th class="center">Evaluación</th><th class="center">Intentos</th><th class="center">Estado</th></tr>
         </thead>
         <tbody id="teamdash-body"></tbody>
+      </table>
+    </div>
+
+    <div class="section-label">Panorama general de la empresa</div>
+    <div class="dash-cards" id="company-kpis"></div>
+    <div class="charts-grid">
+      <div class="chart-box">
+        <h3>Distribución de avance</h3>
+        <p class="chart-sub">Cuántos colaboradores caen en cada rango de progreso</p>
+        <div class="chart-canvas-wrap"><canvas id="chartDistribucion"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Manual vs Video vs Evaluación</h3>
+        <p class="chart-sub">Promedio de avance por tipo de contenido, en toda la empresa</p>
+        <div class="chart-canvas-wrap"><canvas id="chartContenido"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>% de aprobación por línea</h3>
+        <p class="chart-sub">De quienes ya rindieron algún test de esa línea, qué porcentaje aprobó (≥70%)</p>
+        <div class="chart-canvas-wrap"><canvas id="chartAprobacion"></canvas></div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<template id="tpl-audit">
+  <section id="view-audit" class="hidden">
+    <div class="process-header">
+      <div class="process-tag mono">SUPERVISIÓN</div>
+      <h1>Registro de auditoría</h1>
+      <p>Historial de cambios hechos por los supervisores: archivos subidos o enlazados, quitados, y asignaciones de tareas. Se muestran los últimos 200 registros.</p>
+    </div>
+    <div class="team-table-wrap">
+      <table class="team-table">
+        <thead>
+          <tr><th>Fecha y hora</th><th>Supervisor</th><th>Acción</th><th>Detalle</th></tr>
+        </thead>
+        <tbody id="audit-body"></tbody>
       </table>
     </div>
   </section>
@@ -2418,6 +2576,1596 @@ const DATA = {
         ]
       }
     ]
+  },
+  "cc": {
+    "code": "CC",
+    "name": "Control de Calidad",
+    "accent": "var(--quality)",
+    "accentDark": "var(--quality-dark)",
+    "desc": "Proceso que asegura que la materia prima, el producto en proceso y el producto terminado cumplan con los estándares de calidad e inocuidad, desde la recepción hasta el despacho.",
+    "subs": [
+      {
+        "id": "cc-01",
+        "code": "CC-01",
+        "name": "Recepción y control de materia prima",
+        "objetivo": "Verificar que el pescado y demás insumos que ingresan a planta cumplan con los estándares de calidad e inocuidad antes de aceptarlos para el proceso.",
+        "pasos": [
+          "Verificar la documentación de origen y certificados sanitarios del proveedor.",
+          "Realizar inspección organoléptica del lote (color, olor, textura).",
+          "Medir la temperatura de llegada del producto.",
+          "Tomar muestras representativas para análisis si corresponde.",
+          "Registrar el resultado del control y aceptar o rechazar el lote."
+        ],
+        "seguridad": [
+          "Uso de guantes al manipular muestras.",
+          "Higiene de manos antes y después del muestreo.",
+          "Evitar la contaminación cruzada entre lotes.",
+          "Usar utensilios de muestreo limpios y desinfectados."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se revisa primero al recibir un lote de materia prima?",
+            "opts": [
+              "La documentación de origen y certificados sanitarios",
+              "El precio del lote",
+              "El color del camión",
+              "La marca del proveedor"
+            ],
+            "a": 0,
+            "exp": "Verificar la documentación certifica que el proveedor cumple con las normas sanitarias antes de aceptar el lote."
+          },
+          {
+            "q": "¿Qué evalúa la inspección organoléptica?",
+            "opts": [
+              "Color, olor y textura",
+              "Solo el precio",
+              "Solo el peso",
+              "El nombre del capitán del barco"
+            ],
+            "a": 0,
+            "exp": "La inspección organoléptica es un examen sensorial que revela el estado real de frescura del producto."
+          },
+          {
+            "q": "¿Qué se hace si un lote no cumple los estándares?",
+            "opts": [
+              "Se rechaza",
+              "Se acepta igual",
+              "Se procesa sin registrar nada",
+              "Se vende aparte sin control"
+            ],
+            "a": 0,
+            "exp": "Un lote que no cumple los estándares de calidad debe rechazarse para no comprometer el producto final."
+          },
+          {
+            "q": "¿Para qué se toman muestras representativas del lote?",
+            "opts": [
+              "Para análisis de calidad si corresponde",
+              "Para pesar el camión",
+              "Solo para archivar",
+              "No tiene ninguna función"
+            ],
+            "a": 0,
+            "exp": "Las muestras permiten hacer análisis más detallados cuando la inspección visual no basta."
+          },
+          {
+            "q": "¿Qué se debe registrar al finalizar el control de recepción?",
+            "opts": [
+              "El resultado del control y la aceptación o rechazo del lote",
+              "Solo la hora de llegada",
+              "El nombre del chofer",
+              "No es necesario registrar nada"
+            ],
+            "a": 0,
+            "exp": "El registro documenta la decisión de calidad tomada y sirve para la trazabilidad del lote."
+          },
+          {
+            "q": "¿Qué EPP es relevante al tomar muestras?",
+            "opts": [
+              "Guantes",
+              "Casco de moto",
+              "Corbata",
+              "Ninguno"
+            ],
+            "a": 0,
+            "exp": "Los guantes evitan la contaminación de las muestras y protegen al personal que las manipula."
+          },
+          {
+            "q": "Verdadero o falso: se puede usar el mismo utensilio de muestreo para varios lotes sin limpiarlo.",
+            "opts": [
+              "Verdadero, ahorra tiempo",
+              "Falso, debe limpiarse y desinfectarse entre lotes",
+              "Verdadero, solo si es del mismo proveedor",
+              "Falso, pero solo los lunes"
+            ],
+            "a": 1,
+            "exp": "Reutilizar utensilios sin limpiar puede generar contaminación cruzada entre lotes distintos."
+          },
+          {
+            "q": "¿Qué mide el control de temperatura en la recepción?",
+            "opts": [
+              "La temperatura de llegada del producto",
+              "La temperatura del camión por fuera",
+              "La temperatura de la oficina",
+              "No se mide temperatura en recepción"
+            ],
+            "a": 0,
+            "exp": "La temperatura de llegada indica si se mantuvo correctamente la cadena de frío durante el transporte."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar documentación y certificados",
+              "Tomar muestras",
+              "Medir la temperatura",
+              "Registrar el resultado final"
+            ],
+            "a": 0,
+            "exp": "Antes de inspeccionar físicamente el lote, se revisa que la documentación esté en regla."
+          },
+          {
+            "q": "¿Por qué es importante evitar la contaminación cruzada entre lotes?",
+            "opts": [
+              "Para no comprometer la calidad de lotes que sí cumplen los estándares",
+              "Por estética únicamente",
+              "No tiene importancia real",
+              "Solo importa el peso final"
+            ],
+            "a": 0,
+            "exp": "Un lote contaminado puede afectar a otros lotes en buen estado si no se controla la contaminación cruzada."
+          }
+        ]
+      },
+      {
+        "id": "cc-02",
+        "code": "CC-02",
+        "name": "Control de proceso",
+        "objetivo": "Supervisar que cada etapa de producción se mantenga dentro de los parámetros de calidad definidos (temperatura, tiempo, humedad, entre otros).",
+        "pasos": [
+          "Verificar los parámetros críticos de cada estación según su ficha técnica.",
+          "Registrar mediciones periódicas durante el turno.",
+          "Detectar desviaciones respecto a los rangos establecidos.",
+          "Informar de inmediato al supervisor si hay una desviación crítica.",
+          "Documentar las acciones correctivas aplicadas."
+        ],
+        "seguridad": [
+          "Uso del EPP correspondiente a cada estación visitada.",
+          "Precaución al tomar mediciones cerca de equipos en movimiento.",
+          "Comunicación clara con los operadores del área.",
+          "Respetar los procedimientos de acceso de cada estación."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se verifica en el control de proceso?",
+            "opts": [
+              "Los parámetros críticos de cada estación",
+              "Solo el aseo de la planta",
+              "El horario de almuerzo",
+              "El precio de venta"
+            ],
+            "a": 0,
+            "exp": "El control de proceso vigila que cada etapa se mantenga dentro de los parámetros definidos en su ficha técnica."
+          },
+          {
+            "q": "¿Qué se hace al detectar una desviación crítica?",
+            "opts": [
+              "Informar de inmediato al supervisor",
+              "Ignorarla si es pequeña",
+              "Esperar al día siguiente para avisar",
+              "Corregirla sin informar a nadie"
+            ],
+            "a": 0,
+            "exp": "Una desviación crítica debe reportarse de inmediato para tomar acción antes de que afecte el producto."
+          },
+          {
+            "q": "¿Qué se documenta después de una desviación?",
+            "opts": [
+              "Las acciones correctivas aplicadas",
+              "El clima del día",
+              "El nombre del turno anterior",
+              "No se documenta nada"
+            ],
+            "a": 0,
+            "exp": "Documentar la acción correctiva permite verificar después si fue efectiva."
+          },
+          {
+            "q": "¿Con qué frecuencia se registran las mediciones durante el turno?",
+            "opts": [
+              "De forma periódica según lo establecido",
+              "Solo una vez al mes",
+              "Nunca, es opcional",
+              "Solo si algo se ve raro"
+            ],
+            "a": 0,
+            "exp": "Las mediciones periódicas permiten detectar desviaciones a tiempo, no solo cuando ya es evidente un problema."
+          },
+          {
+            "q": "¿Contra qué se comparan las mediciones tomadas?",
+            "opts": [
+              "Los rangos establecidos en la ficha técnica",
+              "El precio del producto",
+              "El clima exterior",
+              "La antigüedad del equipo"
+            ],
+            "a": 0,
+            "exp": "Los rangos de la ficha técnica son el estándar contra el cual se evalúa si el proceso está bien."
+          },
+          {
+            "q": "¿Qué EPP se debe usar al recorrer distintas estaciones?",
+            "opts": [
+              "El correspondiente a cada estación visitada",
+              "Uno genérico para toda la planta",
+              "Ninguno, no es necesario",
+              "Solo lentes de sol"
+            ],
+            "a": 0,
+            "exp": "Cada estación tiene sus propios riesgos, por lo que el EPP debe adaptarse a cada una."
+          },
+          {
+            "q": "Verdadero o falso: las desviaciones menores nunca deben registrarse.",
+            "opts": [
+              "Verdadero, no es necesario",
+              "Falso, toda desviación debe registrarse",
+              "Verdadero, solo las graves importan",
+              "Falso, pero solo una vez por semana"
+            ],
+            "a": 1,
+            "exp": "Incluso las desviaciones menores deben registrarse para detectar patrones antes de que se vuelvan graves."
+          },
+          {
+            "q": "¿Qué tipo de parámetros se controla en esta estación?",
+            "opts": [
+              "Temperatura, tiempo, humedad, entre otros",
+              "Solo el color del producto",
+              "Solo el precio de venta",
+              "Solo la cantidad de personal"
+            ],
+            "a": 0,
+            "exp": "El control de proceso abarca varios parámetros críticos definidos en la ficha técnica de cada etapa."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar los parámetros críticos de cada estación",
+              "Documentar acciones correctivas",
+              "Informar al supervisor",
+              "Registrar mediciones finales"
+            ],
+            "a": 0,
+            "exp": "Antes de registrar o corregir, primero se identifican los parámetros críticos a controlar."
+          },
+          {
+            "q": "¿Por qué es importante la comunicación con los operadores del área?",
+            "opts": [
+              "Para coordinar correctamente el control sin interrumpir el proceso",
+              "No es necesario comunicarse",
+              "Solo para conversar",
+              "Para revisar el sueldo de los operadores"
+            ],
+            "a": 0,
+            "exp": "Una buena comunicación evita malentendidos y facilita que el control se haga de forma segura y ordenada."
+          }
+        ]
+      },
+      {
+        "id": "cc-03",
+        "code": "CC-03",
+        "name": "Control microbiológico",
+        "objetivo": "Detectar oportunamente la presencia de microorganismos que puedan comprometer la inocuidad del producto.",
+        "pasos": [
+          "Tomar muestras según el plan de muestreo microbiológico.",
+          "Rotular correctamente cada muestra con fecha, lote y punto de muestreo.",
+          "Enviar las muestras al laboratorio (propio o externo) dentro del plazo establecido.",
+          "Registrar y analizar los resultados obtenidos.",
+          "Activar el protocolo correspondiente si un resultado está fuera de norma."
+        ],
+        "seguridad": [
+          "Manipular las muestras con técnica aséptica.",
+          "Uso de guantes y mascarilla al tomar muestras.",
+          "Desechar el material de muestreo usado de forma segura.",
+          "Lavado de manos antes y después del muestreo."
+        ],
+        "quiz": [
+          {
+            "q": "¿Cuál es el objetivo del control microbiológico?",
+            "opts": [
+              "Detectar oportunamente microorganismos que afecten la inocuidad",
+              "Medir el peso del producto",
+              "Revisar el color del envase",
+              "Controlar el precio de venta"
+            ],
+            "a": 0,
+            "exp": "El control microbiológico busca detectar a tiempo cualquier contaminación biológica del producto."
+          },
+          {
+            "q": "¿Qué información debe llevar el rótulo de cada muestra?",
+            "opts": [
+              "Fecha, lote y punto de muestreo",
+              "Solo el nombre del analista",
+              "Solo el precio del producto",
+              "Ninguna información es necesaria"
+            ],
+            "a": 0,
+            "exp": "Esa información permite identificar exactamente de dónde vino la muestra si hay un resultado fuera de norma."
+          },
+          {
+            "q": "¿Qué se hace si un resultado microbiológico está fuera de norma?",
+            "opts": [
+              "Se activa el protocolo correspondiente",
+              "Se ignora si es solo un poco alto",
+              "Se vende el producto igual",
+              "No se hace nada hasta el otro mes"
+            ],
+            "a": 0,
+            "exp": "Un resultado fuera de norma requiere activar un protocolo definido para proteger la inocuidad del producto."
+          },
+          {
+            "q": "¿Según qué se toman las muestras microbiológicas?",
+            "opts": [
+              "El plan de muestreo microbiológico",
+              "El clima del día",
+              "El turno de menor personal",
+              "No hay un plan definido"
+            ],
+            "a": 0,
+            "exp": "El plan de muestreo define cuándo, dónde y con qué frecuencia se deben tomar las muestras."
+          },
+          {
+            "q": "¿A dónde se envían las muestras para su análisis?",
+            "opts": [
+              "Al laboratorio (propio o externo)",
+              "A la bodega de insumos",
+              "A la oficina de ventas",
+              "No se envían a ningún lado"
+            ],
+            "a": 0,
+            "exp": "El laboratorio es quien realiza el análisis técnico para detectar microorganismos."
+          },
+          {
+            "q": "¿Qué técnica se debe usar al manipular las muestras?",
+            "opts": [
+              "Técnica aséptica",
+              "Cualquier técnica, no importa",
+              "Solo con las manos limpias basta",
+              "No se requiere ninguna técnica especial"
+            ],
+            "a": 0,
+            "exp": "La técnica aséptica evita contaminar la muestra durante su manipulación, lo que falsearía el resultado."
+          },
+          {
+            "q": "¿Qué EPP es clave al tomar muestras microbiológicas?",
+            "opts": [
+              "Guantes y mascarilla",
+              "Casco de obra",
+              "Chaleco reflectante",
+              "Ninguno"
+            ],
+            "a": 0,
+            "exp": "Guantes y mascarilla protegen tanto a la muestra de contaminación como a la persona que la toma."
+          },
+          {
+            "q": "Verdadero o falso: el material de muestreo usado se puede reutilizar sin desecharlo.",
+            "opts": [
+              "Verdadero, ahorra recursos",
+              "Falso, debe desecharse de forma segura",
+              "Verdadero, si se enjuaga con agua",
+              "Falso, pero solo a veces"
+            ],
+            "a": 1,
+            "exp": "El material de muestreo usado debe desecharse de forma segura para evitar contaminación y riesgos."
+          },
+          {
+            "q": "¿Qué se hace con los resultados obtenidos del laboratorio?",
+            "opts": [
+              "Se registran y analizan",
+              "Se descartan si son buenos",
+              "No se revisan",
+              "Solo se archivan sin leer"
+            ],
+            "a": 0,
+            "exp": "Registrar y analizar los resultados permite tomar decisiones oportunas sobre el lote correspondiente."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Tomar muestras según el plan de muestreo",
+              "Enviar muestras al laboratorio",
+              "Rotular las muestras",
+              "Analizar resultados"
+            ],
+            "a": 0,
+            "exp": "Antes de rotular o enviar, primero se toman las muestras siguiendo el plan definido."
+          }
+        ]
+      },
+      {
+        "id": "cc-04",
+        "code": "CC-04",
+        "name": "Control de producto terminado",
+        "objetivo": "Confirmar que el producto final (harina o congelado) cumple con las especificaciones de calidad antes de su despacho.",
+        "pasos": [
+          "Verificar peso, humedad y características sensoriales del lote final.",
+          "Revisar que el etiquetado sea correcto y esté completo.",
+          "Confirmar que el envase o embalaje esté en buen estado.",
+          "Comparar los resultados con la ficha técnica del producto.",
+          "Dar la aprobación de calidad para el despacho o retener el lote si no cumple."
+        ],
+        "seguridad": [
+          "Cuidado al manipular producto congelado (frío) o harina recién envasada (calor residual).",
+          "Uso de EPP según el área de verificación.",
+          "Precaución al mover pallets o cajas durante la inspección.",
+          "Mantener el área de revisión ordenada y despejada."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se verifica en el control de producto terminado?",
+            "opts": [
+              "Peso, humedad y características sensoriales",
+              "Solo el nombre del operario",
+              "Solo el color del camión de despacho",
+              "El precio de la materia prima"
+            ],
+            "a": 0,
+            "exp": "Estas variables determinan si el producto final cumple con la calidad esperada antes de salir de planta."
+          },
+          {
+            "q": "¿Qué se revisa respecto al etiquetado?",
+            "opts": [
+              "Que sea correcto y esté completo",
+              "Que tenga muchos colores",
+              "Que sea grande",
+              "No se revisa el etiquetado"
+            ],
+            "a": 0,
+            "exp": "Un etiquetado incorrecto o incompleto puede generar problemas legales o de trazabilidad."
+          },
+          {
+            "q": "¿Qué pasa si el lote no cumple la ficha técnica?",
+            "opts": [
+              "Se retiene el lote",
+              "Se despacha igual",
+              "Se mezcla con otro lote bueno",
+              "No se hace nada"
+            ],
+            "a": 0,
+            "exp": "Retener el lote evita que un producto fuera de especificación llegue al cliente final."
+          },
+          {
+            "q": "¿Con qué se comparan los resultados del control final?",
+            "opts": [
+              "La ficha técnica del producto",
+              "El precio de mercado",
+              "El clima del día",
+              "La opinión personal del supervisor"
+            ],
+            "a": 0,
+            "exp": "La ficha técnica define los parámetros oficiales que el producto debe cumplir."
+          },
+          {
+            "q": "¿Qué se revisa sobre el envase o embalaje?",
+            "opts": [
+              "Que esté en buen estado",
+              "Que sea del color favorito del cliente",
+              "Que pese más de lo normal",
+              "No se revisa el envase"
+            ],
+            "a": 0,
+            "exp": "Un envase dañado puede comprometer la conservación del producto durante el transporte y almacenamiento."
+          },
+          {
+            "q": "¿Quién da la aprobación final de calidad para el despacho?",
+            "opts": [
+              "El control de calidad, según los resultados obtenidos",
+              "El chofer del camión",
+              "Cualquier persona disponible",
+              "No se requiere aprobación"
+            ],
+            "a": 0,
+            "exp": "La aprobación de calidad certifica que el producto cumple los estándares antes de salir de planta."
+          },
+          {
+            "q": "¿Qué riesgo existe al manipular harina recién envasada?",
+            "opts": [
+              "Calor residual",
+              "Frío extremo",
+              "Ruido excesivo",
+              "Ninguno"
+            ],
+            "a": 0,
+            "exp": "La harina recién envasada puede conservar calor residual del proceso de secado/envasado."
+          },
+          {
+            "q": "Verdadero o falso: un producto que no cumple la ficha técnica se puede despachar si el cliente no se dará cuenta.",
+            "opts": [
+              "Verdadero, si es una diferencia mínima",
+              "Falso, siempre debe retenerse si no cumple",
+              "Verdadero, depende del cliente",
+              "Falso, pero solo para exportación"
+            ],
+            "a": 1,
+            "exp": "Independiente del cliente, un producto fuera de especificación debe retenerse, nunca despacharse a sabiendas."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar peso, humedad y características sensoriales",
+              "Dar la aprobación de despacho",
+              "Revisar el embalaje",
+              "Comparar con la ficha técnica"
+            ],
+            "a": 0,
+            "exp": "El control comienza midiendo las variables clave del producto antes de cualquier comparación o aprobación."
+          },
+          {
+            "q": "¿Qué EPP es relevante en esta estación?",
+            "opts": [
+              "El correspondiente al área de verificación (frío o calor)",
+              "Ninguno, no hay riesgo",
+              "Solo guantes de cocina",
+              "Solo casco de obra"
+            ],
+            "a": 0,
+            "exp": "El EPP depende de si se está verificando producto congelado (frío) o harina recién procesada (calor)."
+          }
+        ]
+      },
+      {
+        "id": "cc-05",
+        "code": "CC-05",
+        "name": "Trazabilidad y documentación",
+        "objetivo": "Mantener el registro completo de cada lote para poder rastrear su historia desde la materia prima hasta el producto final.",
+        "pasos": [
+          "Verificar que cada lote tenga un código de trazabilidad único.",
+          "Revisar que los registros de cada etapa estén completos y sean coherentes entre sí.",
+          "Archivar la documentación según el procedimiento de la planta.",
+          "Responder consultas de trazabilidad cuando se soliciten (auditorías, clientes).",
+          "Actualizar los registros digitales o físicos correspondientes."
+        ],
+        "seguridad": [
+          "Manejo cuidadoso de información confidencial.",
+          "Orden en el archivo físico para evitar accidentes por acumulación de papelería.",
+          "Respaldo periódico de la información digital.",
+          "Acceso restringido a los registros según el cargo."
+        ],
+        "quiz": [
+          {
+            "q": "¿Cuál es el objetivo de la trazabilidad?",
+            "opts": [
+              "Poder rastrear la historia de un lote de principio a fin",
+              "Aumentar el precio del producto",
+              "Reducir el personal de planta",
+              "Decorar los informes"
+            ],
+            "a": 0,
+            "exp": "La trazabilidad permite reconstruir todo el camino de un lote, desde la materia prima hasta el despacho."
+          },
+          {
+            "q": "¿Qué debe tener cada lote para su trazabilidad?",
+            "opts": [
+              "Un código de trazabilidad único",
+              "Un color especial",
+              "Un precio fijo",
+              "Un nombre de fantasía"
+            ],
+            "a": 0,
+            "exp": "El código único permite identificar y rastrear exactamente ese lote en cualquier etapa."
+          },
+          {
+            "q": "¿Quién puede solicitar información de trazabilidad?",
+            "opts": [
+              "Auditorías o clientes, entre otros",
+              "Nadie, es información secreta",
+              "Solo el dueño de la empresa",
+              "Solo el capitán del barco"
+            ],
+            "a": 0,
+            "exp": "La trazabilidad debe estar disponible para auditorías y consultas de clientes cuando se requiera."
+          },
+          {
+            "q": "¿Qué se revisa en los registros de cada etapa?",
+            "opts": [
+              "Que estén completos y sean coherentes entre sí",
+              "Que tengan buena letra",
+              "Que sean cortos",
+              "Que estén en un solo idioma"
+            ],
+            "a": 0,
+            "exp": "Registros completos y coherentes son la base de una trazabilidad confiable."
+          },
+          {
+            "q": "¿Cómo se debe archivar la documentación?",
+            "opts": [
+              "Según el procedimiento de la planta",
+              "Como cada uno prefiera",
+              "No es necesario archivarla",
+              "Se puede desechar después de usarla"
+            ],
+            "a": 0,
+            "exp": "Seguir un procedimiento estándar de archivo asegura que la información se pueda encontrar cuando se necesite."
+          },
+          {
+            "q": "¿Qué riesgo existe con un archivo físico desordenado?",
+            "opts": [
+              "Accidentes por acumulación de papelería",
+              "Ninguno, es solo estético",
+              "Mejora la trazabilidad",
+              "Ahorra espacio"
+            ],
+            "a": 0,
+            "exp": "Un archivo desordenado puede generar riesgos físicos además de dificultar encontrar la información."
+          },
+          {
+            "q": "¿Por qué es importante el manejo cuidadoso de información confidencial?",
+            "opts": [
+              "Para proteger datos sensibles de la empresa y sus clientes",
+              "No es importante",
+              "Solo aplica a información pública",
+              "Solo la usan los clientes"
+            ],
+            "a": 0,
+            "exp": "La información de trazabilidad puede incluir datos comerciales sensibles que deben protegerse."
+          },
+          {
+            "q": "Verdadero o falso: los registros digitales no necesitan respaldo.",
+            "opts": [
+              "Verdadero, nunca se pierden",
+              "Falso, deben respaldarse periódicamente",
+              "Verdadero, solo los físicos se respaldan",
+              "Falso, pero solo una vez al año"
+            ],
+            "a": 1,
+            "exp": "Los registros digitales también pueden perderse (fallas técnicas), por eso necesitan respaldo periódico."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar que cada lote tenga un código de trazabilidad único",
+              "Archivar la documentación",
+              "Responder consultas de auditoría",
+              "Actualizar registros"
+            ],
+            "a": 0,
+            "exp": "Sin un código de trazabilidad único, no es posible seguir después el rastro del lote."
+          },
+          {
+            "q": "¿Quién debería tener acceso a los registros de trazabilidad?",
+            "opts": [
+              "Personal autorizado según su cargo",
+              "Cualquier persona sin restricción",
+              "Solo personas externas a la empresa",
+              "Nadie, deben quedar guardados sin uso"
+            ],
+            "a": 0,
+            "exp": "El acceso restringido según el cargo protege la información y mantiene el control sobre quién la modifica."
+          }
+        ]
+      },
+      {
+        "id": "cc-06",
+        "code": "CC-06",
+        "name": "No conformidades y acciones correctivas",
+        "objetivo": "Gestionar cualquier desviación de calidad detectada, asegurando que se corrija y no se repita.",
+        "pasos": [
+          "Registrar la no conformidad detectada con el detalle correspondiente.",
+          "Evaluar el impacto y decidir si el producto se retiene, reprocesa o rechaza.",
+          "Investigar la causa raíz del problema.",
+          "Definir e implementar una acción correctiva.",
+          "Verificar que la acción correctiva fue efectiva en un seguimiento posterior."
+        ],
+        "seguridad": [
+          "Comunicación clara y sin represalias para quien reporta una no conformidad.",
+          "Documentar todo con objetividad.",
+          "Resguardar evidencias relacionadas a la no conformidad.",
+          "Seguir el conducto regular definido por la planta."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué es una no conformidad?",
+            "opts": [
+              "Una desviación de calidad detectada respecto a lo esperado",
+              "Un premio de la empresa",
+              "Un tipo de producto nuevo",
+              "Un turno de trabajo"
+            ],
+            "a": 0,
+            "exp": "Una no conformidad es cualquier situación que se aparta de los estándares de calidad establecidos."
+          },
+          {
+            "q": "¿Qué se hace después de registrar una no conformidad?",
+            "opts": [
+              "Evaluar el impacto y decidir qué hacer con el producto",
+              "Ignorarla si no es grave",
+              "Despedir al responsable de inmediato",
+              "Esconderla del supervisor"
+            ],
+            "a": 0,
+            "exp": "Evaluar el impacto permite decidir si el producto se retiene, reprocesa o rechaza según la gravedad."
+          },
+          {
+            "q": "¿Qué busca la investigación de causa raíz?",
+            "opts": [
+              "Entender por qué ocurrió el problema realmente",
+              "Culpar a alguien rápidamente",
+              "Cerrar el caso sin analizar nada",
+              "Aumentar la producción"
+            ],
+            "a": 0,
+            "exp": "Entender la causa raíz es clave para evitar que la no conformidad se repita en el futuro."
+          },
+          {
+            "q": "¿Qué es una acción correctiva?",
+            "opts": [
+              "Una medida definida para resolver la causa del problema",
+              "Un descuento en el sueldo",
+              "Un cambio de turno",
+              "Una sanción sin análisis"
+            ],
+            "a": 0,
+            "exp": "La acción correctiva ataca la causa raíz del problema, no solo el síntoma."
+          },
+          {
+            "q": "¿Por qué se hace un seguimiento posterior a la acción correctiva?",
+            "opts": [
+              "Para verificar que fue efectiva",
+              "Para cerrar el caso sin revisar nada más",
+              "Porque es obligatorio por ley únicamente",
+              "No se hace seguimiento"
+            ],
+            "a": 0,
+            "exp": "El seguimiento confirma que la acción correctiva realmente resolvió el problema y evitó que se repitiera."
+          },
+          {
+            "q": "¿Qué actitud favorece que el personal reporte no conformidades?",
+            "opts": [
+              "Comunicación clara y sin represalias",
+              "Castigar siempre a quien reporta",
+              "Ignorar los reportes",
+              "Mantener todo en secreto"
+            ],
+            "a": 0,
+            "exp": "Un ambiente sin represalias incentiva que el personal reporte problemas apenas los detecta, no cuando ya es tarde."
+          },
+          {
+            "q": "¿Qué se debe hacer con la documentación de una no conformidad?",
+            "opts": [
+              "Registrarla con objetividad y detalle",
+              "Redactarla vagamente",
+              "No documentarla",
+              "Borrarla después de resolverla"
+            ],
+            "a": 0,
+            "exp": "Una documentación objetiva y detallada permite analizar bien el caso y aprender de él."
+          },
+          {
+            "q": "Verdadero o falso: todas las no conformidades requieren rechazar el producto.",
+            "opts": [
+              "Verdadero, siempre se rechaza",
+              "Falso, puede retenerse, reprocesarse o rechazarse según el caso",
+              "Verdadero, no hay otra opción",
+              "Falso, nunca se rechaza nada"
+            ],
+            "a": 1,
+            "exp": "La decisión depende de la evaluación del impacto: no siempre implica rechazar el producto."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Registrar la no conformidad detectada",
+              "Implementar la acción correctiva",
+              "Hacer seguimiento posterior",
+              "Investigar la causa raíz"
+            ],
+            "a": 0,
+            "exp": "Todo comienza con el registro formal de la no conformidad detectada."
+          },
+          {
+            "q": "¿Qué se debe resguardar relacionado a una no conformidad?",
+            "opts": [
+              "Las evidencias relacionadas al caso",
+              "Nada, no es necesario",
+              "Solo la opinión del supervisor",
+              "Solo fotos del producto bueno"
+            ],
+            "a": 0,
+            "exp": "Las evidencias respaldan el análisis y las decisiones tomadas frente a la no conformidad."
+          }
+        ]
+      }
+    ]
+  },
+  "pr": {
+    "code": "PR",
+    "name": "Prevención de Riesgos",
+    "accent": "var(--risk)",
+    "accentDark": "var(--risk-dark)",
+    "desc": "Conjunto de prácticas orientadas a proteger la salud y seguridad de los trabajadores, identificando y controlando los riesgos presentes en cada área de la planta.",
+    "subs": [
+      {
+        "id": "pr-01",
+        "code": "PR-01",
+        "name": "Uso de equipos de protección personal (EPP)",
+        "objetivo": "Asegurar que cada trabajador use correctamente el equipo de protección personal según el riesgo de su puesto de trabajo.",
+        "pasos": [
+          "Identificar el EPP requerido según el área y la tarea a realizar.",
+          "Verificar que el EPP esté en buen estado antes de usarlo.",
+          "Usar el EPP de forma correcta durante toda la jornada.",
+          "Reportar EPP dañado o faltante para su reposición.",
+          "Almacenar el EPP correctamente al finalizar el turno."
+        ],
+        "seguridad": [
+          "No usar EPP dañado o vencido.",
+          "Nunca compartir EPP de uso personal (protección auditiva o respiratoria) entre distintos trabajadores.",
+          "Capacitarse en el uso correcto de cada equipo.",
+          "Revisar el EPP antes de cada turno."
+        ],
+        "quiz": [
+          {
+            "q": "¿Según qué se define el EPP requerido para un puesto?",
+            "opts": [
+              "El área y la tarea a realizar",
+              "El gusto personal del trabajador",
+              "La antigüedad en la empresa",
+              "El clima del día"
+            ],
+            "a": 0,
+            "exp": "Cada puesto tiene riesgos distintos, por lo que el EPP debe adaptarse específicamente a esas tareas."
+          },
+          {
+            "q": "¿Qué se debe hacer si el EPP está dañado?",
+            "opts": [
+              "Reportarlo para su reposición",
+              "Usarlo igual, no pasa nada",
+              "Guardarlo sin avisar a nadie",
+              "Prestarlo a un compañero"
+            ],
+            "a": 0,
+            "exp": "Un EPP dañado no protege correctamente y debe reemplazarse antes de seguir usándolo."
+          },
+          {
+            "q": "¿Por qué no se debe compartir protección auditiva o respiratoria?",
+            "opts": [
+              "Por higiene y ajuste personal",
+              "No hay ningún problema en compartirlo",
+              "Porque es más caro",
+              "Porque se ve mal"
+            ],
+            "a": 0,
+            "exp": "Este tipo de EPP tiene contacto directo con el cuerpo y su ajuste es personal, compartirlo genera riesgo higiénico y de mal ajuste."
+          },
+          {
+            "q": "¿Cuándo se debe verificar el estado del EPP?",
+            "opts": [
+              "Antes de usarlo",
+              "Solo una vez al año",
+              "Nunca, se asume que está bien",
+              "Solo si se ve roto a simple vista"
+            ],
+            "a": 0,
+            "exp": "Revisar el EPP antes de usarlo permite detectar daños que no siempre son visibles a primera vista."
+          },
+          {
+            "q": "¿Qué se debe hacer con el EPP al finalizar el turno?",
+            "opts": [
+              "Almacenarlo correctamente",
+              "Dejarlo tirado en cualquier lugar",
+              "Botarlo aunque esté bueno",
+              "Llevárselo a la casa sin autorización"
+            ],
+            "a": 0,
+            "exp": "Un almacenamiento correcto prolonga la vida útil del EPP y evita que se dañe o contamine."
+          },
+          {
+            "q": "¿Qué favorece capacitarse en el uso correcto del EPP?",
+            "opts": [
+              "Que realmente cumpla su función protectora",
+              "No tiene ningún efecto",
+              "Que se vea mejor puesto",
+              "Que dure menos tiempo"
+            ],
+            "a": 0,
+            "exp": "Un EPP mal usado, aunque esté en buen estado, puede no proteger correctamente."
+          },
+          {
+            "q": "Verdadero o falso: el EPP vencido se puede seguir usando si se ve bien.",
+            "opts": [
+              "Verdadero, si se ve bien sirve",
+              "Falso, el EPP vencido no debe usarse",
+              "Verdadero, solo si es urgente",
+              "Falso, pero solo para visitas"
+            ],
+            "a": 1,
+            "exp": "El EPP vencido puede haber perdido su capacidad de protección aunque visualmente parezca estar bien."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Identificar el EPP requerido según el área y la tarea",
+              "Almacenar el EPP",
+              "Reportar EPP dañado",
+              "Usar el EPP durante la jornada"
+            ],
+            "a": 0,
+            "exp": "Antes de usar cualquier EPP, primero se identifica cuál corresponde según el riesgo del puesto."
+          },
+          {
+            "q": "¿Qué se debe hacer si falta EPP para un trabajador?",
+            "opts": [
+              "Reportarlo para su reposición",
+              "Que trabaje sin EPP mientras tanto",
+              "Prestarle el de otro compañero",
+              "Ignorar la situación"
+            ],
+            "a": 0,
+            "exp": "Trabajar sin el EPP necesario expone al trabajador a riesgos que ese equipo está diseñado para prevenir."
+          },
+          {
+            "q": "¿Qué rol cumple el EPP en la prevención de riesgos?",
+            "opts": [
+              "Es la última barrera de protección frente a un riesgo",
+              "Es solo un accesorio decorativo",
+              "No tiene relación con la seguridad",
+              "Reemplaza todas las demás medidas de seguridad"
+            ],
+            "a": 0,
+            "exp": "El EPP es la última línea de defensa, pero no reemplaza otras medidas de control de riesgos previas."
+          }
+        ]
+      },
+      {
+        "id": "pr-02",
+        "code": "PR-02",
+        "name": "Prevención de accidentes en planta",
+        "objetivo": "Reducir los riesgos de accidentes identificando y controlando los peligros presentes en las distintas áreas de la planta.",
+        "pasos": [
+          "Reconocer las señales de seguridad y zonas de riesgo de la planta.",
+          "Reportar condiciones inseguras apenas se detecten (cables sueltos, pisos dañados, etc.).",
+          "Respetar las zonas de tránsito peatonal y vehicular.",
+          "Participar en las charlas de seguridad y simulacros programados.",
+          "Aplicar el procedimiento de reporte de incidentes ante cualquier evento, aunque no haya lesión."
+        ],
+        "seguridad": [
+          "Mantener siempre despejadas las vías de evacuación.",
+          "No improvisar soluciones fuera de tu función sin autorización.",
+          "Usar la señalización de la planta como guía.",
+          "Reportar cualquier condición insegura sin demora."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se debe hacer al detectar una condición insegura?",
+            "opts": [
+              "Reportarla apenas se detecte",
+              "Esperar a que otro la reporte",
+              "Ignorarla si no afecta a nadie en ese momento",
+              "Arreglarla uno mismo sin avisar"
+            ],
+            "a": 0,
+            "exp": "Reportar de inmediato permite corregir el riesgo antes de que cause un accidente."
+          },
+          {
+            "q": "¿Qué se debe respetar en las zonas de tránsito?",
+            "opts": [
+              "Las zonas de tránsito peatonal y vehicular",
+              "Nada en particular",
+              "Solo las señales que gustan",
+              "Solo las reglas de tránsito de la calle"
+            ],
+            "a": 0,
+            "exp": "Respetar estas zonas evita colisiones entre personas y vehículos dentro de la planta."
+          },
+          {
+            "q": "¿Por qué es importante participar en los simulacros?",
+            "opts": [
+              "Para saber actuar correctamente ante una emergencia real",
+              "Es solo un trámite sin utilidad",
+              "Para tener un día libre",
+              "No es importante participar"
+            ],
+            "a": 0,
+            "exp": "Los simulacros preparan al personal para reaccionar de forma ordenada ante una emergencia real."
+          },
+          {
+            "q": "¿Qué se debe reportar según el procedimiento de incidentes?",
+            "opts": [
+              "Cualquier evento, aunque no haya lesión",
+              "Solo los accidentes con heridos graves",
+              "Solo si el jefe está presente",
+              "No es necesario reportar nada"
+            ],
+            "a": 0,
+            "exp": "Reportar incidentes sin lesión (casi accidentes) ayuda a prevenir que a futuro sí ocurra una lesión."
+          },
+          {
+            "q": "¿Qué se debe mantener siempre despejado?",
+            "opts": [
+              "Las vías de evacuación",
+              "Solo los pasillos de oficina",
+              "Solo la entrada principal",
+              "No es necesario mantener nada despejado"
+            ],
+            "a": 0,
+            "exp": "Las vías de evacuación bloqueadas ponen en riesgo a todo el personal ante una emergencia."
+          },
+          {
+            "q": "¿Qué se debe hacer antes de improvisar una solución fuera de tu función?",
+            "opts": [
+              "Pedir autorización",
+              "Hacerlo igual si parece simple",
+              "No es necesario avisar a nadie",
+              "Improvisar siempre que se pueda"
+            ],
+            "a": 0,
+            "exp": "Actuar fuera de tu función sin autorización puede generar riesgos que no estás capacitado para manejar."
+          },
+          {
+            "q": "¿Para qué sirve la señalización de seguridad de la planta?",
+            "opts": [
+              "Como guía visual de zonas de riesgo y procedimientos",
+              "Es solo decoración",
+              "No cumple ninguna función real",
+              "Sirve solo para visitas externas"
+            ],
+            "a": 0,
+            "exp": "La señalización comunica de forma rápida y clara los riesgos y procedimientos de cada zona."
+          },
+          {
+            "q": "Verdadero o falso: solo se deben reportar los accidentes que dejan heridos.",
+            "opts": [
+              "Verdadero, los demás no importan",
+              "Falso, también deben reportarse los incidentes sin lesión",
+              "Verdadero, así se evita papeleo",
+              "Falso, pero solo los graves"
+            ],
+            "a": 1,
+            "exp": "Reportar también los incidentes sin lesión permite corregir riesgos antes de que causen un accidente real."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Reconocer las señales de seguridad y zonas de riesgo",
+              "Participar en simulacros",
+              "Reportar condiciones inseguras",
+              "Aplicar el procedimiento de incidentes"
+            ],
+            "a": 0,
+            "exp": "Conocer las señales y zonas de riesgo es la base para poder prevenir accidentes en el día a día."
+          },
+          {
+            "q": "¿Qué actitud ayuda más a prevenir accidentes en planta?",
+            "opts": [
+              "Estar atento y reportar a tiempo",
+              "Confiar en que nada va a pasar",
+              "Trabajar rápido sin mirar el entorno",
+              "Dejar que otros se encarguen de la seguridad"
+            ],
+            "a": 0,
+            "exp": "La prevención depende de la atención activa de cada trabajador, no es responsabilidad de una sola persona."
+          }
+        ]
+      },
+      {
+        "id": "pr-03",
+        "code": "PR-03",
+        "name": "Manejo manual de cargas",
+        "objetivo": "Prevenir lesiones musculoesqueléticas al levantar, transportar o mover cargas de forma manual.",
+        "pasos": [
+          "Evaluar el peso y tamaño de la carga antes de moverla.",
+          "Solicitar ayuda o usar ayudas mecánicas si la carga es muy pesada.",
+          "Doblar las rodillas y mantener la espalda recta al levantar.",
+          "Sujetar la carga cerca del cuerpo al transportarla.",
+          "Evitar giros bruscos de la espalda mientras se sostiene una carga."
+        ],
+        "seguridad": [
+          "Respetar los límites de peso establecidos por la empresa.",
+          "Uso de calzado y guantes adecuados.",
+          "Pedir apoyo ante dudas sobre una carga riesgosa.",
+          "Planificar el trayecto antes de levantar la carga."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se debe hacer antes de levantar una carga pesada?",
+            "opts": [
+              "Evaluar su peso y tamaño",
+              "Levantarla lo más rápido posible",
+              "Ignorar su peso y levantarla igual",
+              "Pedir que otro la levante sin avisar"
+            ],
+            "a": 0,
+            "exp": "Evaluar la carga primero permite decidir si se necesita ayuda o un equipo mecánico."
+          },
+          {
+            "q": "¿Cómo se debe doblar el cuerpo al levantar una carga?",
+            "opts": [
+              "Doblando las rodillas y manteniendo la espalda recta",
+              "Doblando solo la espalda",
+              "Sin doblar nada, de un tirón",
+              "No importa la postura"
+            ],
+            "a": 0,
+            "exp": "Doblar las rodillas y mantener la espalda recta protege la columna del esfuerzo excesivo."
+          },
+          {
+            "q": "¿Dónde se debe sujetar la carga al transportarla?",
+            "opts": [
+              "Cerca del cuerpo",
+              "Lo más lejos posible del cuerpo",
+              "Con un solo brazo estirado",
+              "No importa la distancia"
+            ],
+            "a": 0,
+            "exp": "Sujetar la carga cerca del cuerpo reduce la tensión sobre la espalda al transportarla."
+          },
+          {
+            "q": "¿Qué movimiento se debe evitar mientras se sostiene una carga?",
+            "opts": [
+              "Giros bruscos de la espalda",
+              "Caminar despacio",
+              "Mirar hacia adelante",
+              "Respirar profundo"
+            ],
+            "a": 0,
+            "exp": "Los giros bruscos con carga son una de las causas más comunes de lesiones lumbares."
+          },
+          {
+            "q": "¿Qué se debe hacer si una carga supera el límite de peso permitido?",
+            "opts": [
+              "Solicitar ayuda o usar ayudas mecánicas",
+              "Levantarla de todas formas",
+              "Partirla en menos partes sin autorización",
+              "Ignorar el límite si hay apuro"
+            ],
+            "a": 0,
+            "exp": "Los límites de peso existen para prevenir lesiones; superarlos requiere apoyo adicional."
+          },
+          {
+            "q": "¿Qué calzado es recomendable para el manejo de cargas?",
+            "opts": [
+              "Calzado adecuado y de seguridad",
+              "Sandalias",
+              "Calzado sin restricciones",
+              "No importa el calzado"
+            ],
+            "a": 0,
+            "exp": "El calzado adecuado da estabilidad y protege los pies ante una caída de la carga."
+          },
+          {
+            "q": "¿Qué se debe hacer antes de iniciar el levantamiento?",
+            "opts": [
+              "Planificar el trayecto a recorrer",
+              "Improvisar el camino sobre la marcha",
+              "No es necesario planificar nada",
+              "Comenzar a caminar de inmediato"
+            ],
+            "a": 0,
+            "exp": "Planificar el trayecto evita obstáculos y decisiones apresuradas mientras se sostiene la carga."
+          },
+          {
+            "q": "Verdadero o falso: es mejor cargar solo y rápido que pedir ayuda.",
+            "opts": [
+              "Verdadero, pedir ayuda hace perder tiempo",
+              "Falso, pedir ayuda es lo correcto ante cargas pesadas",
+              "Verdadero, siempre es más eficiente solo",
+              "Falso, pero solo si hay testigos"
+            ],
+            "a": 1,
+            "exp": "Pedir ayuda ante una carga pesada previene lesiones, es más importante que la rapidez."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Evaluar el peso y tamaño de la carga",
+              "Transportar la carga",
+              "Girar con la carga",
+              "Pedir ayuda"
+            ],
+            "a": 0,
+            "exp": "Antes de decidir cómo levantar, primero se evalúa qué tan pesada y grande es la carga."
+          },
+          {
+            "q": "¿Qué lesiones busca prevenir esta estación?",
+            "opts": [
+              "Lesiones musculoesqueléticas",
+              "Quemaduras",
+              "Cortes profundos",
+              "Intoxicaciones"
+            ],
+            "a": 0,
+            "exp": "El manejo manual de cargas está directamente relacionado con lesiones musculoesqueléticas, especialmente de espalda."
+          }
+        ]
+      },
+      {
+        "id": "pr-04",
+        "code": "PR-04",
+        "name": "Trabajo en frío / cámaras",
+        "objetivo": "Proteger a los trabajadores que se desempeñan en zonas de frío extremo (túneles de congelado, cámaras) de los riesgos asociados a esa exposición.",
+        "pasos": [
+          "Verificar el uso de ropa térmica adecuada antes de ingresar.",
+          "Respetar los tiempos máximos de permanencia establecidos.",
+          "Conocer la ubicación de las salidas de emergencia de la cámara.",
+          "Realizar pausas de recuperación térmica según lo programado.",
+          "Reportar de inmediato síntomas de hipotermia propios o de un compañero."
+        ],
+        "seguridad": [
+          "Nunca ingresar solo a una cámara de frío sin que alguien sepa que estás ahí.",
+          "Verificar que el sistema de apertura de emergencia funcione.",
+          "Conocer los síntomas de hipotermia.",
+          "Respetar las pausas de recuperación térmica."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se debe verificar antes de ingresar a una cámara de frío?",
+            "opts": [
+              "El uso de ropa térmica adecuada",
+              "El precio del producto almacenado",
+              "El horario de almuerzo",
+              "La marca del refrigerante"
+            ],
+            "a": 0,
+            "exp": "La ropa térmica es la primera barrera de protección contra el frío extremo."
+          },
+          {
+            "q": "¿Por qué no se debe ingresar solo a una cámara de frío?",
+            "opts": [
+              "Por si ocurre una emergencia, alguien debe saber que estás ahí",
+              "No hay ningún riesgo en entrar solo",
+              "Es más rápido trabajar solo",
+              "No tiene relación con la seguridad"
+            ],
+            "a": 0,
+            "exp": "Si algo sucede estando solo, nadie sabría que necesitas ayuda dentro de la cámara."
+          },
+          {
+            "q": "¿Qué se debe respetar sobre el tiempo dentro de la cámara?",
+            "opts": [
+              "Los tiempos máximos de permanencia establecidos",
+              "No hay límite de tiempo",
+              "Se puede estar el tiempo que se quiera",
+              "Solo importa terminar la tarea"
+            ],
+            "a": 0,
+            "exp": "El tiempo máximo de permanencia previene los efectos acumulativos del frío extremo en el cuerpo."
+          },
+          {
+            "q": "¿Qué se debe conocer sobre la cámara antes de trabajar en ella?",
+            "opts": [
+              "La ubicación de las salidas de emergencia",
+              "El color de las paredes",
+              "El precio de construcción",
+              "El nombre del proveedor del equipo"
+            ],
+            "a": 0,
+            "exp": "Conocer las salidas de emergencia permite actuar rápido si ocurre un imprevisto."
+          },
+          {
+            "q": "¿Qué se debe hacer al notar síntomas de hipotermia en un compañero?",
+            "opts": [
+              "Reportarlo de inmediato",
+              "Esperar a que se le pase solo",
+              "Ignorarlo si sigue trabajando",
+              "Decirle que aguante hasta el final del turno"
+            ],
+            "a": 0,
+            "exp": "La hipotermia puede agravarse rápidamente, por lo que se debe actuar de inmediato al notar síntomas."
+          },
+          {
+            "q": "¿Para qué sirven las pausas de recuperación térmica?",
+            "opts": [
+              "Para que el cuerpo se recupere del frío extremo",
+              "Para socializar con compañeros",
+              "Para revisar el celular",
+              "No tienen ninguna función real"
+            ],
+            "a": 0,
+            "exp": "Las pausas permiten que el cuerpo recupere temperatura antes de seguir expuesto al frío."
+          },
+          {
+            "q": "¿Qué se debe verificar en el sistema de apertura de emergencia?",
+            "opts": [
+              "Que funcione correctamente",
+              "Que tenga un color llamativo",
+              "Que sea nuevo",
+              "No es necesario verificarlo"
+            ],
+            "a": 0,
+            "exp": "Un sistema de apertura de emergencia que no funciona puede dejar a alguien atrapado dentro de la cámara."
+          },
+          {
+            "q": "Verdadero o falso: la ropa térmica es opcional si el trabajo dentro de la cámara es breve.",
+            "opts": [
+              "Verdadero, si es rápido no se necesita",
+              "Falso, siempre es obligatoria dentro de la cámara",
+              "Verdadero, depende de cada trabajador",
+              "Falso, pero solo en invierno"
+            ],
+            "a": 1,
+            "exp": "La ropa térmica es obligatoria independiente de cuánto tiempo se vaya a estar dentro."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar el uso de ropa térmica adecuada",
+              "Realizar pausas de recuperación",
+              "Conocer las salidas de emergencia",
+              "Reportar síntomas de hipotermia"
+            ],
+            "a": 0,
+            "exp": "Antes de ingresar a la cámara, se verifica que la persona cuente con la ropa térmica adecuada."
+          },
+          {
+            "q": "¿Qué riesgo principal previene esta estación?",
+            "opts": [
+              "Hipotermia y efectos del frío extremo",
+              "Quemaduras",
+              "Cortes con cuchillo",
+              "Exposición a ruido excesivo"
+            ],
+            "a": 0,
+            "exp": "El trabajo en frío/cámaras está directamente relacionado con la prevención de hipotermia y sus efectos."
+          }
+        ]
+      },
+      {
+        "id": "pr-05",
+        "code": "PR-05",
+        "name": "Uso seguro de maquinaria",
+        "objetivo": "Prevenir accidentes derivados del uso de equipos y maquinaria de la planta (prensas, molinos, cocedores, calibradoras, entre otros).",
+        "pasos": [
+          "Verificar que el equipo tenga sus guardas de seguridad instaladas.",
+          "Confirmar que estás autorizado y capacitado para operar ese equipo específico.",
+          "Aplicar el procedimiento de bloqueo y etiquetado (LOTO) antes de cualquier intervención.",
+          "Nunca retirar dispositivos de seguridad para \"trabajar más rápido\".",
+          "Reportar de inmediato cualquier falla o ruido anormal del equipo."
+        ],
+        "seguridad": [
+          "Jamás introducir manos u objetos en partes móviles.",
+          "Respetar las distancias de seguridad señalizadas.",
+          "Detener el equipo ante cualquier duda antes de intervenir.",
+          "Usar solo equipos para los que se está capacitado."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se debe verificar antes de operar un equipo?",
+            "opts": [
+              "Que tenga sus guardas de seguridad instaladas",
+              "Que tenga buen color",
+              "Que sea el más nuevo de la planta",
+              "Que esté cerca del baño"
+            ],
+            "a": 0,
+            "exp": "Las guardas de seguridad son la primera barrera contra el contacto con partes móviles peligrosas."
+          },
+          {
+            "q": "¿Qué se requiere para operar un equipo específico?",
+            "opts": [
+              "Estar autorizado y capacitado para ese equipo",
+              "Tener muchas ganas de aprender",
+              "Ser el más rápido del turno",
+              "No se requiere nada especial"
+            ],
+            "a": 0,
+            "exp": "Cada equipo tiene sus propios riesgos, por lo que se requiere capacitación y autorización específica."
+          },
+          {
+            "q": "¿Qué procedimiento se aplica antes de intervenir un equipo?",
+            "opts": [
+              "Bloqueo y etiquetado (LOTO)",
+              "Ninguno, se interviene directamente",
+              "Pedir permiso verbal solamente",
+              "Apagar solo la luz del área"
+            ],
+            "a": 0,
+            "exp": "El bloqueo y etiquetado (LOTO) evita que el equipo se active mientras alguien lo está interviniendo."
+          },
+          {
+            "q": "¿Está permitido retirar dispositivos de seguridad para trabajar más rápido?",
+            "opts": [
+              "No, nunca",
+              "Sí, si se tiene cuidado",
+              "Sí, solo los supervisores pueden hacerlo",
+              "Depende del equipo"
+            ],
+            "a": 0,
+            "exp": "Retirar dispositivos de seguridad expone a riesgos graves, sin importar la urgencia por producir más rápido."
+          },
+          {
+            "q": "¿Qué se debe hacer ante un ruido anormal en un equipo?",
+            "opts": [
+              "Reportarlo de inmediato",
+              "Ignorarlo si sigue funcionando",
+              "Aumentar la velocidad para terminar antes",
+              "Esperar a que se detenga solo"
+            ],
+            "a": 0,
+            "exp": "Un ruido anormal puede ser señal de una falla que, si se ignora, puede terminar en un accidente."
+          },
+          {
+            "q": "¿Qué se debe evitar siempre cerca de partes móviles?",
+            "opts": [
+              "Introducir manos u objetos",
+              "Mirar el equipo desde lejos",
+              "Reportar fallas",
+              "Usar EPP"
+            ],
+            "a": 0,
+            "exp": "Las partes móviles pueden atrapar manos u objetos con fuerza suficiente para causar lesiones graves."
+          },
+          {
+            "q": "¿Qué se debe respetar según la señalización de cada equipo?",
+            "opts": [
+              "Las distancias de seguridad señalizadas",
+              "El color del piso",
+              "La hora de uso",
+              "El nombre del fabricante"
+            ],
+            "a": 0,
+            "exp": "Las distancias de seguridad marcan el límite hasta donde una persona puede acercarse sin riesgo."
+          },
+          {
+            "q": "Verdadero o falso: si tienes duda sobre un equipo, debes intervenirlo igual para no atrasarte.",
+            "opts": [
+              "Verdadero, no hay tiempo que perder",
+              "Falso, ante cualquier duda se debe detener el equipo primero",
+              "Verdadero, la duda no es motivo para detenerse",
+              "Falso, pero solo si el jefe lo autoriza"
+            ],
+            "a": 1,
+            "exp": "Ante cualquier duda, lo correcto es detener el equipo antes de intervenir, nunca improvisar con dudas."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Verificar que el equipo tenga sus guardas de seguridad instaladas",
+              "Aplicar el procedimiento LOTO",
+              "Reportar fallas",
+              "Confirmar autorización para operar"
+            ],
+            "a": 0,
+            "exp": "Antes de cualquier otra acción, se verifica que las guardas de seguridad estén correctamente instaladas."
+          },
+          {
+            "q": "¿Qué tipo de equipos abarca esta estación?",
+            "opts": [
+              "Prensas, molinos, cocedores, calibradoras, entre otros",
+              "Solo computadores de oficina",
+              "Solo vehículos de transporte",
+              "Solo herramientas manuales"
+            ],
+            "a": 0,
+            "exp": "Esta estación cubre el uso seguro de la maquinaria productiva presente en la planta."
+          }
+        ]
+      },
+      {
+        "id": "pr-06",
+        "code": "PR-06",
+        "name": "Procedimientos de emergencia y evacuación",
+        "objetivo": "Que todo el personal sepa cómo actuar de forma segura y ordenada ante una emergencia (incendio, sismo, derrame, accidente grave).",
+        "pasos": [
+          "Conocer las rutas de evacuación y puntos de encuentro de tu área.",
+          "Identificar la ubicación de extintores y botiquines cercanos a tu puesto.",
+          "Seguir las instrucciones del personal a cargo de emergencias durante un simulacro o evento real.",
+          "Evacuar de forma calmada, sin correr y sin devolverse por objetos personales.",
+          "Reportarse en el punto de encuentro para el conteo de personal."
+        ],
+        "seguridad": [
+          "Participar activamente en los simulacros programados.",
+          "No bloquear nunca las rutas de evacuación con materiales u objetos.",
+          "Memorizar el punto de encuentro de tu área.",
+          "Mantener la calma y ayudar a quien lo necesite durante la evacuación."
+        ],
+        "quiz": [
+          {
+            "q": "¿Qué se debe conocer sobre tu área de trabajo?",
+            "opts": [
+              "Las rutas de evacuación y puntos de encuentro",
+              "Solo el nombre del supervisor",
+              "Solo el horario de colación",
+              "El precio del producto que se fabrica ahí"
+            ],
+            "a": 0,
+            "exp": "Conocer estas rutas con anticipación permite reaccionar rápido y de forma ordenada ante una emergencia real."
+          },
+          {
+            "q": "¿Cómo se debe evacuar ante una emergencia?",
+            "opts": [
+              "De forma calmada, sin correr",
+              "Corriendo lo más rápido posible",
+              "Empujando a los demás para salir primero",
+              "Esperando a que todos salgan primero"
+            ],
+            "a": 0,
+            "exp": "Evacuar corriendo aumenta el riesgo de caídas y choques; lo correcto es hacerlo de forma calmada y ordenada."
+          },
+          {
+            "q": "¿Qué se debe hacer al llegar al punto de encuentro?",
+            "opts": [
+              "Reportarse para el conteo de personal",
+              "Retirarse a la casa de inmediato",
+              "Volver a la planta a buscar algo",
+              "Esperar a que termine el simulacro sin reportarse"
+            ],
+            "a": 0,
+            "exp": "El conteo de personal permite confirmar que todos evacuaron correctamente y detectar si falta alguien."
+          },
+          {
+            "q": "¿Está permitido devolverse por objetos personales durante una evacuación?",
+            "opts": [
+              "No, nunca",
+              "Sí, si es algo importante",
+              "Sí, si hay tiempo",
+              "Depende del objeto"
+            ],
+            "a": 0,
+            "exp": "Ningún objeto personal justifica el riesgo de devolverse durante una emergencia real."
+          },
+          {
+            "q": "¿Qué se debe identificar cerca de tu puesto de trabajo?",
+            "opts": [
+              "La ubicación de extintores y botiquines",
+              "El precio de los equipos",
+              "El nombre de todos los compañeros",
+              "La fecha de fabricación de la maquinaria"
+            ],
+            "a": 0,
+            "exp": "Saber dónde están estos elementos permite actuar rápido ante una emergencia menor antes de que escale."
+          },
+          {
+            "q": "¿Qué se debe hacer durante un simulacro?",
+            "opts": [
+              "Participar activamente siguiendo las instrucciones",
+              "Ignorarlo porque no es una emergencia real",
+              "Quedarse en el puesto de trabajo",
+              "Salir corriendo sin seguir ninguna indicación"
+            ],
+            "a": 0,
+            "exp": "El simulacro entrena al personal para que sepa reaccionar correctamente si ocurre una emergencia real."
+          },
+          {
+            "q": "¿Qué no se debe hacer con las rutas de evacuación?",
+            "opts": [
+              "Bloquearlas con materiales u objetos",
+              "Conocerlas de memoria",
+              "Usarlas durante un simulacro",
+              "Señalizarlas correctamente"
+            ],
+            "a": 0,
+            "exp": "Una ruta de evacuación bloqueada puede costar vidas en una emergencia real."
+          },
+          {
+            "q": "Verdadero o falso: solo el personal de emergencias necesita conocer el punto de encuentro.",
+            "opts": [
+              "Verdadero, los demás no lo necesitan",
+              "Falso, todo el personal debe conocerlo",
+              "Verdadero, es información reservada",
+              "Falso, pero solo los supervisores"
+            ],
+            "a": 1,
+            "exp": "Todo el personal debe conocer el punto de encuentro de su área para una evacuación efectiva."
+          },
+          {
+            "q": "¿Cuál es la primera actividad de esta estación?",
+            "opts": [
+              "Conocer las rutas de evacuación y puntos de encuentro",
+              "Reportarse en el punto de encuentro",
+              "Seguir instrucciones durante la emergencia",
+              "Evacuar de forma calmada"
+            ],
+            "a": 0,
+            "exp": "Antes de cualquier emergencia, lo primero es conocer bien las rutas y el punto de encuentro de tu área."
+          },
+          {
+            "q": "¿Qué tipo de emergencias cubre esta estación?",
+            "opts": [
+              "Incendio, sismo, derrame, accidente grave, entre otras",
+              "Solo incendios",
+              "Solo sismos",
+              "Ninguna emergencia real, es solo teoría"
+            ],
+            "a": 0,
+            "exp": "Los procedimientos de emergencia abarcan distintos tipos de eventos que pueden ocurrir en la planta."
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -2434,7 +4182,7 @@ let currentSupervisorId = null;   // supervisor con sesión iniciada (role === '
 let selectedCollabId = COLLAB_IDS[0]; // colaborador que el supervisor está gestionando
 let collabStore = {}; // { [collabId]: { assignments:{[subId]:true}, progress:{[subId]:{manual,video,quiz,attempts}} } }
 let media = {}; // { [subId]: { pdfUrl, pdfName, pdfIsObjectUrl, videoUrl, videoRawUrl, videoKind, videoName, videoIsObjectUrl, imgUrl, imgName, imgIsObjectUrl } }
-let panelMedia = { hp:{}, cg:{} }; // { url, name, isObjectUrl }
+let panelMedia = { hp:{}, cg:{}, cc:{}, pr:{} }; // { url, name, isObjectUrl }
 const $ = sel => document.querySelector(sel);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
 
@@ -2526,6 +4274,23 @@ async function uploadToCloudinary(file){
 /* ============================================================
    FIRESTORE — guardar y cargar los archivos de cada estación y de los paneles
    ============================================================ */
+/* ============================================================
+   REGISTRO DE AUDITORÍA — quién cambió qué y cuándo
+   ============================================================ */
+async function logAudit(action, details){
+  if(!firebaseReady || role!=='supervisor') return;
+  try{
+    await db.collection('auditLog').add({
+      timestamp: new Date().toISOString(),
+      supervisor: currentSupervisorId || 'desconocido',
+      action: action,
+      details: details || ''
+    });
+  }catch(err){
+    console.error('Error guardando registro de auditoría:', err);
+  }
+}
+
 async function saveStationMedia(subId){
   if(!firebaseReady || !subId) return;
   const m = getMedia(subId);
@@ -2589,7 +4354,7 @@ async function loadPanelMedia(){
 let mediaDataReady = null; // promesa: se resuelve cuando terminó de cargar los archivos guardados
 
 function injectTemplates(){
-  ['tpl-mytasks','tpl-assign','tpl-teamdash'].forEach(tid=>{
+  ['tpl-mytasks','tpl-assign','tpl-teamdash','tpl-audit'].forEach(tid=>{
     const tpl = document.getElementById(tid);
     if(!tpl) return;
     const node = tpl.content.firstElementChild.cloneNode(true);
@@ -2650,14 +4415,19 @@ function renderManualImage(subId){
   }
 }
 
+const PANEL_OVERLAYS = {
+  hp: 'linear-gradient(160deg, rgba(122,15,10,.88), rgba(214,34,26,.72) 65%)',
+  cg: 'linear-gradient(200deg, rgba(0,114,143,.88), rgba(0,168,214,.72) 65%)',
+  cc: 'linear-gradient(160deg, rgba(18,79,44,.88), rgba(30,132,73,.72) 65%)',
+  pr: 'linear-gradient(200deg, rgba(122,72,5,.88), rgba(201,122,10,.72) 65%)'
+};
 function renderPanelImage(key){
   const panel = document.querySelector('.panel-'+key);
   const status = document.getElementById(key+'ImgStatus');
+  if(!panel || !status) return;
   const m = panelMedia[key];
   if(m && m.url){
-    const overlay = key==='hp'
-      ? 'linear-gradient(160deg, rgba(142,69,32,.88), rgba(196,98,45,.72) 65%)'
-      : 'linear-gradient(200deg, rgba(27,84,112,.88), rgba(46,125,166,.72) 65%)';
+    const overlay = PANEL_OVERLAYS[key] || PANEL_OVERLAYS.hp;
     panel.style.backgroundImage = overlay + ', url(' + m.url + ')';
     panel.style.backgroundSize = 'cover';
     panel.style.backgroundPosition = 'center';
@@ -2719,7 +4489,7 @@ let currentViewId = 'view-role';
 
 function showView(id){
   currentViewId = id;
-  ['view-login','view-home','view-process','view-sub','view-mytasks','view-assign','view-teamdash'].forEach(v=>{
+  ['view-login','view-home','view-process','view-sub','view-mytasks','view-assign','view-teamdash','view-audit'].forEach(v=>{
     const el = document.getElementById(v);
     if(el) el.classList.toggle('hidden', v!==id);
   });
@@ -2736,6 +4506,7 @@ function updateTopbar(){
   }
   $('#navAssign').classList.toggle('hidden', role!=='supervisor');
   $('#navDash').classList.toggle('hidden', role!=='supervisor');
+  $('#navAudit').classList.toggle('hidden', role!=='supervisor');
 }
 
 function updateCrumbs(){
@@ -2840,6 +4611,8 @@ async function openSub(subId, cameFrom){
 
   resetQuizUI();
   currentQuizSub = sub;
+
+  updateConfirmUI(subId);
 
   $$('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab==='manual'));
   $$('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-manual'));
@@ -3031,9 +4804,12 @@ function renderMyTasks(){
     <div class="dash-card"><div class="num">${avg}%</div><div class="lbl">Progreso general</div></div>`;
 
   const list = $('#mytasks-list');
+  const chartBox = $('#myProgressChartBox');
   if(total===0){
     list.innerHTML = `<div class="empty-state">Aún no tienes tareas asignadas. Pídele a tu supervisor que te asigne una estación desde su cuenta, o explora libremente los procesos más abajo.</div>`;
+    chartBox.classList.add('hidden');
   } else {
+    chartBox.classList.remove('hidden');
     list.innerHTML = assignedIds.map(id=>{
       const { sub } = findSub(id);
       const p = store.progress[id] || {manual:0,video:0,quiz:0};
@@ -3054,6 +4830,27 @@ function renderMyTasks(){
     }).join('');
     $$('#mytasks-list .task-item').forEach(el=>{
       el.addEventListener('click', ()=> openSub(el.dataset.sub, 'mytasks'));
+    });
+
+    const wrap = $('#myProgressCanvasWrap');
+    wrap.style.height = Math.max(180, assignedIds.length*30) + 'px';
+    renderChart('chartMyProgress', {
+      type:'bar',
+      data:{
+        labels: assignedIds.map(id=> findSub(id).sub.code),
+        datasets:[{
+          label:'Progreso (%)',
+          data: assignedIds.map(id=> stationOverall(currentCollaboratorId,id)),
+          backgroundColor: assignedIds.map(id=> stationOverall(currentCollaboratorId,id)>=100 ? '#3F7D4F' : '#0A2FE0'),
+          borderRadius:2
+        }]
+      },
+      options:{
+        indexAxis:'y',
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{ x:{ beginAtZero:true, max:100 } }
+      }
     });
   }
 }
@@ -3100,6 +4897,7 @@ function renderAssignList(){
         store.assignments[cb.dataset.sub] = cb.checked;
       });
       saveCollabDoc(selectedCollabId);
+      logAudit('Actualizó asignaciones', `Línea ${DATA[key].name} para ${selectedCollabId}`);
       btn.textContent = '✓ Guardado';
       btn.classList.add('saved');
       clearTimeout(btn._resetTimer);
@@ -3115,6 +4913,7 @@ function renderAssignList(){
       const val = btn.dataset.action==='all';
       DATA[key].subs.forEach(s=>{ store.assignments[s.id] = val; });
       saveCollabDoc(selectedCollabId);
+      logAudit(val ? 'Asignó línea completa' : 'Quitó línea completa', `${DATA[key].name} para ${selectedCollabId}`);
       renderAssignList();
     });
   });
@@ -3123,6 +4922,46 @@ function renderAssignList(){
 /* ============================================================
    DASHBOARD DE EQUIPO (supervisor)
    ============================================================ */
+/* ============================================================
+   VISTA DE AUDITORÍA (supervisor)
+   ============================================================ */
+async function openAudit(){
+  $('#crumbs').innerHTML = '<span>Inicio</span><span class="sep">/</span><span class="cur">Auditoría</span>';
+  showView('view-audit');
+  $('#audit-body').innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--ink-soft);padding:24px;">Cargando…</td></tr>';
+  await renderAuditLog();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function renderAuditLog(){
+  const body = $('#audit-body');
+  if(!firebaseReady){
+    body.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--ink-soft);padding:24px;">No se pudo conectar a la base de datos.</td></tr>';
+    return;
+  }
+  try{
+    const snapshot = await db.collection('auditLog').orderBy('timestamp','desc').limit(200).get();
+    if(snapshot.empty){
+      body.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--ink-soft);padding:24px;">Aún no hay registros de auditoría.</td></tr>';
+      return;
+    }
+    body.innerHTML = snapshot.docs.map(doc=>{
+      const d = doc.data();
+      let fecha = d.timestamp;
+      try{ fecha = new Date(d.timestamp).toLocaleString('es-CL'); }catch(e){}
+      return `<tr>
+        <td class="mono" style="font-size:12px;white-space:nowrap;">${escapeHtml(fecha)}</td>
+        <td>${escapeHtml(d.supervisor||'')}</td>
+        <td>${escapeHtml(d.action||'')}</td>
+        <td>${escapeHtml(d.details||'')}</td>
+      </tr>`;
+    }).join('');
+  }catch(err){
+    console.error('Error cargando el registro de auditoría:', err);
+    body.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--bad);padding:24px;">No se pudo cargar el registro. Revisa la conexión.</td></tr>';
+  }
+}
+
 async function openTeamDash(){
   populateCollabSelects();
   $('#crumbs').innerHTML = '<span>Inicio</span><span class="sep">/</span><span class="cur">Dashboard equipo</span>';
@@ -3130,6 +4969,7 @@ async function openTeamDash(){
   $('#teamdash-body').innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--ink-soft);padding:24px;">Cargando…</td></tr>';
   if(collabDataReady) await collabDataReady;
   renderTeamDash();
+  renderCompanyDashboard();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -3164,6 +5004,181 @@ function renderTeamDash(){
       <td class="center">${estado}</td>
     </tr>`;
   }).join('');
+}
+
+/* ============================================================
+   PANORAMA GENERAL DE LA EMPRESA (KPIs + gráficos)
+   ============================================================ */
+let chartInstances = {};
+function renderChart(canvasId, config){
+  const canvas = document.getElementById(canvasId);
+  if(!canvas || typeof Chart==='undefined') return;
+  if(chartInstances[canvasId]) chartInstances[canvasId].destroy();
+  chartInstances[canvasId] = new Chart(canvas, config);
+}
+
+function allAssignedPairs(){
+  const pairs = [];
+  COLLAB_IDS.forEach(collabId=>{
+    const store = collabStore[collabId];
+    Object.keys(store.assignments).forEach(subId=>{
+      if(store.assignments[subId]) pairs.push({collabId, subId});
+    });
+  });
+  return pairs;
+}
+
+function renderCompanyDashboard(){
+  const pairs = allAssignedPairs();
+  const totalAssigned = pairs.length;
+  const totalCompleted = pairs.filter(p=>stationOverall(p.collabId,p.subId)>=100).length;
+  const avgProgress = totalAssigned ? Math.round(pairs.reduce((s,p)=>s+stationOverall(p.collabId,p.subId),0)/totalAssigned) : 0;
+  const activeCollabs = COLLAB_IDS.filter(id=>Object.values(collabStore[id].assignments).some(v=>v)).length;
+
+  let attemptsSum = 0, attemptsCount = 0;
+  pairs.forEach(p=>{
+    const prog = collabStore[p.collabId].progress[p.subId];
+    if(prog && prog.attempts>0){ attemptsSum += prog.attempts; attemptsCount++; }
+  });
+  const avgAttempts = attemptsCount ? (attemptsSum/attemptsCount).toFixed(1) : '—';
+
+  $('#company-kpis').innerHTML = `
+    <div class="dash-card"><div class="num">${avgProgress}%</div><div class="lbl">Progreso general de la empresa</div></div>
+    <div class="dash-card"><div class="num">${activeCollabs}/${COLLAB_IDS.length}</div><div class="lbl">Colaboradores con tareas</div></div>
+    <div class="dash-card"><div class="num">${totalCompleted}/${totalAssigned}</div><div class="lbl">Tareas completadas</div></div>
+    <div class="dash-card"><div class="num">${avgAttempts}</div><div class="lbl">Intentos promedio por evaluación</div></div>`;
+
+  /* --- Distribución de avance (histograma) --- */
+  const buckets = [0,0,0,0];
+  COLLAB_IDS.forEach(collabId=>{
+    const store = collabStore[collabId];
+    const assignedIds = Object.keys(store.assignments).filter(id=>store.assignments[id]);
+    const avg = assignedIds.length ? Math.round(assignedIds.reduce((s,id)=>s+stationOverall(collabId,id),0)/assignedIds.length) : 0;
+    if(avg<25) buckets[0]++;
+    else if(avg<50) buckets[1]++;
+    else if(avg<75) buckets[2]++;
+    else buckets[3]++;
+  });
+  renderChart('chartDistribucion', {
+    type:'bar',
+    data:{
+      labels:['0-25%','25-50%','50-75%','75-100%'],
+      datasets:[{ label:'Colaboradores', data:buckets, backgroundColor:'#0A2FE0', borderRadius:2 }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } }
+    }
+  });
+
+  /* --- Manual vs Video vs Evaluación (agregado) --- */
+  let mSum=0, vSum=0, qSum=0;
+  pairs.forEach(p=>{
+    const prog = collabStore[p.collabId].progress[p.subId];
+    mSum += prog.manual; vSum += prog.video; qSum += prog.quiz;
+  });
+  const n = totalAssigned || 1;
+  renderChart('chartContenido', {
+    type:'bar',
+    data:{
+      labels:['Manual','Video','Evaluación'],
+      datasets:[{
+        label:'Promedio (%)',
+        data:[Math.round(mSum/n), Math.round(vSum/n), Math.round(qSum/n)],
+        backgroundColor:['#D6221A','#00A8D6','#1E8449'],
+        borderRadius:2
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ y:{ beginAtZero:true, max:100 } }
+    }
+  });
+
+  /* --- % de aprobación por línea de proceso --- */
+  const lineEntries = Object.entries(DATA);
+  const aprobData = lineEntries.map(([key, proc])=>{
+    let attempted=0, passed=0;
+    proc.subs.forEach(sub=>{
+      COLLAB_IDS.forEach(collabId=>{
+        const prog = collabStore[collabId].progress[sub.id];
+        if(prog && prog.attempts>0){
+          attempted++;
+          if(prog.quiz>=70) passed++;
+        }
+      });
+    });
+    return attempted ? Math.round((passed/attempted)*100) : 0;
+  });
+  renderChart('chartAprobacion', {
+    type:'bar',
+    data:{
+      labels: lineEntries.map(([key,proc])=>proc.name),
+      datasets:[{ label:'% aprobación', data:aprobData, backgroundColor:'#7A0F0A', borderRadius:2 }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ y:{ beginAtZero:true, max:100 } }
+    }
+  });
+}
+
+async function exportToExcel(){
+  if(typeof XLSX==='undefined'){
+    alert('No se pudo cargar la librería de Excel. Revisa tu conexión a internet e inténtalo de nuevo.');
+    return;
+  }
+  if(collabDataReady) await collabDataReady;
+
+  const detalle = [];
+  const resumen = [];
+
+  COLLAB_IDS.forEach(collabId=>{
+    const store = collabStore[collabId];
+    const assignedIds = Object.keys(store.assignments).filter(id=>store.assignments[id]);
+    const completadas = assignedIds.filter(id=>stationOverall(collabId,id)>=100).length;
+    const avg = assignedIds.length ? Math.round(assignedIds.reduce((s,id)=>s+stationOverall(collabId,id),0)/assignedIds.length) : 0;
+
+    resumen.push({
+      'Colaborador': collabId,
+      'Tareas asignadas': assignedIds.length,
+      'Completadas': completadas,
+      'Progreso general (%)': avg
+    });
+
+    Object.entries(DATA).forEach(([key, proc])=>{
+      proc.subs.forEach(sub=>{
+        const asignada = !!store.assignments[sub.id];
+        const p = store.progress[sub.id] || {manual:0,video:0,quiz:0,attempts:0};
+        const overall = stationOverall(collabId, sub.id);
+        detalle.push({
+          'Colaborador': collabId,
+          'Línea': proc.name,
+          'Código': sub.code,
+          'Estación': sub.name,
+          'Asignada': asignada ? 'Sí' : 'No',
+          'Manual (%)': p.manual,
+          'Video (%)': p.video,
+          'Evaluación (%)': p.quiz,
+          'Intentos evaluación': p.attempts || 0,
+          'Progreso general (%)': overall,
+          'Estado': overall>=100 ? 'Completo' : (overall>0 ? 'En progreso' : 'Sin iniciar')
+        });
+      });
+    });
+  });
+
+  const wb = XLSX.utils.book_new();
+  const wsResumen = XLSX.utils.json_to_sheet(resumen);
+  const wsDetalle = XLSX.utils.json_to_sheet(detalle);
+  XLSX.utils.book_append_sheet(wb, wsResumen, 'Resumen por colaborador');
+  XLSX.utils.book_append_sheet(wb, wsDetalle, 'Detalle por estación');
+
+  const fecha = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `progreso_capacitacion_${fecha}.xlsx`);
 }
 
 function populateCollabSelects(){
@@ -3204,7 +5219,7 @@ function goBack(){
     else openProcess(state.process);
   } else if(currentViewId==='view-process'){
     role==='colaborador' ? openMyTasks() : goHome();
-  } else if(currentViewId==='view-assign' || currentViewId==='view-teamdash'){
+  } else if(currentViewId==='view-assign' || currentViewId==='view-teamdash' || currentViewId==='view-audit'){
     goHome();
   } else {
     role==='colaborador' ? openMyTasks() : goHome();
@@ -3255,17 +5270,90 @@ $('#switchAccountBtn').addEventListener('click', ()=>{
 
 $('#navAssign').addEventListener('click', openAssign);
 $('#navDash').addEventListener('click', openTeamDash);
+$('#navAudit').addEventListener('click', openAudit);
+
+function switchTab(tabName){
+  $$('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabName));
+  $$('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tabName));
+}
+function shakeBox(box){
+  if(!box) return;
+  box.classList.remove('shake');
+  void box.offsetWidth; // reinicia la animación
+  box.classList.add('shake');
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
 
 $$('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
-    $$('.tab-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    $$('.tab-panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    if(btn.classList.contains('locked')){
+      const subId = state.sub;
+      if(!isManualConfirmed(subId)){
+        switchTab('manual');
+        shakeBox($('#confirmReadBox'));
+      } else if(btn.dataset.tab==='quiz' && !isVideoConfirmed(subId)){
+        switchTab('video');
+        shakeBox($('#confirmVideoBox'));
+      }
+      return;
+    }
+    switchTab(btn.dataset.tab);
   });
 });
 
-$('#printManualBtn').addEventListener('click', ()=> window.print());
+function isManualConfirmed(subId){
+  if(role!=='colaborador' || !currentCollaboratorId) return true; // supervisores no se bloquean
+  const prog = collabStore[currentCollaboratorId] && collabStore[currentCollaboratorId].progress[subId];
+  return !!(prog && prog.manualConfirmed);
+}
+function isVideoConfirmed(subId){
+  if(role!=='colaborador' || !currentCollaboratorId) return true; // supervisores no se bloquean
+  const prog = collabStore[currentCollaboratorId] && collabStore[currentCollaboratorId].progress[subId];
+  return !!(prog && prog.videoConfirmed);
+}
+
+function updateConfirmUI(subId){
+  const manualOk = isManualConfirmed(subId);
+  const videoOk = isVideoConfirmed(subId);
+
+  const manualCb = $('#confirmReadCheckbox');
+  const manualBox = $('#confirmReadBox');
+  manualCb.checked = manualOk;
+  manualBox.classList.toggle('confirmed', manualOk);
+
+  const videoCb = $('#confirmVideoCheckbox');
+  const videoBox = $('#confirmVideoBox');
+  videoCb.checked = videoOk;
+  videoBox.classList.toggle('confirmed', videoOk);
+
+  $$('.tab-btn').forEach(b=>{
+    if(b.dataset.tab==='video') b.classList.toggle('locked', !manualOk);
+    else if(b.dataset.tab==='quiz') b.classList.toggle('locked', !manualOk || !videoOk);
+  });
+}
+
+$('#confirmReadCheckbox').addEventListener('change', e=>{
+  const checked = e.target.checked;
+  if(role==='colaborador' && currentCollaboratorId && state.sub){
+    const store = collabStore[currentCollaboratorId];
+    if(!store.progress[state.sub]) store.progress[state.sub] = {manual:0,video:0,quiz:0,attempts:0};
+    store.progress[state.sub].manualConfirmed = checked;
+    saveCollabDoc(currentCollaboratorId);
+  }
+  updateConfirmUI(state.sub);
+});
+
+$('#confirmVideoCheckbox').addEventListener('change', e=>{
+  const checked = e.target.checked;
+  if(role==='colaborador' && currentCollaboratorId && state.sub){
+    const store = collabStore[currentCollaboratorId];
+    if(!store.progress[state.sub]) store.progress[state.sub] = {manual:0,video:0,quiz:0,attempts:0};
+    store.progress[state.sub].videoConfirmed = checked;
+    saveCollabDoc(currentCollaboratorId);
+  }
+  updateConfirmUI(state.sub);
+});
+
 
 $('#videoFrame').addEventListener('click', ()=>{
   $('#videoFrame').classList.add('hidden');
@@ -3293,6 +5381,7 @@ $('#pdfUpload').addEventListener('change', async e=>{
     m.pdfIsObjectUrl = false;
     renderManualDoc(subId);
     saveStationMedia(subId);
+    logAudit('Subió PDF', `${subId}: ${f.name}`);
     flashSaved($('#manualDocStatus'));
   }catch(err){
     console.error('Error subiendo PDF a Cloudinary:', err);
@@ -3312,6 +5401,7 @@ $('#pdfLinkBtn').addEventListener('click', ()=>{
   m.pdfIsObjectUrl = false;
   renderManualDoc(subId);
   saveStationMedia(subId);
+  logAudit('Enlazó PDF', `${subId}: ${val}`);
   flashSaved($('#manualDocStatus'));
   $('#pdfLinkInput').value = '';
 });
@@ -3324,6 +5414,7 @@ $('#manualDocStatus').addEventListener('click', e=>{
     m.pdfUrl = null; m.pdfName = null; m.pdfIsObjectUrl = false;
     renderManualDoc(subId);
     saveStationMedia(subId);
+    logAudit('Quitó PDF', subId);
   }
 });
 
@@ -3346,6 +5437,7 @@ $('#imgUpload').addEventListener('change', async e=>{
     m.imgIsObjectUrl = false;
     renderManualImage(subId);
     saveStationMedia(subId);
+    logAudit('Subió imagen', `${subId}: ${f.name}`);
     flashSaved($('#manualImgStatus'));
   }catch(err){
     console.error('Error subiendo imagen a Cloudinary:', err);
@@ -3365,6 +5457,7 @@ $('#imgLinkBtn').addEventListener('click', ()=>{
   m.imgIsObjectUrl = false;
   renderManualImage(subId);
   saveStationMedia(subId);
+  logAudit('Enlazó imagen', `${subId}: ${val}`);
   flashSaved($('#manualImgStatus'));
   $('#imgLinkInput').value = '';
 });
@@ -3377,11 +5470,12 @@ $('#manualImgStatus').addEventListener('click', e=>{
     m.imgUrl = null; m.imgName = null; m.imgIsObjectUrl = false;
     renderManualImage(subId);
     saveStationMedia(subId);
+    logAudit('Quitó imagen', subId);
   }
 });
 
 /* --- home panel images: upload / link / clear --- */
-['hp','cg'].forEach(key=>{
+['hp','cg','cc','pr'].forEach(key=>{
   document.getElementById(key+'ImgCtrl').addEventListener('click', e=> e.stopPropagation());
   document.getElementById(key+'ImgUpload').addEventListener('change', async e=>{
     const f = e.target.files[0];
@@ -3395,6 +5489,7 @@ $('#manualImgStatus').addEventListener('click', e=>{
       panelMedia[key] = { url, name:f.name, isObjectUrl:false };
       renderPanelImage(key);
       savePanelMedia(key);
+      logAudit('Subió imagen de panel', `${DATA[key].name}: ${f.name}`);
       flashSaved(document.getElementById(key+'ImgStatus'));
     }catch(err){
       console.error('Error subiendo imagen de panel a Cloudinary:', err);
@@ -3410,6 +5505,7 @@ $('#manualImgStatus').addEventListener('click', e=>{
     panelMedia[key] = { url:val, name:null, isObjectUrl:false };
     renderPanelImage(key);
     savePanelMedia(key);
+    logAudit('Enlazó imagen de panel', `${DATA[key].name}: ${val}`);
     flashSaved(document.getElementById(key+'ImgStatus'));
     document.getElementById(key+'ImgLinkInput').value = '';
   });
@@ -3420,6 +5516,7 @@ $('#manualImgStatus').addEventListener('click', e=>{
       panelMedia[key] = {};
       renderPanelImage(key);
       savePanelMedia(key);
+      logAudit('Quitó imagen de panel', DATA[key].name);
     }
   });
 });
@@ -3446,6 +5543,7 @@ $('#videoUpload').addEventListener('change', async e=>{
     m.videoIsObjectUrl = false;
     renderVideoMedia(subId);
     saveStationMedia(subId);
+    logAudit('Subió video', `${subId}: ${f.name}`);
     flashSaved($('#videoStatus'));
   }catch(err){
     console.error('Error subiendo video a Cloudinary:', err);
@@ -3468,6 +5566,7 @@ $('#videoLinkBtn').addEventListener('click', ()=>{
   m.videoIsObjectUrl = false;
   renderVideoMedia(subId);
   saveStationMedia(subId);
+  logAudit('Enlazó video', `${subId}: ${raw}`);
   flashSaved($('#videoStatus'));
   $('#videoLinkInput').value = '';
 });
@@ -3480,6 +5579,7 @@ $('#videoStatus').addEventListener('click', e=>{
     m.videoUrl = null; m.videoKind = null; m.videoName = null; m.videoRawUrl = null; m.videoIsObjectUrl = false;
     renderVideoMedia(subId);
     saveStationMedia(subId);
+    logAudit('Quitó video', subId);
   }
 });
 
@@ -3494,11 +5594,22 @@ mediaDataReady = Promise.all([loadAllStationMedia(), loadPanelMedia()]);
 mediaDataReady.then(()=>{
   renderPanelImage('hp');
   renderPanelImage('cg');
+  renderPanelImage('cc');
+  renderPanelImage('pr');
 });
 $$('.mini-panel[data-process]').forEach(p=>{
   p.addEventListener('click', ()=> openProcess(p.dataset.process));
 });
+$('#exportExcelBtn').addEventListener('click', exportToExcel);
 showView('view-login');
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(err=>{
+      console.error('No se pudo registrar el service worker (no afecta el uso normal de la página):', err);
+    });
+  });
+}
 </script>
 </body>
 </html>
